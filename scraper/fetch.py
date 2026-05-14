@@ -37,6 +37,7 @@ SHERIFF_URL = f"{SHERIFF_ROOT}/sheriff-sale/"
 SHERIFF_ARCHIVE_URL = f"{SHERIFF_ROOT}/2026-sheriff-sales/"
 ASSESSOR_URL = f"{ROOT}/164/Assessor"
 FORT_WAYNE_311_URL = "https://www.cityoffortwayne.org/311"
+FORT_WAYNE_311_INCIDENTS_URL = "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents"
 TAX_RECORD_LIMIT = 500
 
 
@@ -83,6 +84,10 @@ def fetch_bytes(url: str, timeout: int = 45) -> bytes:
     req = Request(url, headers={"User-Agent": "fort-wayne-allen-scraper/0.1"})
     with urlopen(req, timeout=timeout) as resp:
         return resp.read()
+
+
+def fetch_json(url: str, timeout: int = 30) -> object:
+    return json.loads(fetch_text(url, timeout=timeout))
 
 
 def extract_links(url: str) -> tuple[list[tuple[str, str]], str]:
@@ -430,12 +435,177 @@ def tax_delinquent_records(statuses: list[SourceStatus]) -> list[dict]:
         ]
 
 
+def code_distress_tags(row: dict, repeated: bool, stacked: bool) -> tuple[list[str], int] | None:
+    text = " ".join(str(row.get(key) or "") for key in ("department", "casetype", "casesubtype", "incidentstatus"))
+    lowered = text.lower()
+    tags: list[str] = ["code-violation"]
+    score = 70
+    if "minimum housing" in lowered or "commercial standards" in lowered:
+        tags.extend(["housing-building-code", "orders-to-repair"])
+        score = 84
+    if "open structure" in lowered:
+        tags.extend(["open-structure", "unsecured-property"])
+        score = 88
+    if "debris" in lowered or "cistern" in lowered:
+        tags.extend(["trash-debris", "nuisance"])
+        score = max(score, 74)
+    if "abandoned vehicle" in lowered:
+        if not (repeated or stacked):
+            return None
+        tags.extend(["abandoned-vehicle", "property-neglect"])
+        score = max(score, 72)
+    if "grass" in lowered or "weed" in lowered or "overgrowth" in lowered:
+        if not (repeated or stacked):
+            return None
+        tags.extend(["overgrown", "nuisance"])
+        score = max(score, 70)
+    if "bulk trash" in lowered or lowered.strip() in {"solid waste garbage", "garbage"}:
+        if not (repeated or stacked):
+            return None
+        tags.extend(["trash-debris"])
+        score = max(score, 70)
+    if not any(tag != "code-violation" for tag in tags):
+        return None
+    if stacked:
+        tags.append("hot-stack")
+        score = min(88, score + 8)
+    return list(dict.fromkeys(tags)), score
+
+
+def parse_incident_date(value: str) -> str:
+    if not value:
+        return datetime.now(UTC).date().isoformat()
+    try:
+        return datetime.strptime(value[:19], "%Y-%m-%dT%H:%M:%S").date().isoformat()
+    except ValueError:
+        return datetime.now(UTC).date().isoformat()
+
+
+def code_violation_records(
+    statuses: list[SourceStatus],
+    property_owner_index: dict[str, dict],
+    stack_index: dict[str, dict],
+) -> list[dict]:
+    raw_count = ignored = with_address = owner_matched = still_unknown = stacked_count = 0
+    try:
+        rows = fetch_json(FORT_WAYNE_311_INCIDENTS_URL)
+        if not isinstance(rows, list):
+            raise RuntimeError("Fort Wayne 311 endpoint did not return a list")
+        raw_count = len(rows)
+        address_counts: dict[str, int] = {}
+        for row in rows:
+            addr = str(row.get("addressline1") or "").strip()
+            if addr:
+                address_counts[address_key(addr)] = address_counts.get(address_key(addr), 0) + 1
+        records = []
+        for row in rows:
+            addr = str(row.get("addressline1") or "").strip()
+            if addr:
+                with_address += 1
+            key = address_key(addr)
+            stacked = key in stack_index
+            classified = code_distress_tags(row, address_counts.get(key, 0) > 1, stacked)
+            if not addr or not classified:
+                ignored += 1
+                continue
+            tags, score = classified
+            match = property_owner_index.get(key)
+            owner = match.get("owner_name", "Unknown Owner") if match else "Unknown Owner"
+            if match:
+                owner_matched += 1
+            else:
+                still_unknown += 1
+            if stacked:
+                stacked_count += 1
+            street, city, state, zip_code = split_city_state_zip(addr)
+            case_type = str(row.get("casetype") or "Code / Nuisance").strip()
+            status = str(row.get("incidentstatus") or "").strip()
+            refno = str(row.get("refno") or row.get("id") or "").strip()
+            filed_date = parse_incident_date(str(row.get("createdtime") or ""))
+            notes = f"Live Fort Wayne 311/code row. Case {refno}. Type: {case_type}. Status: {status}."
+            if stacked:
+                notes += " Address also appears in tax delinquent or foreclosure data."
+            record = make_record(
+                owner_name=owner,
+                property_address=street,
+                property_city=city,
+                property_state=state,
+                property_zip=zip_code,
+                parcel_id=match.get("parcel_id", "") if match else "",
+                lead_type="Code / Nuisance",
+                lead_type_key="code_violation",
+                filed_date=filed_date,
+                amount=0,
+                public_records_url=FORT_WAYNE_311_URL,
+                distress_sources=["code_violation"] + [tag.replace("-", "_") for tag in tags if tag != "code-violation"],
+                tags=tags,
+                notes=notes,
+            )
+            record["score"] = score
+            record["subject_to_score"] = max(0, score - 18)
+            record["hot_stack"] = stacked or score >= 80
+            record["case_number"] = refno
+            record["source_status"] = "live"
+            records.append(record)
+        statuses.append(
+            SourceStatus(
+                "code_violation",
+                FORT_WAYNE_311_INCIDENTS_URL,
+                "live",
+                f"Parsed {raw_count} public 311 rows; kept {len(records)} property-distress code rows after noise filtering.",
+            )
+        )
+        print(
+            "code_raw_records={raw} code_ignored_low_distress={ignored} code_distress_kept={kept} "
+            "code_records_with_addresses={with_addr} code_owner_matched={matched} "
+            "code_unknown_owner={unknown} code_hot_stacked={stacked}".format(
+                raw=raw_count,
+                ignored=ignored,
+                kept=len(records),
+                with_addr=with_address,
+                matched=owner_matched,
+                unknown=still_unknown,
+                stacked=stacked_count,
+            )
+        )
+        return records or code_violation_stub(statuses, "No public 311 rows passed distress filtering.")
+    except Exception as exc:
+        statuses.append(SourceStatus("code_violation", FORT_WAYNE_311_INCIDENTS_URL, "error", str(exc)))
+        print(
+            f"code_raw_records={raw_count} code_ignored_low_distress={ignored} code_distress_kept=0 "
+            f"code_records_with_addresses={with_address} code_owner_matched={owner_matched} "
+            f"code_unknown_owner={still_unknown} code_hot_stacked={stacked_count} code_error={exc}"
+        )
+        return code_violation_stub(statuses, "Public Fort Wayne 311/code endpoint could not be parsed safely.")
+
+
+def code_violation_stub(statuses: list[SourceStatus], detail: str) -> list[dict]:
+    statuses.append(SourceStatus("code_violation", FORT_WAYNE_311_URL, "stubbed", detail))
+    return [
+        make_record(
+            owner_name="Code Nuisance Adapter Pending",
+            property_address="Fort Wayne Code / Nuisance Records",
+            property_city="Fort Wayne",
+            property_state="IN",
+            property_zip="",
+            lead_type="Code / Nuisance Source Stub",
+            lead_type_key="code_violation",
+            filed_date=datetime.now(UTC).date().isoformat(),
+            amount=0,
+            public_records_url=FORT_WAYNE_311_URL,
+            distress_sources=["code_violation"],
+            tags=["code-violation", "nuisance", "adapter-stub"],
+            notes="Code/nuisance adapter placeholder. Dashboard-compatible structure remains available when the public live source returns no safe distress rows.",
+            source_status="stub",
+        )
+    ]
+
+
 def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
     today = datetime.now(UTC).date().isoformat()
     statuses.extend(
         [
             SourceStatus("probate", "Allen County court/probate records", "stubbed", "No safe public row parser wired yet."),
-            SourceStatus("code_violation", FORT_WAYNE_311_URL, "stubbed", "No safe public code/nuisance row parser wired yet."),
             SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing match adapter pending; used later for absentee detection."),
         ]
     )
@@ -454,22 +624,6 @@ def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
             distress_sources=["probate"],
             tags=["probate", "adapter-stub"],
             notes="Probate/estate adapter placeholder. Live source mapping exists, but no row-level scrape is enabled yet.",
-            source_status="stub",
-        ),
-        make_record(
-            owner_name="Code Nuisance Adapter Pending",
-            property_address="Fort Wayne Code / Nuisance Records",
-            property_city="Fort Wayne",
-            property_state="IN",
-            property_zip="",
-            lead_type="Code / Nuisance Source Stub",
-            lead_type_key="code_violation",
-            filed_date=today,
-            amount=0,
-            public_records_url=FORT_WAYNE_311_URL,
-            distress_sources=["code_violation"],
-            tags=["code-violation", "nuisance", "adapter-stub"],
-            notes="Code/nuisance adapter placeholder. Dashboard-compatible structure is ready for a future live Fort Wayne source.",
             source_status="stub",
         ),
     ]
@@ -496,12 +650,16 @@ def build_records() -> dict:
     statuses: list[SourceStatus] = []
     records = []
     tax_records = tax_delinquent_records(statuses)
-    records.extend(sheriff_sale_records(statuses, owner_index(tax_records)))
+    tax_owner_index = owner_index(tax_records)
+    sheriff_records = sheriff_sale_records(statuses, tax_owner_index)
+    stack_index = {**owner_index(tax_records), **{address_key(record.get("property_address", "")): record for record in sheriff_records if record.get("property_address")}}
+    records.extend(sheriff_records)
     records.extend(tax_records)
+    records.extend(code_violation_records(statuses, tax_owner_index, stack_index))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
-    print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')}")
+    print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')}")
     return {
         "fetched_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
