@@ -16,6 +16,8 @@ import json
 import re
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
+from io import BytesIO
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from html.parser import HTMLParser
@@ -23,16 +25,19 @@ from pathlib import Path
 from typing import Iterable
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
+from zipfile import ZipFile
 
 
 ROOT = "https://www.allencounty.in.gov"
 SHERIFF_ROOT = "https://www.allencountysheriff.org"
 DELINQUENT_URL = f"{ROOT}/824/Delinquent-Property-List"
+DELINQUENT_DOCUMENT_URL = f"{ROOT}/DocumentCenter/View/11377/2025-Delinquent-Property"
 TAX_SALE_URL = f"{ROOT}/321/Tax-Sale"
 SHERIFF_URL = f"{SHERIFF_ROOT}/sheriff-sale/"
 SHERIFF_ARCHIVE_URL = f"{SHERIFF_ROOT}/2026-sheriff-sales/"
 ASSESSOR_URL = f"{ROOT}/164/Assessor"
 FORT_WAYNE_311_URL = "https://www.cityoffortwayne.org/311"
+TAX_RECORD_LIMIT = 500
 
 
 class LinkParser(HTMLParser):
@@ -230,9 +235,11 @@ def parse_sheriff_rows(text: str, pdf_url: str) -> list[dict]:
                 public_records_url=pdf_url,
                 distress_sources=["foreclosure", "sheriff_sale"],
                 tags=["foreclosure", "sheriff-sale"],
-                notes=f"Live sheriff-sale PDF row. Case {match.group('case')}. Judgment/amount seen: ${amount:,}.",
+                notes=f"Live sheriff-sale PDF row. Case {match.group('case')}. Judgment/amount seen: ${amount:,}. Defendant/owner name was not present in the sheriff-sale schedule row; assessor lookup by address is still needed.",
             )
         )
+        records[-1]["case_number"] = match.group("case")
+        records[-1]["owner_lookup_status"] = "TODO: lookup owner/defendant via Allen County assessor or court case detail by address/case number"
     return records
 
 
@@ -246,18 +253,112 @@ def sheriff_sale_records(statuses: list[SourceStatus]) -> list[dict]:
             records.extend(parse_sheriff_rows(text, pdf_url))
         except Exception as exc:
             statuses.append(SourceStatus("sheriff_pdf", pdf_url, "stubbed", str(exc)))
+    named = sum(1 for record in records if record.get("owner_name") != "Unknown Owner")
+    unknown = len(records) - named
+    print(f"sheriff_records={len(records)} sheriff_named_owners={named} sheriff_unknown_owners={unknown}")
+    if records and not named:
+        statuses.append(
+            SourceStatus(
+                "sheriff_owner_lookup",
+                ASSESSOR_URL,
+                "stubbed",
+                "Sheriff-sale schedule rows expose address/case/amount/attorney/sold-to, but no defendant/owner column. Assessor/case-detail lookup by address is needed.",
+            )
+        )
     return records
+
+
+def xlsx_rows(url: str) -> list[dict[str, str]]:
+    data = fetch_bytes(url)
+    with ZipFile(BytesIO(data)) as archive:
+        ns = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+        shared_root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
+        shared = [
+            "".join(t.text or "" for t in si.findall(".//a:t", ns))
+            for si in shared_root.findall("a:si", ns)
+        ]
+        sheet = ET.fromstring(archive.read("xl/worksheets/sheet1.xml"))
+        parsed_rows: list[list[str]] = []
+        for row in sheet.findall(".//a:row", ns):
+            values: dict[int, str] = {}
+            for cell in row.findall("a:c", ns):
+                ref = cell.attrib.get("r", "")
+                col_match = re.match(r"([A-Z]+)", ref)
+                if not col_match:
+                    continue
+                col = 0
+                for ch in col_match.group(1):
+                    col = col * 26 + ord(ch) - ord("A") + 1
+                value_node = cell.find("a:v", ns)
+                if value_node is None or value_node.text is None:
+                    value = ""
+                elif cell.attrib.get("t") == "s":
+                    value = shared[int(value_node.text)]
+                else:
+                    value = value_node.text
+                values[col - 1] = " ".join(value.split())
+            if values:
+                parsed_rows.append([values.get(i, "") for i in range(max(values) + 1)])
+        if not parsed_rows:
+            return []
+        headers = [slug(header).replace("-", "_") for header in parsed_rows[0]]
+        return [dict(zip(headers, row)) for row in parsed_rows[1:] if any(row)]
+
+
+def parse_tax_address(value: str) -> tuple[str, str, str, str]:
+    cleaned = " ".join((value or "").split())
+    return split_city_state_zip(cleaned)
 
 
 def tax_delinquent_records(statuses: list[SourceStatus]) -> list[dict]:
     try:
         links, html = extract_links(DELINQUENT_URL)
         delinquent_links = [href for text, href in links if "delinquent" in (text + href).lower()]
-        detail = f"Live page reachable. Found {len(delinquent_links)} delinquent-document links. Parser not enabled until file format is confirmed."
-        statuses.append(SourceStatus("tax_delinquent", DELINQUENT_URL, "stubbed", detail))
+        rows = xlsx_rows(DELINQUENT_DOCUMENT_URL)
+        candidates = []
+        for row in rows:
+            parcel = row.get("parcel_property_number", "")
+            tax_type = row.get("tax_type", "")
+            amount = parse_money(row.get("delinquent_amt", ""))
+            address = row.get("property_address", "")
+            owner = row.get("pay_yr_owner_of_record", "")
+            if tax_type.lower() != "real" or not amount or not address:
+                continue
+            street, city, state, zip_code = parse_tax_address(address)
+            candidates.append(
+                make_record(
+                    owner_name=owner or "Unknown Owner",
+                    property_address=street,
+                    property_city=city,
+                    property_state=state,
+                    property_zip=zip_code,
+                    parcel_id=parcel,
+                    lead_type="Tax Delinquent",
+                    lead_type_key="tax_delinquent",
+                    filed_date=datetime.now(UTC).date().isoformat(),
+                    amount=amount,
+                    public_records_url=DELINQUENT_DOCUMENT_URL,
+                    distress_sources=["tax_delinquent"],
+                    tags=["tax-delinquent"] + (["high-tax-delinquency"] if amount >= 2500 else []),
+                    notes=f"Live Allen County delinquent property row. Tax type: {tax_type}. Delinquent amount: ${amount:,}.",
+                )
+            )
+        candidates.sort(key=lambda record: record.get("amount", 0), reverse=True)
+        records = candidates[:TAX_RECORD_LIMIT]
+        statuses.append(
+            SourceStatus(
+                "tax_delinquent",
+                DELINQUENT_DOCUMENT_URL,
+                "live",
+                f"Parsed {len(candidates)} real-property delinquent rows from {len(rows)} spreadsheet rows; exported top {len(records)} by delinquent amount. Page had {len(delinquent_links)} delinquent links.",
+            )
+        )
+        print(f"tax_delinquent_records={len(records)} tax_delinquent_candidates={len(candidates)}")
+        return records
     except Exception as exc:
         statuses.append(SourceStatus("tax_delinquent", DELINQUENT_URL, "error", str(exc)))
-    return [
+        print(f"tax_delinquent_records=0 tax_error={exc}")
+        return [
         make_record(
             owner_name="Tax Delinquent Adapter Pending",
             property_address="Allen County Delinquent Property List",
@@ -274,7 +375,7 @@ def tax_delinquent_records(statuses: list[SourceStatus]) -> list[dict]:
             notes="Live Allen County delinquent property page is reachable; row-level parser is intentionally stubbed until the linked document format is locked down.",
             source_status="stub",
         )
-    ]
+        ]
 
 
 def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
@@ -326,9 +427,10 @@ def dedupe(records: Iterable[dict]) -> list[dict]:
     seen: set[tuple[str, str, str]] = set()
     out: list[dict] = []
     for record in records:
+        property_key = record.get("parcel_id") or record.get("property_address", "")
         key = (
             slug(record.get("lead_type_key", "")),
-            slug(record.get("property_address", "")),
+            slug(property_key),
             slug(record.get("filed_date", "")),
         )
         if key in seen:
@@ -345,6 +447,8 @@ def build_records() -> dict:
     records.extend(tax_delinquent_records(statuses))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
+    sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
+    print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')}")
     return {
         "fetched_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
