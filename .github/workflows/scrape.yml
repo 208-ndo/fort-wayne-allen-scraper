@@ -1,0 +1,35 @@
+name: Fort Wayne Allen Scraper
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 9 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install parser dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pypdf
+      - name: Run scraper
+        run: |
+          python scraper/fetch.py --out data/records.json
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/records.json
+          git diff --cached --quiet || git commit -m "Update Fort Wayne data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
