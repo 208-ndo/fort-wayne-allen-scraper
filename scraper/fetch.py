@@ -96,6 +96,25 @@ def slug(value: str) -> str:
     return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.lower())).strip("-")
 
 
+def address_key(address: str) -> str:
+    key = slug(address)
+    replacements = {
+        "-street": "-st",
+        "-avenue": "-ave",
+        "-boulevard": "-blvd",
+        "-drive": "-dr",
+        "-road": "-rd",
+        "-court": "-ct",
+        "-lane": "-ln",
+        "-trail": "-trl",
+        "-way": "-wy",
+        "-place": "-pl",
+    }
+    for old, new in replacements.items():
+        key = key.replace(old, new)
+    return key
+
+
 def parse_money(value: str) -> int:
     cleaned = re.sub(r"[^0-9.]", "", value or "")
     if not cleaned:
@@ -243,7 +262,39 @@ def parse_sheriff_rows(text: str, pdf_url: str) -> list[dict]:
     return records
 
 
-def sheriff_sale_records(statuses: list[SourceStatus]) -> list[dict]:
+def owner_index(records: Iterable[dict]) -> dict[str, dict]:
+    index: dict[str, dict] = {}
+    for record in records:
+        owner = record.get("owner_name", "")
+        addr = record.get("property_address", "")
+        if not owner or owner == "Unknown Owner" or not addr:
+            continue
+        index.setdefault(address_key(addr), record)
+    return index
+
+
+def enrich_sheriff_owners(records: list[dict], property_index: dict[str, dict]) -> int:
+    matched = 0
+    for record in records:
+        if record.get("owner_name") != "Unknown Owner":
+            continue
+        match = property_index.get(address_key(record.get("property_address", "")))
+        if not match:
+            record["owner_lookup_status"] = "TODO: lookup owner/defendant via Allen County assessor or court case detail by address/case number"
+            continue
+        record["owner_name"] = match["owner_name"]
+        record["parcel_id"] = match.get("parcel_id", record.get("parcel_id", ""))
+        record["owner_lookup_status"] = "matched_from_tax_delinquent_address"
+        record["tags"] = list(dict.fromkeys([*(record.get("tags") or []), "owner-matched", "tax-delinquent"]))
+        record["distress_sources"] = list(dict.fromkeys([*(record.get("distress_sources") or []), "tax_delinquent"]))
+        record["distress_count"] = len(record["distress_sources"])
+        record["hot_stack"] = True
+        record["notes"] = f"{record.get('notes', '')} Owner matched from Allen County delinquent property row by normalized address.".strip()
+        matched += 1
+    return matched
+
+
+def sheriff_sale_records(statuses: list[SourceStatus], property_index: dict[str, dict] | None = None) -> list[dict]:
     pdfs, status = sheriff_pdf_urls()
     statuses.append(status)
     records: list[dict] = []
@@ -253,16 +304,17 @@ def sheriff_sale_records(statuses: list[SourceStatus]) -> list[dict]:
             records.extend(parse_sheriff_rows(text, pdf_url))
         except Exception as exc:
             statuses.append(SourceStatus("sheriff_pdf", pdf_url, "stubbed", str(exc)))
+    matched = enrich_sheriff_owners(records, property_index or {})
     named = sum(1 for record in records if record.get("owner_name") != "Unknown Owner")
     unknown = len(records) - named
-    print(f"sheriff_records={len(records)} sheriff_named_owners={named} sheriff_unknown_owners={unknown}")
-    if records and not named:
+    print(f"sheriff_records={len(records)} sheriff_owner_address_matches={matched} sheriff_named_owners={named} sheriff_unknown_owners={unknown}")
+    if unknown:
         statuses.append(
             SourceStatus(
                 "sheriff_owner_lookup",
                 ASSESSOR_URL,
                 "stubbed",
-                "Sheriff-sale schedule rows expose address/case/amount/attorney/sold-to, but no defendant/owner column. Assessor/case-detail lookup by address is needed.",
+                f"{matched} sheriff records matched owner by tax/property address; {unknown} still need assessor or case-detail lookup.",
             )
         )
     return records
@@ -443,8 +495,9 @@ def dedupe(records: Iterable[dict]) -> list[dict]:
 def build_records() -> dict:
     statuses: list[SourceStatus] = []
     records = []
-    records.extend(sheriff_sale_records(statuses))
-    records.extend(tax_delinquent_records(statuses))
+    tax_records = tax_delinquent_records(statuses)
+    records.extend(sheriff_sale_records(statuses, owner_index(tax_records)))
+    records.extend(tax_records)
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]

@@ -1,8 +1,14 @@
 {
-  "fetched_at": "2026-05-14T23:36:19+00:00",
+  "fetched_at": "2026-05-14T23:41:51+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
+    {
+      "source": "tax_delinquent",
+      "url": "https://www.allencounty.in.gov/DocumentCenter/View/11377/2025-Delinquent-Property",
+      "status": "live",
+      "detail": "Parsed 8721 real-property delinquent rows from 11437 spreadsheet rows; exported top 500 by delinquent amount. Page had 5 delinquent links."
+    },
     {
       "source": "sheriff_sales",
       "url": "https://www.allencountysheriff.org/2026-sheriff-sales/",
@@ -13,13 +19,7 @@
       "source": "sheriff_owner_lookup",
       "url": "https://www.allencounty.in.gov/164/Assessor",
       "status": "stubbed",
-      "detail": "Sheriff-sale schedule rows expose address/case/amount/attorney/sold-to, but no defendant/owner column. Assessor/case-detail lookup by address is needed."
-    },
-    {
-      "source": "tax_delinquent",
-      "url": "https://www.allencounty.in.gov/DocumentCenter/View/11377/2025-Delinquent-Property",
-      "status": "live",
-      "detail": "Parsed 8721 real-property delinquent rows from 11437 spreadsheet rows; exported top 500 by delinquent amount. Page had 5 delinquent links."
+      "detail": "1 sheriff records matched owner by tax/property address; 47 still need assessor or case-detail lookup."
     },
     {
       "source": "probate",
@@ -1663,7 +1663,7 @@
     },
     {
       "id": "FW-33e8d4763f",
-      "owner_name": "Unknown Owner",
+      "owner_name": "Handy Herman G L/Est & Chester Lucille L/Est & Chester Lucille",
       "property_address": "3115 Castle Dr",
       "property_city": "Fort Wayne",
       "property_state": "IN",
@@ -1672,30 +1672,33 @@
       "mailing_city": "",
       "mailing_state": "",
       "mailing_zip": "",
-      "parcel_id": "",
+      "parcel_id": "02-13-30-428-022.000-070",
       "lead_type": "Sheriff Sale / Foreclosure",
       "lead_type_key": "foreclosure",
       "filed_date": "2026-04-15",
       "amount": 45151,
       "score": 87,
       "subject_to_score": 69,
-      "distress_count": 2,
+      "distress_count": 3,
       "estimated_value": 0,
       "estimated_equity": 0,
       "hot_stack": true,
       "distress_sources": [
         "foreclosure",
-        "sheriff_sale"
+        "sheriff_sale",
+        "tax_delinquent"
       ],
       "tags": [
         "foreclosure",
-        "sheriff-sale"
+        "sheriff-sale",
+        "owner-matched",
+        "tax-delinquent"
       ],
       "public_records_url": "https://www.allencountysheriff.org/wp-content/uploads/2026/04/APRIL-2026-5.pdf",
-      "notes": "Live sheriff-sale PDF row. Case 02C01-2206-MF-000226. Judgment/amount seen: $45,151. Defendant/owner name was not present in the sheriff-sale schedule row; assessor lookup by address is still needed.",
+      "notes": "Live sheriff-sale PDF row. Case 02C01-2206-MF-000226. Judgment/amount seen: $45,151. Defendant/owner name was not present in the sheriff-sale schedule row; assessor lookup by address is still needed. Owner matched from Allen County delinquent property row by normalized address.",
       "source_status": "live",
       "case_number": "02C01-2206-MF-000226",
-      "owner_lookup_status": "TODO: lookup owner/defendant via Allen County assessor or court case detail by address/case number"
+      "owner_lookup_status": "matched_from_tax_delinquent_address"
     },
     {
       "id": "FW-f52b05f83f",
