@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fort Wayne / Allen County Motivated Seller Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3a;--accent:#f5a623;--accent2:#e85d4a;--accent3:#4af5a6;--text:#e8e8f0;--muted:#777795;--hot:#ff4444;--warm:#ff8c00;--cool:#44aaff}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Syne,sans-serif;min-height:100vh}.topbar{position:sticky;top:0;z-index:10;height:56px;background:rgba(10,10,15,.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}.brand{display:flex;align-items:center;gap:10px}.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent3);box-shadow:0 0 18px var(--accent3)}.brand-name{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.brand-sub,.updated{font:11px "Space Mono",monospace;color:var(--muted)}.statsbar{display:flex;gap:18px;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px}.stat{min-width:76px;text-align:center}.stat-num{font-size:22px;font-weight:800;line-height:1}.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;white-space:nowrap}.hot{color:var(--hot)}.warm{color:var(--warm)}.green{color:var(--accent3)}.cool{color:var(--cool)}.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;overflow:auto}.tabs{display:flex;gap:2px;min-width:max-content}.tab{padding:12px 14px;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.tab.active{color:var(--text);border-bottom-color:var(--accent)}.badge{background:var(--border);border-radius:10px;font-size:10px;padding:1px 6px;margin-left:5px}.tab.active .badge{background:var(--accent);color:#000}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px}.search-wrap{flex:1;min-width:220px}.search-wrap input,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font:12px "Space Mono",monospace;padding:8px 10px;outline:none}select{width:auto;font-size:11px}.btn{border:0;border-radius:6px;padding:8px 14px;background:var(--accent);color:#000;font-size:11px;font-weight:800;letter-spacing:.05em;cursor:pointer}.btn-ghost{background:var(--surface);border:1px solid var(--border);color:var(--text)}.rec-count{margin-left:auto;font:11px "Space Mono",monospace;color:var(--muted)}.table-wrap{height:calc(100vh - 206px);overflow:auto}table{width:100%;border-collapse:collapse}th{position:sticky;top:0;background:var(--surface);z-index:2;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}tr:hover{background:var(--surface)}.score-badge{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 13px "Space Mono",monospace}.sh{background:rgba(255,68,68,.15);color:var(--hot);border:1px solid rgba(255,68,68,.3)}.sm{background:rgba(255,140,0,.15);color:var(--warm);border:1px solid rgba(255,140,0,.3)}.sl{background:rgba(74,245,166,.15);color:var(--accent3);border:1px solid rgba(74,245,166,.3)}.owner-name{font-weight:800}.owner-sub,.date-cell{font:11px "Space Mono",monospace;color:var(--muted)}.amount-cell{font:700 12px "Space Mono",monospace;color:var(--accent)}.tags{display:flex;gap:4px;flex-wrap:wrap}.tag{font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;border:1px solid rgba(245,166,35,.25);background:rgba(245,166,35,.14);color:#f5c060;white-space:nowrap}.t-hot{background:rgba(255,68,68,.16);border-color:rgba(255,68,68,.3);color:#ff7777}.t-green{background:rgba(74,245,166,.14);border-color:rgba(74,245,166,.28);color:#50e8a0}.empty,.loading{text-align:center;padding:38px;color:var(--muted);font:12px "Space Mono",monospace}.mo{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:40;display:none;align-items:center;justify-content:center;padding:20px}.mo.open{display:flex}.mc{width:100%;max-width:760px;max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px}.mh{display:flex;justify-content:space-between;gap:18px;margin-bottom:18px}.mt{font-size:18px;font-weight:800}.ms{font:11px "Space Mono",monospace;color:var(--muted);margin-top:4px}.mx{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer}.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mf.full{grid-column:1/-1}.ml{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase}.mv{font:13px "Space Mono",monospace;margin-top:3px}.msec{grid-column:1/-1;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}.mdiv{grid-column:1/-1;border:0;border-top:1px solid var(--border)}@media(max-width:720px){.topbar{padding:0 14px}.statsbar,.tabs-wrap,.toolbar{padding-left:14px;padding-right:14px}.mg{grid-template-columns:1fr}th:nth-child(4),td:nth-child(4){display:none}.table-wrap{height:auto;min-height:55vh}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand"><div class="brand-dot"></div><div><div class="brand-name">Fort Wayne / Allen County Intel</div><div class="brand-sub">Motivated seller dashboard</div></div></div>
+  <div class="updated" id="updated">Loading...</div>
+</div>
+<div class="statsbar">
+  <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">Records</div></div>
+  <div class="stat"><div class="stat-num hot" id="s-hot">0</div><div class="stat-label">Hot Stack</div></div>
+  <div class="stat"><div class="stat-num warm" id="s-foreclosure">0</div><div class="stat-label">Foreclosure</div></div>
+  <div class="stat"><div class="stat-num cool" id="s-code">0</div><div class="stat-label">Code / Nuisance</div></div>
+  <div class="stat"><div class="stat-num green" id="s-absentee">0</div><div class="stat-label">Absentee</div></div>
+</div>
+<div class="tabs-wrap"><div class="tabs" id="tabs">
+  <button class="tab active" data-tab="all">All <span class="badge">0</span></button>
+  <button class="tab" data-tab="hot_stack">Hot Stack <span class="badge">0</span></button>
+  <button class="tab" data-tab="foreclosure">Foreclosure <span class="badge">0</span></button>
+  <button class="tab" data-tab="tax_delinquent">Tax Delinquent <span class="badge">0</span></button>
+  <button class="tab" data-tab="code_violation">Code / Nuisance <span class="badge">0</span></button>
+  <button class="tab" data-tab="probate">Probate <span class="badge">0</span></button>
+  <button class="tab" data-tab="absentee">Absentee <span class="badge">0</span></button>
+</div></div>
+<div class="toolbar">
+  <div class="search-wrap"><input id="q" placeholder="Search owner, address, parcel, tags..." oninput="applyFilters()"></div>
+  <select id="score-filter" onchange="applyFilters()"><option value="">Score: All</option><option value="80">80+</option><option value="60">60+</option></select>
+  <button class="btn" onclick="exportCSV()">CSV</button>
+  <button class="btn btn-ghost" onclick="clearFilters()">Clear</button>
+  <div class="rec-count" id="rec-count">0 records</div>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Score</th><th>Owner / Property</th><th>Lead Type</th><th>Filed</th><th>Amount</th><th>Signals</th><th>Source</th></tr></thead><tbody id="tbody"><tr><td colspan="7"><div class="loading">Loading Fort Wayne sample records...</div></td></tr></tbody></table></div>
+<div class="mo" id="modal"><div class="mc"><div class="mh"><div><div class="mt" id="m-title"></div><div class="ms" id="m-sub"></div></div><button class="mx" onclick="closeModal()">x</button></div><div class="mg" id="m-grid"></div></div></div>
+<script>
+let records=[],filtered=[],curTab='all';
+const tabs=['all','hot_stack','foreclosure','tax_delinquent','code_violation','probate','absentee'];
+const money=v=>v==null||v===''?'':`$${Number(v).toLocaleString()}`;
+const clean=v=>String(v||'').trim();
+const tagHTML=r=>(r.tags||[]).map(t=>`<span class="tag ${t==='hot-stack'?'t-hot':t==='absentee-owner'?'t-green':''}">${t}</span>`).join('');
+const hasSignal=(r,s)=>[...(r.distress_sources||[]),...(r.tags||[])].includes(s)||r.lead_type_key===s;
+const inTab=r=>curTab==='all'||(curTab==='hot_stack'?r.hot_stack:hasSignal(r,curTab));
+async function loadRecords(){
+  const res=await fetch('data/records.json',{cache:'no-store'});
+  const data=await res.json();
+  records=data.records||[];
+  document.getElementById('updated').textContent=`Sample data: ${data.fetched_at||'local'}`;
+  updateStats();
+  applyFilters();
+}
+function updateStats(){
+  const count=fn=>records.filter(fn).length;
+  document.getElementById('s-total').textContent=records.length;
+  document.getElementById('s-hot').textContent=count(r=>r.hot_stack);
+  document.getElementById('s-foreclosure').textContent=count(r=>hasSignal(r,'foreclosure'));
+  document.getElementById('s-code').textContent=count(r=>hasSignal(r,'code_violation'));
+  document.getElementById('s-absentee').textContent=count(r=>hasSignal(r,'absentee'));
+  document.querySelectorAll('.tab').forEach(btn=>{
+    const tab=btn.dataset.tab;
+    btn.querySelector('.badge').textContent=records.filter(r=>tab==='all'||(tab==='hot_stack'?r.hot_stack:hasSignal(r,tab))).length;
+  });
+}
+function applyFilters(){
+  const q=clean(document.getElementById('q').value).toLowerCase();
+  const minScore=Number(document.getElementById('score-filter').value)||0;
+  filtered=records.filter(r=>inTab(r)).filter(r=>(Number(r.score)||0)>=minScore).filter(r=>{
+    const hay=[r.owner_name,r.property_address,r.property_city,r.parcel_id,r.lead_type,...(r.tags||[])].join(' ').toLowerCase();
+    return !q||hay.includes(q);
+  });
+  render();
+}
+function render(){
+  const tbody=document.getElementById('tbody');
+  document.getElementById('rec-count').textContent=`${filtered.length} records`;
+  if(!filtered.length){tbody.innerHTML='<tr><td colspan="7"><div class="empty">No matching Fort Wayne / Allen County leads.</div></td></tr>';return;}
+  tbody.innerHTML=filtered.map((r,i)=>{
+    const cls=r.score>=80?'sh':r.score>=60?'sm':'sl';
+    return `<tr onclick="openModal(${i})"><td><div class="score-badge ${cls}">${r.score}</div></td><td><div class="owner-name">${r.owner_name||'Unknown Owner'}</div><div class="owner-sub">${r.property_address}, ${r.property_city} ${r.property_state} ${r.property_zip}</div></td><td>${r.lead_type}</td><td class="date-cell">${r.filed_date||''}</td><td class="amount-cell">${money(r.amount)}</td><td><div class="tags">${tagHTML(r)}</div></td><td><a class="btn btn-ghost" href="${r.public_records_url}" onclick="event.stopPropagation()" target="_blank">View</a></td></tr>`;
+  }).join('');
+}
+function openModal(i){
+  const r=filtered[i];
+  document.getElementById('m-title').textContent=r.owner_name||'Unknown Owner';
+  document.getElementById('m-sub').textContent=`${r.property_address}, ${r.property_city} ${r.property_state} ${r.property_zip}`;
+  document.getElementById('m-grid').innerHTML=[
+    ['Lead Type',r.lead_type],['Seller Score',r.score],['Amount',money(r.amount)],['Equity Estimate',money(r.estimated_equity)],['Parcel',r.parcel_id],['Owner Mailing',[r.mailing_address,r.mailing_city,r.mailing_state,r.mailing_zip].filter(Boolean).join(', ')],
+    ['Distress Sources',(r.distress_sources||[]).join(', ')],['Tags',(r.tags||[]).join(', ')],['Notes',r.notes]
+  ].map(([k,v])=>`<div class="mf ${k==='Notes'?'full':''}"><div class="ml">${k}</div><div class="mv">${v||''}</div></div>`).join('<hr class="mdiv">');
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function clearFilters(){document.getElementById('q').value='';document.getElementById('score-filter').value='';applyFilters()}
+function exportCSV(){
+  const headers=['Owner Name','Property Address','Property City','Property State','Property Zip','Mailing Address','Lead Type','Seller Score','Amount','Estimated Equity','Tags','Notes','Public Records URL'];
+  const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+  const lines=filtered.map(r=>[r.owner_name,r.property_address,r.property_city,r.property_state,r.property_zip,r.mailing_address,r.lead_type,r.score,r.amount,r.estimated_equity,(r.tags||[]).join(', '),r.notes,r.public_records_url].map(esc).join(','));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[headers.map(esc).join(','),...lines].join('\n')],{type:'text/csv'}));a.download='fort_wayne_allen_leads.csv';a.click();
+}
+document.getElementById('tabs').addEventListener('click',e=>{const btn=e.target.closest('.tab');if(!btn)return;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');curTab=btn.dataset.tab;applyFilters()});
+loadRecords().catch(err=>{document.getElementById('tbody').innerHTML=`<tr><td colspan="7"><div class="empty">Could not load data/records.json: ${err.message}</div></td></tr>`});
+</script>
+</body>
+</html>
