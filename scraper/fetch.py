@@ -280,32 +280,51 @@ def owner_index(records: Iterable[dict]) -> dict[str, dict]:
     return index
 
 
-def owner_name_index(records: Iterable[dict]) -> dict[str, dict]:
-    index: dict[str, dict] = {}
+def name_tokens(value: str) -> list[str]:
+    suffixes = {"jr", "sr", "ii", "iii", "iv", "v"}
+    cleaned = re.sub(r"\b(estate|trust|llc|inc|corp|corporation|co|company)\b", " ", (value or "").lower())
+    tokens = re.findall(r"[a-z0-9]+", cleaned)
+    return [token for token in tokens if token not in suffixes]
+
+
+def name_variants(value: str) -> set[str]:
+    tokens = name_tokens(value)
+    if len(tokens) < 2:
+        return set()
+    variants = {"-".join(tokens)}
+    first, last = tokens[0], tokens[-1]
+    middle = tokens[1:-1]
+    variants.add("-".join([first, last]))
+    variants.add("-".join([last, first]))
+    if middle:
+        variants.add("-".join([first, middle[0], last]))
+        variants.add("-".join([last, first, middle[0]]))
+        if len(middle[0]) > 1:
+            variants.add("-".join([first, middle[0][0], last]))
+            variants.add("-".join([last, first, middle[0][0]]))
+    return {variant for variant in variants if variant}
+
+
+def owner_name_index(records: Iterable[dict]) -> dict[str, list[dict]]:
+    index: dict[str, list[dict]] = {}
     for record in records:
         owner = record.get("owner_name", "")
         if not owner or owner == "Unknown Owner":
             continue
-        key = slug(re.sub(r"\b(llc|inc|corp|corporation|co|company|trust|estate)\b", "", owner.lower()))
-        if key:
-            index.setdefault(key, record)
+        for key in name_variants(owner):
+            index.setdefault(key, []).append(record)
     return index
 
 
-def match_owner_name(name: str, index: dict[str, dict]) -> dict | None:
-    key = slug(re.sub(r"\b(llc|inc|corp|corporation|co|company|trust|estate)\b", "", (name or "").lower()))
-    if not key:
-        return None
-    if key in index:
-        return index[key]
-    parts = key.split("-")
-    if len(parts) >= 2:
-        compact = {parts[0], parts[-1]}
-        for owner_key, record in index.items():
-            owner_parts = set(owner_key.split("-"))
-            if compact.issubset(owner_parts):
-                return record
-    return None
+def match_owner_name(name: str, index: dict[str, list[dict]]) -> tuple[dict | None, int]:
+    candidates: dict[str, dict] = {}
+    for key in name_variants(name):
+        for record in index.get(key, []):
+            candidate_key = record.get("parcel_id") or record.get("property_address") or record.get("id", "")
+            candidates[candidate_key] = record
+    if len(candidates) == 1:
+        return next(iter(candidates.values())), 1
+    return None, len(candidates)
 
 
 def enrich_sheriff_owners(records: list[dict], property_index: dict[str, dict]) -> int:
@@ -716,8 +735,8 @@ def probate_tags(row: dict, matched_property: bool) -> list[str] | None:
     return list(dict.fromkeys(tags))
 
 
-def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, dict]) -> list[dict]:
-    raw = kept = matched = missing_property = 0
+def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, list[dict]]) -> list[dict]:
+    raw = kept = matched = multiple = name_only = hot_stacked = 0
     try:
         records = []
         for date_text in court_calendar_date_range():
@@ -731,15 +750,21 @@ def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, dict
                 if str(row.get("caseCategoryKey") or "") != "PR":
                     continue
                 subject = probate_subject(str(row.get("caseStyle") or ""))
-                property_match = match_owner_name(subject, tax_name_index)
+                property_match, candidate_count = match_owner_name(subject, tax_name_index)
                 tags = probate_tags(row, bool(property_match))
                 if not tags or not subject:
                     continue
                 kept += 1
                 if property_match:
                     matched += 1
+                    hot_stacked += 1
+                    tags.extend(["probate-property-matched", "hot-stack", "tax-delinquent"])
+                elif candidate_count > 1:
+                    multiple += 1
+                    tags.append("needs-property-review")
                 else:
-                    missing_property += 1
+                    name_only += 1
+                    tags.append("probate-name-only")
                 hearing_date = parse_incident_date(str(row.get("sessionDate") or ""))
                 case_number = str(row.get("caseNumber") or "").strip()
                 hearing = str(row.get("hearingDesc") or "").strip()
@@ -747,6 +772,10 @@ def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, dict
                 notes = f"Live Indiana court calendar probate row. Case {case_number}. Hearing: {hearing}. Court: {court}. Hearing date: {hearing_date}."
                 if property_match:
                     notes += " Matched to Allen County tax/property owner name."
+                elif candidate_count > 1:
+                    notes += f" Multiple possible tax/property owner matches found ({candidate_count}); property address needs manual review."
+                else:
+                    notes += " No safe tax/property owner match found; property address left unknown."
                 record = make_record(
                     owner_name=subject,
                     property_address=property_match.get("property_address", "Unknown Address") if property_match else "Unknown Address",
@@ -760,31 +789,39 @@ def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, dict
                     amount=property_match.get("amount", 0) if property_match else 0,
                     public_records_url=str(row.get("caseURL") or "https://public.courts.in.gov/CourtCal/"),
                     distress_sources=["probate"] + (["tax_delinquent"] if property_match else []),
-                    tags=tags + (["hot-stack", "tax-delinquent"] if property_match else []),
+                    tags=list(dict.fromkeys(tags)),
                     notes=notes,
                 )
                 record["case_number"] = case_number
                 record["source_status"] = "live"
                 record["hot_stack"] = bool(property_match)
+                if property_match:
+                    record["score"] = min(100, record.get("score", 0) + 10)
+                    record["subject_to_score"] = max(0, record["score"] - 18)
+                else:
+                    record["score"] = min(record.get("score", 0), 62)
+                    record["subject_to_score"] = max(0, record["score"] - 18)
                 records.append(record)
         statuses.append(
             SourceStatus(
                 "probate",
                 f"{COURT_CALENDAR_API}/Hearing/List",
                 "live",
-                f"Scanned {raw} Allen County public hearing rows; kept {kept} probate/estate rows.",
+                f"Scanned {raw} Allen County public hearing rows; kept {kept} probate/estate rows; {matched} safely matched to tax/property owner records.",
             )
         )
         print(
             f"probate_raw_records={raw} probate_records_kept={kept} "
-            f"probate_property_matched={matched} probate_missing_property={missing_property}"
+            f"probate_property_matched={matched} probate_multiple_possible_matches={multiple} "
+            f"probate_name_only={name_only} probate_hot_stacked={hot_stacked}"
         )
         return records or probate_stub(statuses, "No probate/estate rows were found in the public court calendar range.")
     except Exception as exc:
         statuses.append(SourceStatus("probate", f"{COURT_CALENDAR_API}/Hearing/List", "error", str(exc)))
         print(
             f"probate_raw_records={raw} probate_records_kept={kept} "
-            f"probate_property_matched={matched} probate_missing_property={missing_property} probate_error={exc}"
+            f"probate_property_matched={matched} probate_multiple_possible_matches={multiple} "
+            f"probate_name_only={name_only} probate_hot_stacked={hot_stacked} probate_error={exc}"
         )
         return probate_stub(statuses, "Public Indiana court calendar probate rows could not be parsed safely.")
 

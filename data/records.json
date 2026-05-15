@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-15T04:19:37+00:00",
+  "fetched_at": "2026-05-15T05:07:44+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
@@ -31,7 +31,7 @@
       "source": "probate",
       "url": "https://public.courts.in.gov/CourtCal/api/Hearing/List",
       "status": "live",
-      "detail": "Scanned 6884 Allen County public hearing rows; kept 30 probate/estate rows."
+      "detail": "Scanned 6884 Allen County public hearing rows; kept 30 probate/estate rows; 0 safely matched to tax/property owner records."
     },
     {
       "source": "assessor",
@@ -19998,10 +19998,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InNmb2h2ektkOVBBa21KOUlVRV94WEpBeWswZ3l3T0tWNXd5NXUxWFFsTzAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicEhkNUdNQXN6ZEZwbnZ1Y1hGSDNTd1lzSGdIbG1ic0pnd0NFX1JvSVpLMDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000045. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik50TlVCUHBfb3ZSMHM4UG1Kb1JSdFp0ZExfVEhvVlRrTV9IVTJadWN2Z2MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidmtJY29aaDVrYlYyVTNOMllsZjV1R2hydDRVNFJVcGRXV25YMUVMczQ2ODEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000045. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-ES-000045"
     },
@@ -20033,10 +20034,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjAxMlBTaldYZ21MYVNWaTBCenVVNGdPQTJ5aWlMLXcyUW9meDVmc0U2RXMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidnJzRnpxRzZNb29ENTlVWnRYSTVBeDk5MWhRVkxwTktYZi10YkUtWlFkSTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2102-EU-000087. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlFrSFNIMUtTNzk5VVQ1OHB0WUFuOC1vOF9IRmRFWW12VVJlbFA1QVpLZUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoia0ZfWG9PazdYdFk2M2F1bVVnck9DdzlsZGhjbUl5Vl9MVmRNNS1IaXE5VTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2102-EU-000087. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2102-EU-000087"
     },
@@ -20068,10 +20070,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFCWXlxbHBlOHl6QUVQRTFwcXQxU0VNSFBnQjF1LWUwNzJfWDl3RTB3RWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiOU9OazZjeG5NbEpwMEtDOFVDbWhPbm9IdTMxaGl4NnRyYlRoRHQ4YkRuQTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000059. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkR1dFIxblRjNUJSdFRSNkNaSHJXdnFJZ2JnNlowOVNZLWhvMU1fWWFRcmsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTUNOYVhlRGhIbHhGbENLSjRPdFpleUo5V3RyZ1hYVEpBMUZXZzI5Q0NHZzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000059. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2502-EU-000059"
     },
@@ -20103,10 +20106,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlJ6R1hneWd4UVV2azF1UjZrS0hTMV9yNXZmMXdTVWU0X0pocnVsNXNjc2MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidkxvdzFxelhDdEltQjdNV3l5YmFzOVAtTGJDcXJMb3N6NXpqMmNCWnNfMDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2312-EU-000627. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjRaZ3g3XzNYTnRfSzd4TktQYWlQNVJqTGY4SGJqN201V0tPSzB0M0MwdzAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUk1iN3h4SVZFazdvczBTdFpjckxiMC1OTWlLVlZFN3J0MWR3dHk2WUdRbzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2312-EU-000627. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2312-EU-000627"
     },
@@ -20138,10 +20142,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFXdG9vLWNLTnBlSThCekZoaTBEQVBLRTJaVWkyUG1PWDZkUXZzeDFZLU0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiV2h2ZEc4dm5MbG9uLVFnbFBqOEl2cXZlQmhoSFVsWXhYcjVYeS1FUDE2MDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-1907-EU-000346. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InljOWNFX3gzWFJPYjZpYjRmMXpFa0pTN083bHU3eE0yM1J5T083SC1uRHMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUVBmX0RKMElUdXkxSDZJVlc3cXhRRU4zZFdZQWxXN0dqRDM3Y05lUEpCbzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-1907-EU-000346. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-1907-EU-000346"
     },
@@ -20173,10 +20178,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkhVVEZrQWtnUFNfMXNSRUVEWmh3OUVsc2RrekZZaGRhSlpZUUF6aUdPbTQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaXAyU05QcWdiSVNqNnJmM1ZmWVl5a1NPX0lzQ25mVUk1S1NMT0UwT1ZuczEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2410-EU-000491. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkJVQkJ3WDVnX2ZUbm5sUWEwdEQtOTFiZ1dJX0ZlUElqRlluWTA0eEtacVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSmo2eXlwclNQTnlNankzY0l0cnE2cTVzVVpnRnJPR2QyUWduM0hVLUdBYzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2410-EU-000491. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2410-EU-000491"
     },
@@ -20208,10 +20214,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImY0bE4xOERfczBXMmtCYXMwcGkyNW83bjZEVGZzRjBBLTBaengtN0c3NlkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUkV5MTRaQnNJSmdRaEU0ai1xb0poclRsd2I1X1JfeDZuSGU4Qm45bXRfUTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2412-EU-000616. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkpmNVNrOHUtT3Fpdkh2bGN4ZXd0T0hMV2dCUnZNdXU1aVNnaXVNcHRGejQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRHktWV9BaEFGTFRvUm1obzhTanVHbDhSVHQ4V1ZJRzZOaS1wUEdIaVpWYzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2412-EU-000616. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2412-EU-000616"
     },
@@ -20243,10 +20250,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InowaE8yNlZoOVJpNVROQ0Rqbl9PTWNfdXg4bk9xQTFnOTktWWN0RF9RaWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiY3lZZ21JWXVzQzFVbG9Cd19CSWNwbUJ3YVNpQWhrcjhKSVRNQ1dkdU1CWTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2210-EU-000644. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im1zZEo2WmFjamZDU3FnYWgyeFV3Qnk4YjBvZkNvdy1Ld0NBa1ZJUURBdU0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYkpDUGFZUVhTMUx2OHB3MVVReWNIcXlNSnoyRDBmUDI5ZjdHUm5xc0llRTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2210-EU-000644. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2210-EU-000644"
     },
@@ -20278,10 +20286,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkRwTzhDMjdhM1dXUmNwZXM1dFlBU0tqc0JnWWZ2OFVyNGNCWjJxQmxpcGMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUUIyZ3Y2UG1QdXdZR2RzeDA0T3lXLXBkR2V2d0hqWnFHLW5YUWdxc1dIdzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000099. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImVQc1dmVzhoZ2EyajdEOXZxdzQtVmhjZlZ3UFg5bkh1VWJoVmlLeGtxQUkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiY2VqUlpidzg5dDFtM0xfckYtR1ZEX0lLLTBKamlUSTRUemV4eDBoSktuTTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000099. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2502-EU-000099"
     },
@@ -20313,10 +20322,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Il9XQ1ZIYnphaFhxQTUwV1djU0xfdzJ6aHJ1S0NiRjB3dFh6V0dGWVBCMkkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicTVWMjJYMnJIS2tVdV9xY3NGNmtSTkNaZUxIaVV4MEowcUtzQXZMY0xkODEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2501-EU-000011. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlR3TWJ2UnQxMy1IXzR0bHlHemxRTnVSd0dEY2ZVZUNCeDJvZ0tRLXNONWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoib3NPSmhaMGpEU3FQV3hrMXMyVWE2VlI3Q09ZbjRHTmpzakRuZlQ1TXVYSTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2501-EU-000011. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2501-EU-000011"
     },
@@ -20348,10 +20358,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IktmX0dSYzM5MUdkbnU5UU56TTQ2Q1RPNWFHQmJtTnZ0bXFBYlNrQVdRcVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaE1sQUh0aXU4RkxXN3RGOTU2ZElneXpzcnNURTRSSnZWNHRROXJzMEhMUTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2504-ES-000020. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-20.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InlLdG5jR3JHQnpMQzJjOFpQZFNhT2RTdGNOWXRFZFkxWmhXZVFrOWVfY0kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRUowTUVQMWdvVkVzdkpRSmJ1NW1HdFJaTkZjZnFyMWM3RUVEQU5randPZzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2504-ES-000020. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-20. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2504-ES-000020"
     },
@@ -20383,10 +20394,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InA1ZVNHQWgxQkgxT05FZU5tMFZpSjN6VU1sdm4xNWZWZWR4ZzQtUVNrLWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWFpSb1E2NUhLYTlYSDJhcmNBTGlIMm9tSW45MEYzcF9GNDZDTHc1aHJ1YzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2510-EU-000516. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkZwWEkwY245MGptbGRnWnZxR20yYVExOTh3RWd2M1ltWU9zYkpXMUs1bjQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNnJMZkpuVE9La2w0c3ZTeGxLYkcyVjZOZ0YtLWloLUNwRlRfNzRtRlNiODEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2510-EU-000516. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-EU-000516"
     },
@@ -20418,10 +20430,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImY5MFU0YlU3TzhHRjdMdlMxcVR1U2g4NEl5Vm9lUEx3MF9TSEJKN1RKQmcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiY1BpdzZtYm9MRUxtNmR5czZKSnhNWDBsZ1dwdjVVTDdDZXhhRkcyTWNIZzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2106-EU-000347. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjRJanl2UzRvcW5uY3E1TVJ1dUZ5SFd2TDlZMDlZX0NBbEdBaUJPdV9ENzQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiT09wQlQxTDVTVktLZjNFbzVKTjJiZzJ3ODRIX1o2RmNURGQ0UVQ1bktzczEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2106-EU-000347. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2106-EU-000347"
     },
@@ -20453,10 +20466,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImRuSVFQU3k2em1SSzZ3UEY1X2NqMmVXRXZqMWRxRGszYzJNMl96TVRtOUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRFRwTkJNZnY5RHM5cGZZLXVZYm54SXdiSmVpWThDd0t3QUpTUUtxM1hlRTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2007-EU-000352. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImV4ano2OU9hVTQ1czJWQjVpbkZnelhiZjBqNDlTNTJOVVVWamZZcU1kcUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiX19iZUJhSy04U1kzQWdtb29zaEFGZ29waWxHcGNjNnRUU1luZEVRNklQRTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2007-EU-000352. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2007-EU-000352"
     },
@@ -20488,10 +20502,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImZLcDNMTXgyM2hXNHRtZjE4dVoxREh4cE1VMm13VmZDWTlJVGNGeUtUZHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSy1HVl9JOWhJUDFHamdFSl9WbjlKMEQ3b2NlLUdMRHhTSDJQNUd0Q1ExbzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2604-ES-000011. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ikx5dHowcV9WelM2SEgtQjhjU2tqOXpEUFlNN3lxbjNwTnFacnNwNmJWVHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRjN0U0JPUGtWNUZiYWRLaXJ3NXVFMng3TE1wWC1IOUdMUy1KUHlnSmRnYzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2604-ES-000011. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2604-ES-000011"
     },
@@ -20523,10 +20538,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlgxSWVTNlk0WFpFam9PZUw3NnN4UFVBbVVIejVGajFSNG5QZFd1Y0xrRVExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidHFKSGE5RVZmaUpPamEtZjVRWHZGdWl0aFdKdTRFZkdwOHRWdFBMYVhmQTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2602-EU-000096. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImtzQ3lHa01kMlljdW9PRDF6VXdYeHJ2eFJWcC1CMGFnZW1odmRNNlBMc2MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidEFQUUxIeTBtUnZoNTkzb1pHTXFVWFBadVY0dkdwZDRDSk1DNElJanJWTTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2602-EU-000096. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2602-EU-000096"
     },
@@ -20558,10 +20574,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImFuempkMktGREp3X2N6X2d5elByejRJTDl5T2h4eGREUmF4RTY5MWRJNDQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiM3BUN2FETVFvYWtGLW9OQ3EzY0dqYy1icU5URGxjVEg3WFBVM0hIQzU0dzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000460. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjJYVkhrYmNRTWVHbkF0MjZyMW5rN09uMmg1R0Vqdm1ldnVKRXFQeDFBSFkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSUl1TGJkaFJxRlZPa2M0VFlwMUt3THl4N0VuUkJ6Rm1XYVBCQlZZb2RGSTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000460. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-EU-000460"
     },
@@ -20593,10 +20610,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImxMbWpjc1Ntd0EwT2VIMkhHajlmQTFZaUhwWm5fSmxnMDNPRGp6eG9TWjQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVVMxMzQ5NzNyTjIwMVgwWjdHTi1od2VTT05BeU1XdmxrQm8zSkpxUUMzQTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000298. Hearing: Pretrial Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-28.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFKM09sMUJQb2pLUFg0dkJoLWt3ZVk4Vlp3Wjh3ZzRXMWNobnQ5NFl0YkUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYUpCTFp4b0ZaU1BrX1o5OVQtRjlBOVVKUUFKWFFKeE1MUnJxaTVhTi11WTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000298. Hearing: Pretrial Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-28. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2506-EU-000298"
     },
@@ -20628,10 +20646,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlJNTXVjTzM4Ym9aekJXREhMNUlHckhkYk9MU0dydm1TVHNGeEVfeHZNOUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTTBrUjhOd3JwOHdXZ1lVWk1kb3l2UFQ3TGhHOFo2ZWZnY3o1R0ZHU0R1STEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2504-EU-000207. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-01.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImRUMW9jUVlTOVhSOC1aV0gxRUIwUmhhMGxnUmx1cFIzRTdHeFA5VllzRjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiLTZpWWotQlYxeXBObEsyOE1JS2lFR1ppaG9OOC12TWNXRmxQUXVGWE1BWTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2504-EU-000207. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-01. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2504-EU-000207"
     },
@@ -20663,10 +20682,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImZlMDY2ZGp5VUE2eE9CUmM3TEZfck9KaGYxa21pUndzMnI0b0VfRDktb00xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoib2txT0RyU18yclNVOXlydm1tN3d1TlV6TFFVNzZuYzFPXzF0dzRseVB2dzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2603-EU-000146. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-01.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InVCdkVSejMwNHRYX05lcmxWNl9MMDBmdlNDSnlKYV9BRGhXVnlzUi1iWWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWmE2Zkp6QzRGcE0xS084NEt3V3lTTW8yQ00yamVYdVR2a19mUjMyZHRtMDEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2603-EU-000146. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-01. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2603-EU-000146"
     },
@@ -20698,10 +20718,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFiMzRvY3RzMTljOGZlV05tQUpweWZyZGx3bFhUbWR3eEVBbWxDZ05QaTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQnBCNE9vOTRoNjcwcy15NG9IMEtTSFFoLXJGQ0dSMjZ6Nnhkb0VYT0pHNDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2406-ES-000039. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-02.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlhEVEV3MlZ0OEdYa3RrLW1YdlVxOVdYRklWamFxQzRDTlpOb18wN2Q1Y1UxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTGNRWWRtV1IyRDlLRXVQcFFPczRfRlQzR3ZNZkVSUVZtNDBjSVMyR0pTMDEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2406-ES-000039. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-02. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2406-ES-000039"
     },
@@ -20733,10 +20754,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjBvOXNRVE1hUzI2RzZSNnprNUFpcW1TTmZuekxxYmpoVk9IRGxCMS11REUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRmtDSEtzOGlKM2FHQy1sbEVsRE5LZUNKUzM4VmJLNVg4alJtaTV5UExPUTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2505-ES-000024. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-03.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjFyejVtalhxR0U4aXd0ZjFmZ3V1cVFablp2RlljVjhSTDd1am1xTmZkS1kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSWNnQ2JMbWU0aDZYNFAzYXY2SnNZcXVDQi1JUDhYRlQ0elJ6ajhhbFZXczEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2505-ES-000024. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2505-ES-000024"
     },
@@ -20768,10 +20790,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IklEQklWdjdDalBoM0VlNGlyMlNzMmxhS01SWWJMUFN1RDZGNlBuNFp3cHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibnhKaHozeTRYdzcyeGI3MldFQVpLeXhOUkxKVUFNcE1IeU5lTEZqSnh6MDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2404-EU-000211. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-03.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkZoTlR6ZDFmekZGcjNtdjh5MVI4UnpLLVVyWHRUTlg0VHpMZ2pxVXZBNkExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaFk0ZzNGQlVZNnhVRm84V1N6cWtLMGRQa1Brc0Q3LTNCVEs3YXFHZGllNDEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2404-EU-000211. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2404-EU-000211"
     },
@@ -20803,10 +20826,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Imx6UjQzTk1DZzNYWndTNHIyQk1QV3BXT2hNRkRVOGp1T0J1NHYyRDlqckUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieVVkU25XQUgwVFM1enBPRkhlbUNZdXhmX3J0RHlDTGxvWTRvWUdqTWZZRTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-1405-EU-000193. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-06-04.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InNQLXdwbERFdHVpbTRsN3VhRTBwbDhZNWoyakZVaFFaYUxuZVNwaUkydWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMTVwd0VPT1ZtQnlRd1hEOUFzZDU1Q253SXFvSmFpTkNFWHdnV3IzZTFwZzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-1405-EU-000193. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-1405-EU-000193"
     },
@@ -20838,10 +20862,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjJ5djJZSHBpQTkxY1F1ZWhZRnlwSHRiUnFLMzlJQkZKdlBnV18zRFhjRGMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQnVwYV9kaGNsZjU0Zk03WTdQUXVicjVuekh5REFIN0ZsN29TLUpPV0d1bzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000431. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ild1Ml95UkFjbTE4cG5CWXZVVFFFbTZ1UWRORGN4VmYtNWJaV3ZKZHk2ZkkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQkNZRlgxZ29UWGR3aEo5SjJVSHRVVExkY3JHUnoxWjlraVlCX0NZMUV6TTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000431. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-EU-000431"
     },
@@ -20873,10 +20898,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlNWUFAtVmR3SDRuZ1htZUtTM0dGVGNUX2Nlb25ZUUhoOTVrVEJDWFVpNFExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoienNud3FadVZxenFrZDBDUWJsSVFyTC1hcmZCTGdVMUNlT1FldGI2bTI4MDEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2405-EU-000265. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ikk1Rkc4NHFoRThQRlUweHIxdk1nYW13SXBxR1NFQ3dvNTh2bHF4LTdfMTAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMkxrUTN4X2txbXhWV2tiRE5hUE40a0V6SVNjUWNjZ2pGZUNCdG9QalBDTTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2405-EU-000265. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2405-EU-000265"
     },
@@ -20908,10 +20934,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im5HY3JfQWZfWXp4RnV1TS1ITW12VklNSm5iYU1Jclh5Y0ItWjlOSnVseVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiV2pvZWpMb1ZuaFNjemxFYTR2dnV5VnZwdGhxTlpsQVJvYWZfUlJEQjdpRTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000320. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-08.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im5JZ0dHb3VpUmp0Q0pXVnNQRmVrRXE4N0VZYWhhQmFCWXJ5a0dKNUUya0kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidEFQUUxIeTBtUnZoNTkzb1pHTXFVVDVkYnRuSUVrOEQwbmE5SDBlUTg3QTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000320. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-08. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2506-EU-000320"
     },
@@ -20943,10 +20970,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImJfSEcyUjBseFIxSmVXV0ZwbzJ3MGFIUDJpakZRMFNsX19kWHJYZTM4NjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSmIwNm92ZHo0aDREQXZXUmNvQ3V2ZG92MWdkMUZ4Y2FwSlBud3JNbVE5YzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-ES-000037. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-09.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkdsazZHYkZDN0JXVl9VNmhsanp1OFpEZVlfTTVDdmp5QVd3WXBYSGVURTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRWs2RF85WTB2Wm9NaUpjdGxvSnFzSWtXWi1ZUTRXckoxWkF2cnpUaXdmdzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2509-ES-000037. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-09. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-ES-000037"
     },
@@ -20978,10 +21006,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Il9Md0ExUkxiNXdMbTM1b1lEWlo4R0Q3bkxRSzlldEtDVVJDbUJscjFmQ1UxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaUZ2dUdFOEJVMTVSaWpEVjRJZzNjODJac0tYNnZKbzNLaE5rTGdUYjhxZzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2307-ES-000019. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-10.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlZ4ZDFQWGVsTVVVdzhCeHJMMnlZMmdOMDFxM1FxR3ZmdW1OMncta2RMcWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiM3JYbUlrVVJMZHppMTI5S3k0aFlYSmdheDRnaWJDR2pZNGRjbzV5QmxEUTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2307-ES-000019. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-10. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2307-ES-000019"
     },
@@ -21013,10 +21042,11 @@
       "tags": [
         "probate",
         "estate",
-        "decedent"
+        "decedent",
+        "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjhtSEVmdGNVT0FCWUxPYlBjb0lSTEdtaXZPRFdnaVc2aWt0ak5KYl9odEUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQmVITWwweF9yY1FvdHA5TTl6ZG5rODJjRFJzUXNtUlJEY2I3dGxjal9FZzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2209-EU-000586. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-11.",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlNBQXRQd09TNkloMzNPNU5GdE5NMzUxU0cxeXR6cl9saW13ZWhfb2RtaFUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiX243eXJIYlVDdUswbkVLSjN6bHN4UnNiZ2Q1d2o4LTJXd2hxdE4yN2QtRTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2209-EU-000586. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-11. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2209-EU-000586"
     }
