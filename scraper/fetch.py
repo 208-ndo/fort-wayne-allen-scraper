@@ -731,12 +731,70 @@ def assessor_owner_search(term: str) -> list[dict]:
     return [assessor_record(attrs) for attrs in assessor_query(where)]
 
 
+def probate_candidate_summary(candidate: dict) -> str:
+    address = ", ".join(
+        part
+        for part in [
+            candidate.get("property_address", ""),
+            " ".join(
+                part
+                for part in [
+                    candidate.get("property_city", ""),
+                    candidate.get("property_state", ""),
+                    candidate.get("property_zip", ""),
+                ]
+                if part
+            ),
+        ]
+        if part
+    ).strip()
+    details = []
+    if candidate.get("owner_name"):
+        details.append(str(candidate.get("owner_name")))
+    if candidate.get("parcel_id"):
+        details.append(f"Parcel {candidate.get('parcel_id')}")
+    if candidate.get("mailing_address"):
+        mailing = ", ".join(
+            part
+            for part in [
+                candidate.get("mailing_address", ""),
+                " ".join(
+                    part
+                    for part in [
+                        candidate.get("mailing_city", ""),
+                        candidate.get("mailing_state", ""),
+                        candidate.get("mailing_zip", ""),
+                    ]
+                    if part
+                ),
+            ]
+            if part
+        ).strip()
+        if mailing and mailing != address:
+            details.append(f"Mailing {mailing}")
+    if details:
+        return f"{address} ({'; '.join(details)})" if address else "; ".join(details)
+    return address
+
+
+def set_probate_candidate_review(record: dict, candidates: list[dict], status: str) -> bool:
+    summaries = [summary for summary in (probate_candidate_summary(candidate) for candidate in candidates[:5]) if summary]
+    record["probate_candidate_count"] = len(candidates)
+    record["probate_property_candidate_count"] = len(candidates)
+    record["probate_match_status"] = status
+    if summaries:
+        record["probate_candidate_addresses"] = "; ".join(summaries)
+        return True
+    return False
+
+
 def apply_probate_property_owner_search(records: list[dict], statuses: list[SourceStatus]) -> None:
     probate_rows = [record for record in records if record.get("lead_type_key") == "probate"]
-    searches = candidates_found = matched = multiple = name_only = 0
+    searches = candidates_found = matched = multiple = name_only = candidate_addresses_stored = 0
     try:
         for record in probate_rows:
             if record.get("property_address") and record.get("property_address") != "Unknown Address":
+                record["probate_match_status"] = record.get("probate_match_status") or "confirmed-existing-property-match"
                 continue
             candidates: list[dict] = []
             for term in probate_owner_search_terms(record.get("owner_name", "")):
@@ -756,7 +814,12 @@ def apply_probate_property_owner_search(records: list[dict], statuses: list[Sour
                 tags = [tag for tag in (record.get("tags") or []) if tag != "probate-name-only"]
                 tags.append("probate-property-matched")
                 record["tags"] = list(dict.fromkeys(tags))
-                record["probate_property_candidate_count"] = 1
+                if set_probate_candidate_review(record, candidates, "confirmed-single-assessor-owner-match"):
+                    candidate_addresses_stored += 1
+                record["notes"] = (
+                    f"{record.get('notes', '')} Public assessor owner search returned one safe property match: "
+                    f"{record.get('probate_candidate_addresses', '')}."
+                ).strip()
                 record["score"] = max(record.get("score", 0), 72)
                 record["subject_to_score"] = max(0, record["score"] - 18)
                 matched += 1
@@ -764,9 +827,17 @@ def apply_probate_property_owner_search(records: list[dict], statuses: list[Sour
                 tags = [tag for tag in (record.get("tags") or []) if tag != "probate-name-only"]
                 tags.append("needs-property-review")
                 record["tags"] = list(dict.fromkeys(tags))
-                record["probate_property_candidate_count"] = len(candidates)
+                if set_probate_candidate_review(record, candidates, "needs-property-review"):
+                    candidate_addresses_stored += 1
+                    record["notes"] = (
+                        f"{record.get('notes', '')} Public assessor owner search returned {len(candidates)} possible "
+                        f"property candidates; review before using: {record.get('probate_candidate_addresses', '')}."
+                    ).strip()
                 multiple += 1
             else:
+                record["probate_candidate_count"] = 0
+                record["probate_property_candidate_count"] = 0
+                record["probate_match_status"] = "probate-name-only"
                 name_only += 1
         statuses.append(
             SourceStatus(
@@ -781,7 +852,8 @@ def apply_probate_property_owner_search(records: list[dict], statuses: list[Sour
     print(
         f"probate_property_rows_checked={len(probate_rows)} property_owner_searches_attempted={searches} "
         f"property_candidates_found={candidates_found} exact_safe_property_matches={matched} "
-        f"property_multiple_candidate_review_rows={multiple} property_name_only_rows={name_only}"
+        f"property_multiple_candidate_review_rows={multiple} probate_candidate_addresses_stored={candidate_addresses_stored} "
+        f"property_name_only_rows={name_only}"
     )
 
 
@@ -1531,6 +1603,32 @@ def dedupe(records: Iterable[dict]) -> list[dict]:
     return out
 
 
+def print_probate_review_summary(records: list[dict]) -> None:
+    probate_rows = [record for record in records if record.get("lead_type_key") == "probate"]
+    confirmed = [
+        record
+        for record in probate_rows
+        if "probate-property-matched" in (record.get("tags") or [])
+        and record.get("property_address")
+        and record.get("property_address") != "Unknown Address"
+    ]
+    needs_review = [record for record in probate_rows if "needs-property-review" in (record.get("tags") or [])]
+    candidate_addresses = [record for record in probate_rows if record.get("probate_candidate_addresses")]
+    name_only = [
+        record
+        for record in probate_rows
+        if "probate-name-only" in (record.get("tags") or []) and not record.get("probate_candidate_addresses")
+    ]
+    grantor = [record for record in probate_rows if record.get("grantor")]
+    grantee = [record for record in probate_rows if record.get("grantee")]
+    print(
+        f"probate_total={len(probate_rows)} probate_confirmed_property_matched={len(confirmed)} "
+        f"probate_needs_review={len(needs_review)} probate_candidate_addresses_stored={len(candidate_addresses)} "
+        f"probate_name_only={len(name_only)} probate_grantor_populated={len(grantor)} "
+        f"probate_grantee_populated={len(grantee)}"
+    )
+
+
 def build_records() -> dict:
     statuses: list[SourceStatus] = []
     records = []
@@ -1549,6 +1647,7 @@ def build_records() -> dict:
     apply_assessor_enrichment(records, statuses)
     apply_absentee_detection(records, statuses)
     apply_institutional_owner_tags(records)
+    print_probate_review_summary(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
     print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')} final_probate_records={sum(1 for record in records if record.get('lead_type_key') == 'probate')}")
     return {

@@ -88,18 +88,21 @@ function render(){
 }
 function openModal(i){
   const r=filtered[i];
+  const probateCandidates=Array.isArray(r.probate_candidate_addresses)?r.probate_candidate_addresses.join('; '):(r.probate_candidate_addresses||'');
+  const candidateCount=r.probate_candidate_count??r.probate_property_candidate_count;
   document.getElementById('m-title').textContent=r.owner_name||'Unknown Owner';
   document.getElementById('m-sub').textContent=`${r.property_address}, ${r.property_city} ${r.property_state} ${r.property_zip}`;
   document.getElementById('m-grid').innerHTML=[
     ['Lead Type',r.lead_type],['Seller Score',r.score],['Amount',money(r.amount)],['Equity Estimate',money(r.estimated_equity)],['Parcel',r.parcel_id],['Owner Mailing',[r.mailing_address,r.mailing_city,r.mailing_state,r.mailing_zip].filter(Boolean).join(', ')],
+    ['Probate Match Status',r.probate_match_status],['Probate Candidate Count',candidateCount],['Probate Candidate Addresses',probateCandidates],
     ['Distress Sources',(r.distress_sources||[]).join(', ')],['Tags',(r.tags||[]).join(', ')],['Notes',r.notes]
-  ].map(([k,v])=>`<div class="mf ${k==='Notes'?'full':''}"><div class="ml">${k}</div><div class="mv">${v||''}</div></div>`).join('<hr class="mdiv">');
+  ].filter(([k,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>`<div class="mf ${k==='Notes'||k==='Probate Candidate Addresses'?'full':''}"><div class="ml">${k}</div><div class="mv">${v||''}</div></div>`).join('<hr class="mdiv">');
   document.getElementById('modal').classList.add('open');
 }
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function clearFilters(){document.getElementById('q').value='';document.getElementById('score-filter').value='';applyFilters()}
 function exportCSV(){
-  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','grantor','grantee','recorder_document_type','recorder_document_number','recorder_recorded_date','tags','notes'];
+  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','probate_candidate_count','probate_candidate_addresses','probate_match_status','grantor','grantee','recorder_document_type','recorder_document_number','recorder_recorded_date','tags','notes'];
   const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
   const lines=filtered.map(r=>[
     r.owner_name,
@@ -120,6 +123,9 @@ function exportCSV(){
     r.public_records_url,
     r.filed_date,
     r.amount,
+    r.probate_candidate_count??r.probate_property_candidate_count,
+    Array.isArray(r.probate_candidate_addresses)?r.probate_candidate_addresses.join('; '):r.probate_candidate_addresses,
+    r.probate_match_status,
     r.grantor,
     r.grantee,
     r.recorder_document_type,
