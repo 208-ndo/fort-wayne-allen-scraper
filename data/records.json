@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-15T02:59:54+00:00",
+  "fetched_at": "2026-05-15T03:07:49+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
@@ -25,7 +25,7 @@
       "source": "code_violation",
       "url": "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents",
       "status": "live",
-      "detail": "Parsed 250 public 311 rows; excluded 17 non-property/intersection rows; kept 57 property-distress code rows after noise filtering."
+      "detail": "Parsed 251 public 311 rows; excluded 17 non-property/intersection rows; kept 57 property-distress code rows after noise filtering."
     },
     {
       "source": "probate",
