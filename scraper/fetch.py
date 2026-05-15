@@ -19,7 +19,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 from io import BytesIO
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable
@@ -38,6 +38,8 @@ SHERIFF_ARCHIVE_URL = f"{SHERIFF_ROOT}/2026-sheriff-sales/"
 ASSESSOR_URL = f"{ROOT}/164/Assessor"
 FORT_WAYNE_311_URL = "https://www.cityoffortwayne.org/311"
 FORT_WAYNE_311_INCIDENTS_URL = "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents"
+COURT_CALENDAR_API = "https://public.courts.in.gov/CourtCal/api"
+ALLEN_COUNTY_ID = 2
 TAX_RECORD_LIMIT = 500
 
 
@@ -276,6 +278,34 @@ def owner_index(records: Iterable[dict]) -> dict[str, dict]:
             continue
         index.setdefault(address_key(addr), record)
     return index
+
+
+def owner_name_index(records: Iterable[dict]) -> dict[str, dict]:
+    index: dict[str, dict] = {}
+    for record in records:
+        owner = record.get("owner_name", "")
+        if not owner or owner == "Unknown Owner":
+            continue
+        key = slug(re.sub(r"\b(llc|inc|corp|corporation|co|company|trust|estate)\b", "", owner.lower()))
+        if key:
+            index.setdefault(key, record)
+    return index
+
+
+def match_owner_name(name: str, index: dict[str, dict]) -> dict | None:
+    key = slug(re.sub(r"\b(llc|inc|corp|corporation|co|company|trust|estate)\b", "", (name or "").lower()))
+    if not key:
+        return None
+    if key in index:
+        return index[key]
+    parts = key.split("-")
+    if len(parts) >= 2:
+        compact = {parts[0], parts[-1]}
+        for owner_key, record in index.items():
+            owner_parts = set(owner_key.split("-"))
+            if compact.issubset(owner_parts):
+                return record
+    return None
 
 
 def enrich_sheriff_owners(records: list[dict], property_index: dict[str, dict]) -> int:
@@ -639,14 +669,128 @@ def code_violation_stub(statuses: list[SourceStatus], detail: str) -> list[dict]
     ]
 
 
-def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
-    today = datetime.now(UTC).date().isoformat()
-    statuses.extend(
-        [
-            SourceStatus("probate", "Allen County court/probate records", "stubbed", "No safe public row parser wired yet."),
-            SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing match adapter pending; used later for absentee detection."),
-        ]
-    )
+def court_calendar_date_range() -> list[str]:
+    payload = fetch_json(f"{COURT_CALENDAR_API}/Hearing/DateRange")
+    data = payload.get("payload", {}) if isinstance(payload, dict) else {}
+    start = datetime.strptime(data.get("startDate", ""), "%m/%d/%Y").date()
+    end = datetime.strptime(data.get("endDate", ""), "%m/%d/%Y").date()
+    out = []
+    day = start
+    while day <= end:
+        out.append(day.strftime("%m/%d/%Y"))
+        day += timedelta(days=1)
+    return out
+
+
+def probate_subject(case_style: str) -> str:
+    style = " ".join((case_style or "").replace("\n", " ").split())
+    patterns = [
+        r"in re:?\s+the estate of\s+(.+)",
+        r"in re:?\s+estate of\s+(.+)",
+        r"estate of\s+(.+)",
+        r"in re:?\s+the guardianship of\s+(.+)",
+        r"in re:?\s+the trust of\s+(.+)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, style, re.I)
+        if match:
+            return match.group(1).strip(" .")
+    return style.strip()
+
+
+def probate_tags(row: dict, matched_property: bool) -> list[str] | None:
+    case_number = str(row.get("caseNumber") or "")
+    style = str(row.get("caseStyle") or "")
+    text = f"{case_number} {style} {row.get('hearingDesc') or ''}".lower()
+    tags = ["probate"]
+    if re.search(r"-(eu|es)-", case_number, re.I) or "estate" in text:
+        tags.extend(["estate", "decedent"])
+    elif re.search(r"-gu-", case_number, re.I) or "guardianship" in text:
+        if not matched_property:
+            return None
+        tags.append("guardianship")
+    elif "trust" in text and matched_property:
+        tags.append("trust")
+    else:
+        return None
+    return list(dict.fromkeys(tags))
+
+
+def probate_records(statuses: list[SourceStatus], tax_name_index: dict[str, dict]) -> list[dict]:
+    raw = kept = matched = missing_property = 0
+    try:
+        records = []
+        for date_text in court_calendar_date_range():
+            url = f"{COURT_CALENDAR_API}/Hearing/List?countyID={ALLEN_COUNTY_ID}&date={date_text}&skip=0&take=500"
+            payload = fetch_json(url)
+            rows = payload.get("payload", []) if isinstance(payload, dict) else []
+            if not isinstance(rows, list):
+                continue
+            raw += len(rows)
+            for row in rows:
+                if str(row.get("caseCategoryKey") or "") != "PR":
+                    continue
+                subject = probate_subject(str(row.get("caseStyle") or ""))
+                property_match = match_owner_name(subject, tax_name_index)
+                tags = probate_tags(row, bool(property_match))
+                if not tags or not subject:
+                    continue
+                kept += 1
+                if property_match:
+                    matched += 1
+                else:
+                    missing_property += 1
+                hearing_date = parse_incident_date(str(row.get("sessionDate") or ""))
+                case_number = str(row.get("caseNumber") or "").strip()
+                hearing = str(row.get("hearingDesc") or "").strip()
+                court = str(row.get("courtName") or "Allen County Court").strip()
+                notes = f"Live Indiana court calendar probate row. Case {case_number}. Hearing: {hearing}. Court: {court}. Hearing date: {hearing_date}."
+                if property_match:
+                    notes += " Matched to Allen County tax/property owner name."
+                record = make_record(
+                    owner_name=subject,
+                    property_address=property_match.get("property_address", "Unknown Address") if property_match else "Unknown Address",
+                    property_city=property_match.get("property_city", "Fort Wayne") if property_match else "Fort Wayne",
+                    property_state=property_match.get("property_state", "IN") if property_match else "IN",
+                    property_zip=property_match.get("property_zip", "") if property_match else "",
+                    parcel_id=property_match.get("parcel_id", "") if property_match else "",
+                    lead_type="Probate / Estate",
+                    lead_type_key="probate",
+                    filed_date=hearing_date,
+                    amount=property_match.get("amount", 0) if property_match else 0,
+                    public_records_url=str(row.get("caseURL") or "https://public.courts.in.gov/CourtCal/"),
+                    distress_sources=["probate"] + (["tax_delinquent"] if property_match else []),
+                    tags=tags + (["hot-stack", "tax-delinquent"] if property_match else []),
+                    notes=notes,
+                )
+                record["case_number"] = case_number
+                record["source_status"] = "live"
+                record["hot_stack"] = bool(property_match)
+                records.append(record)
+        statuses.append(
+            SourceStatus(
+                "probate",
+                f"{COURT_CALENDAR_API}/Hearing/List",
+                "live",
+                f"Scanned {raw} Allen County public hearing rows; kept {kept} probate/estate rows.",
+            )
+        )
+        print(
+            f"probate_raw_records={raw} probate_records_kept={kept} "
+            f"probate_property_matched={matched} probate_missing_property={missing_property}"
+        )
+        return records or probate_stub(statuses, "No probate/estate rows were found in the public court calendar range.")
+    except Exception as exc:
+        statuses.append(SourceStatus("probate", f"{COURT_CALENDAR_API}/Hearing/List", "error", str(exc)))
+        print(
+            f"probate_raw_records={raw} probate_records_kept={kept} "
+            f"probate_property_matched={matched} probate_missing_property={missing_property} probate_error={exc}"
+        )
+        return probate_stub(statuses, "Public Indiana court calendar probate rows could not be parsed safely.")
+
+
+def probate_stub(statuses: list[SourceStatus], detail: str) -> list[dict]:
+    statuses.append(SourceStatus("probate", "Allen County court/probate records", "stubbed", detail))
     return [
         make_record(
             owner_name="Probate Adapter Pending",
@@ -656,15 +800,24 @@ def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
             property_zip="",
             lead_type="Probate / Estate Source Stub",
             lead_type_key="probate",
-            filed_date=today,
+            filed_date=datetime.now(UTC).date().isoformat(),
             amount=0,
-            public_records_url="https://www.allencounty.in.gov/",
+            public_records_url="https://public.courts.in.gov/CourtCal/",
             distress_sources=["probate"],
             tags=["probate", "adapter-stub"],
-            notes="Probate/estate adapter placeholder. Live source mapping exists, but no row-level scrape is enabled yet.",
+            notes="Probate/estate adapter placeholder. Public court calendar parsing returned no safe estate rows.",
             source_status="stub",
-        ),
+        )
     ]
+
+
+def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
+    statuses.extend(
+        [
+            SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing match adapter pending; used later for absentee detection."),
+        ]
+    )
+    return []
 
 
 def dedupe(records: Iterable[dict]) -> list[dict]:
@@ -672,6 +825,8 @@ def dedupe(records: Iterable[dict]) -> list[dict]:
     out: list[dict] = []
     for record in records:
         property_key = record.get("parcel_id") or record.get("property_address", "")
+        if record.get("lead_type_key") == "probate" and property_key == "Unknown Address":
+            property_key = record.get("case_number") or property_key
         key = (
             slug(record.get("lead_type_key", "")),
             slug(property_key),
@@ -694,10 +849,11 @@ def build_records() -> dict:
     records.extend(sheriff_records)
     records.extend(tax_records)
     records.extend(code_violation_records(statuses, tax_owner_index, foreclosure_index))
+    records.extend(probate_records(statuses, owner_name_index(tax_records)))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
-    print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')}")
+    print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')} final_probate_records={sum(1 for record in records if record.get('lead_type_key') == 'probate')}")
     return {
         "fetched_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
