@@ -99,7 +99,7 @@ function openModal(i){
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function clearFilters(){document.getElementById('q').value='';document.getElementById('score-filter').value='';applyFilters()}
 function exportCSV(){
-  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','tags','notes'];
+  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','grantor','grantee','recorder_document_type','recorder_document_number','recorder_recorded_date','tags','notes'];
   const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
   const lines=filtered.map(r=>[
     r.owner_name,
@@ -120,6 +120,11 @@ function exportCSV(){
     r.public_records_url,
     r.filed_date,
     r.amount,
+    r.grantor,
+    r.grantee,
+    r.recorder_document_type,
+    r.recorder_document_number,
+    r.recorder_recorded_date,
     (r.tags||[]).join(', '),
     r.notes
   ].map(esc).join(','));

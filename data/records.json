@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-15T15:04:35+00:00",
+  "fetched_at": "2026-05-15T15:39:35+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
@@ -31,13 +31,19 @@
       "source": "probate",
       "url": "https://public.courts.in.gov/CourtCal/api/Hearing/List",
       "status": "live",
-      "detail": "Scanned 6990 Allen County public hearing rows; kept 30 probate/estate rows; 0 safely matched to tax/property owner records."
+      "detail": "Scanned 7012 Allen County public hearing rows; kept 30 probate/estate rows; 0 safely matched to tax/property owner records."
     },
     {
       "source": "assessor",
       "url": "https://www.allencounty.in.gov/164/Assessor",
       "status": "live",
       "detail": "Public assessor/property enrichment uses Allen County iMap parcel layer for exact parcel/address matches."
+    },
+    {
+      "source": "recorder_probate",
+      "url": "https://inallen.fidlar.com/INAllen/DirectSearch/",
+      "status": "live_partial",
+      "detail": "Checked 30 probate rows; attempted 110 Recorder searches; found 0 name-tied deed/transfer candidates."
     },
     {
       "source": "assessor_property",
@@ -19983,7 +19989,7 @@
         "entity-owner"
       ],
       "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260514-100510. Type: Minimum Housing/Commercial Standards. Status: Waiting.",
+      "notes": "Live Fort Wayne 311/code row. Case 260514-100510. Type: Minimum Housing/Commercial Standards. Status: Resolved.",
       "source_status": "live",
       "case_number": "260514-100510"
     },
@@ -20296,6 +20302,43 @@
       "case_number": "260513-100572"
     },
     {
+      "id": "FW-3a6a63de17",
+      "owner_name": "Unknown Owner",
+      "property_address": "5301 Southern Ct",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "",
+      "mailing_address": "",
+      "mailing_city": "",
+      "mailing_state": "",
+      "mailing_zip": "",
+      "parcel_id": "",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-05-13",
+      "amount": 0,
+      "score": 74,
+      "subject_to_score": 56,
+      "distress_count": 3,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": false,
+      "distress_sources": [
+        "code_violation",
+        "trash_debris",
+        "nuisance"
+      ],
+      "tags": [
+        "code-violation",
+        "trash-debris",
+        "nuisance"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 260513-100465. Type: Debris / Cistern. Status: Waiting.",
+      "source_status": "live",
+      "case_number": "260513-100465"
+    },
+    {
       "id": "FW-75f06aee13",
       "owner_name": "Cervantez Juan J",
       "property_address": "1404 Gable Rd",
@@ -20410,43 +20453,6 @@
       "notes": "Live Fort Wayne 311/code row. Case 260513-100149. Type: Bulk Trash Pickup. Status: Unresolved.",
       "source_status": "live",
       "case_number": "260513-100149"
-    },
-    {
-      "id": "FW-3a6a63de17",
-      "owner_name": "Unknown Owner",
-      "property_address": "5301 Southern Ct",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-05-13",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260513-100465. Type: Debris / Cistern. Status: Waiting.",
-      "source_status": "live",
-      "case_number": "260513-100465"
     },
     {
       "id": "FW-4cd78507b5",
@@ -21750,7 +21756,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im0wSVhLVzU2VHB5dVJHVU1taTVWS2NDdENfNWZQSTFDTVBhU1Nod2JZQUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRkVqWlFuS0VRSGRaV2JlNUNnWjNmVlVkRVF2eXg1V05UQXF5R1ZNS3N3QTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImZqQUNsSWc1S2N1TjBfM0lQUlZLZ080NlNUanlwUmVFYW9LZFA3UU5mcVExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNmpmMV8zRzIwMGNyWVQ1YlRqRkRncXpOemhya21lN0ZpaGRZdjJnV01zYzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000045. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-ES-000045"
@@ -21786,7 +21792,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InVtcHA0REZDVTM1Q0ktQlB2T29mdFhfbk4xR1JsVTIwNXA2d3FseldtaFUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieVZ1eEYyTmk3ZFFwTDdBTkpSX3pFUWlSbDVkMDZGc0FCZHlGVmFpYU5YbzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjFpdlF6U1ZCc0ZTQy11NU1YSDZOS3ZLREpWRWJLT1RBUmFiLVlOajZqaUExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibmU3bG5RRkN2YnVoWWU1ZmF3MHJDMDNkX1V3cEZjNTBweUJ1cEFSZ2NsODEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2102-EU-000087. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2102-EU-000087"
@@ -21822,7 +21828,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlB0MWJIN1R4VldzUU5CVFhUOHZFMjBIWmtuWVBSZkxTZ0tEYjZXYXhMdjQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNlYwMW15VExyYlZJVzBaWU1zRlpqdk40ek00WEhnZ1ZkeFU4ZlU0ZXZXZzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik83N2ctVjNyVFJtNXg0SkNiYW1hbHFIbGx2V25EMXlwdGtLTHZsVjNRTkExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYXF0enZTS1JITTJNZlM3R0VxcngtSnd2WlBQNmk5UENFQWwtalk0c0RUTTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000059. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2502-EU-000059"
@@ -21858,7 +21864,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImNSQjBBWDY1bFBRRVJib09XVFNhbG9CVHplQjdQeUw0RFNzX1RsRlF6VTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiX1VpOGxWMlpnaTFyZFY4d2JnNExmYXVZNERsTzFuQ0N2bGJlUlV5SWYyVTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImNBVVBVRmxVT0tRdUNzNWNLblFxRXNkellHTWJMY0E5MGYxNHpDVEVBUU0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWWFpNHk1VkVjS0hBT1k5dEJ2RS0zSUFZSFBFc2pHUkU0UlA3SXEwekUwNDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2312-EU-000627. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2312-EU-000627"
@@ -21894,7 +21900,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkVWLXR2eEJzZF9SazJ3YzZHblFlZmY4MElCVzhKb3BFRmFVVkl5RlRiZVExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTi1xc0hBOE1sN3I2dWVIU0xYY19nSjctMllJV3BtQm5ubDhxYTctNU9EQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IktOQXNPem5hVzRzbkg2NEttZ1EwZFotS1dleS1aN1FseVhDWktJTVpyR1ExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNzhBMjRtdHROWS1DMnEtdDhmUHRiY1AtSmlGbEx5TDZMMVR2cjVUZVh0ODEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-1907-EU-000346. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-1907-EU-000346"
@@ -21930,7 +21936,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InhvR0NBMzlsSGxRMzVHLVRZSG9iaUtRa0tKQVNSR2hJZjVBMWVrcmlNdkUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicl93WGVxTUxHenRQVmhvUkZJVEtQc2NxM2hEb2dkWHJfR1JZcDFKQ0dTYzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlFkTzdEWFB6NE9FMGgzbFVmbTN5a3o5ZzFfZkY4cG13NkdLaUstc0tVYVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibU1sUnFBVG1aWUFlMkhrbU5DekNFQTB2azNkOC1GdnNfQzZST21oMEVkSTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2410-EU-000491. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2410-EU-000491"
@@ -21966,7 +21972,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im1DTlNTTkhEVXdYMUp1QTMzUFdDcjBkM0R5RERuMUt2VXBOaVBIanlHMXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiM1BKN1NwQXFVVUI3eXY2dkRFejVFUTZqM3Y3MmhwaEdmaEZ0TC1YenJkUTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InhyNmhNYVBIWklIZXdiTUNMMFdvZWVRejhVYklQbTJJTWRXai1MdnprRWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNS1tRlJmTGVwWFZtOEpDdWgzRW1qejRzOXY3aVNfYktNVkRsSW1pQW5RdzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2412-EU-000616. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2412-EU-000616"
@@ -22002,7 +22008,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlQwZjlDMktjRjE4MHgwOXBmaXdSS3JQVHNZNC1SeTZlcmNNQU4yV25zYjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRVlhcFdJUGNlRG00NUs0ZU9ITzZ5eHlfWXR5QWxOOTN2cmJ2cnlOemxkMDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IklFMHBJTUJkOS1yUmVqUERQX2pNQW5nalhJaE82bHhDa3BGLVJPc2VwTHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNS1tRlJmTGVwWFZtOEpDdWgzRW1qeGVTRkppMUwxeUhRVlVTTlB0cG02STEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2210-EU-000644. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2210-EU-000644"
@@ -22038,7 +22044,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjJsVDBiZFU0WXlSZGpoSEV6R3hNbzltR1hnR0NfR1NTclNrNTh1Q3JMdXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiS1lKOWZrbWZra3NYUUJHaDFyc01URFBwemE4VndnT1AtZGdoQkwzblZSczEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlI1MUlsSUp2MVNDRWN6WEo5bm5rM2Y2dEgwczdDWHVmcWhEZXF2VXluODAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiR0VKNTBkaHBvMHJ4R1pib21CTEVOdFZXZTJEMVBaeTBVRUdPemswSTl1bzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2502-EU-000099. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2502-EU-000099"
@@ -22074,7 +22080,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImhYSm5NZjZydnF5RFZuaGJNQnF1b0RJRkNaQkx2c05xV0RnZkQyeU5udlExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWXRCMWJKT0M4TXoySHJYSmJva09YMDAxczBzUnQ0Rk1YYlIwZFZ4ejdwTTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InNVSTcyMWZ3R0RjVGxlQTdjbXlWcGoxdTVSMWJDNFpkWnF1MEU2MEhHRm8xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicHllSk5ET3JndmI2Y3U0elhRYldmaUt1ZGFhd1lHLWlJV2g5THQ0N3dPRTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2501-EU-000011. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-05-13. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2501-EU-000011"
@@ -22110,7 +22116,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjB1S0ZSUnFFS3ZtbzlHOUI3VlJRTE9lVklNS2FCMlJBYkRxTFFWeVR0NzQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSVp3eGNfLXFBbHlHakh6bGVUdjZXX1llUEI0OFltQmNmNkNoZmwzN2I4WTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InU4YTJ1T1hHMDhYdTlPTkNfX2VOeXE2aWtjR29qSG0zNlZ2dEdpRWs2aDQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZ3N0LVZsUFUzZWh6V0ROSHZNWndWb2J2LTdPcUVFd045X2hPVHd6emZ2UTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2504-ES-000020. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-20. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2504-ES-000020"
@@ -22146,7 +22152,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlNwRHBJNERkbFJBMlA5T1hpRnk5NEpiSy1oaHo1RGJOMlNNSWdHbWpUNjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZXF3azZoM0V1TnQ0Vm16MVJUdUxqY05hdHc0dGNtalYxZzRwanFzNEJZWTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlFFbC03NlpVUkVRWWJ1bVYwd3h2eUppRWdxbXFlTGxvcHFxNkl5ZUNRNXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiXzFvVnVTaC1EYVJ0eFpVOV9SNGNVc2ViMzFGMUgtajdpbWJ1Q3UtNGJtMDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2510-EU-000516. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-EU-000516"
@@ -22182,7 +22188,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ijg2dElmTm1PUXlndkJOZzVyR0U1ZzV0ZnZuLUNRbFBYc2FUa29XTDRzRkkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZkNheUZzUTFkTDdDX3hPRWwyMzY5eEFveXgzZXZoTjlnaUZiZUZYUWVVSTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlM2RTV0VG9FejVscHQyWjFNdzVuMkhiZHZsdE5yeXI0dXF3Q1dDaUVRcWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibUNMOTFwOEhBWmM1aFhTVVpzQTBDRHRJLUhDdTJvWHMzV3JMSk51Zl8ydzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2106-EU-000347. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2106-EU-000347"
@@ -22218,7 +22224,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImY3VVBnNjFTRVBPNHR1by1GRHp5RXJtejczOXJXRzFqSm4zSkFWVmdPSUUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTUlhUWVRLXFDRTBYU2N3eHRmYi1yOUl1bzhwWXIzNHR6TVcyVDFoSDh1STEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InJOR3BRMWpmb0V3UEZ2VFVYd2FqY1NpOHZiLTVTV3hHdVhncmthZEFJVm8xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiXzctZndlb3dlM3JNUDhSZjl2ZTZ2UkF5NEp3WUZtWmZKN2VkYmhhcWhvQTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2007-EU-000352. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2007-EU-000352"
@@ -22254,7 +22260,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlFTTm9JT0t2dm41WHpVWTF0QkRXV2Q0bFFOWnpNcUZTUEluRjgtWjRDLTAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRzVFSjdNT3FRQmhLOVpza2pUUU1JQXU2SUtqSjBxLXlUM1ktLWp3N1p0RTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im9FbmNlVUNQR1o5MGl1bE1BYm5hZWpRdW0tZS1Xcm5XRkVvMElHbmZzRjAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUWFsVDRZMjZObVFneTh0UmFvdm85bXpGOTRpSXBvcjVTMW9vd3VLTVVNYzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2604-ES-000011. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-26. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2604-ES-000011"
@@ -22290,7 +22296,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik9yZDRSUEI1VVVZNXJkaFFwQnJKdHQtb1Y2alNBUUMzNGFoQ05ELU9xdDgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibmdPYy1ZaHI3OGwzUUM4VEgyT3hSenlfc2dGVHNDSjRvcWRMQ2tkb3dUMDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InU5bDVCcW9QY1FxU01UTWJBSEJ1dzJqWU1NUmQ4UFlVeWtMc0pESjZwNTAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieHhrVl9QY3dTNGFPbFh1ckJQUWZ2V05uRjhXLXk3VzRXOFcyVGYySmhoSTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2602-EU-000096. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2602-EU-000096"
@@ -22326,7 +22332,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im1LUGVqV3ZxWWZZWFVmT0hYWmlxVzZPdUZueEpTU2EyRHJwQ29PQ1NWVDgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZDVZRlI5bURUQWRtSFlIVmk0QTNZTjJZUDBSNV83S0tXRjVFbFdsYWJYdzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjlzMldvQnpGUFJELVJLM0d4NEo5ejFpRGtSQ0xqVkxCVERuMjdYUlh6Y0kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidWpMUEVPTkI4NmR6Ty1EX010M0pSSkZNaDA3MDI5M0VLcU90ZHNKRk1rSTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000460. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-05-27. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-EU-000460"
@@ -22362,7 +22368,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImYxdkRXR1kzblVnQkRVR2d1UGpnYmluU3luZUtXalpOQ2pkZzhKd000NnMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZE9Wb21BY1ZrQ2xkOHp6WG5IVEpvbTUtTGVhekFrQm8xMk5LRTZhVEVCQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImphYkIxd0hUNGJicEltejY1NmlWbXBhdmRmcWEtUDZWWkFKUmdqaXpPQkUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiR0VKNTBkaHBvMHJ4R1pib21CTEVOck8yTVdoQm9UdmRPSmtWS3dTNGRRMDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000298. Hearing: Pretrial Conference. Court: Allen Superior Court 2. Hearing date: 2026-05-28. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2506-EU-000298"
@@ -22398,7 +22404,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik43dnNmamdzOUJ1OFdPa3IzcVRUUnJobmxrR3dBTGlyaUM5TzRUaHJ0YjAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNFQ0VjQzSTZIc0lETTZnMGNjeFNZeXVuTW9pT01lSHRIZnBIVUhsV2NVbzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlZMcURvdkRpNnZSWmNoc0FrZ2dJeHBYTmVUT3hmQVFXYTRScVM2azVUdjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZ05ZQXNBaGlYMldxaTZkdFNIMGRyYVRyaVA3R25QYnFNX0FSb1R1VV9hczEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2504-EU-000207. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-01. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2504-EU-000207"
@@ -22434,7 +22440,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im1oZ2I0NzZ4Q0hQb0NxVEFQNkh0YzItQ3FpTDZYTVZTNVR0cEs2YVJYTkExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUDUzcTJYNnhmOFA0SUdDRERERWNhTmNpck81OVQ1NDVnRnpmSVoyOU5NQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkgxZ3J6NG4tN1AzMzJOdWtqN2VpVENHMjBPNW9WNXgwdW9ZRVVuWjZDYmMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZ0x0STRRMEtQWS16VnBKc0xkd3VSa1Z2U0dhLVUxUVd6c3ptWGpqZl9tZzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2603-EU-000146. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-01. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2603-EU-000146"
@@ -22470,7 +22476,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InJvdzItVnJlRFdZNXJpUXg4NHRfN2I2S2ZUVWhSZ2h0SDhJT1ZOaE03c0kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidEM2RlcydGZDdEZSR0hjbUQyblBOMDhkemR3QWhaaFo3MHhJeDNxek04dzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ii1GeGxjXy1FXzc4NHBuYUZ0d29RblB0akhBenQ2VTJQcjktdlNiektzUGMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTDVOVTVWdm5ETUZ1dWlCWUgxdVN2b2wzQjQ3SW9LRkw0akR6b0V6WV9UNDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2406-ES-000039. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-02. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2406-ES-000039"
@@ -22506,7 +22512,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InRjb2k2Yk92d1NoVnlmUTJxLVMwMlczeHFlZFJ5UEFwMkYyVEluRENCVmcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaV82c0lzdTd5ZWk1MGF2QTg4MS02bUlLRXJaUTY0UklqQkRNdEtrMWs0bzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjRKMVJScVZ6Wm90dXoyZHFHemRBRjAyVDBoTmpTVzVqaDFRR0RldnZ5aEExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMFY1LTlaM1hYSEhselFzM2t3b2Z6aDBMQlVSa2Y2bU5uMzlCU0lqUldfRTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2505-ES-000024. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2505-ES-000024"
@@ -22542,7 +22548,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkdQMmVXMEs4TWNfMXIwc0J5OVdiLXhfMTBtRnJpWW9VQ3hfc0s2ZHdVQ2MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiV0huU0xhRVBBUlJ1cGlFTEp1eXltSG43aWdDM3RsM21WWU9GUkh1U1o4MDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ilc1UF9sZGdXLVZGWGR5RjBFbmJhY3JXX19IdG9aczhKejdCTEpPU2FsQ00xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZDI3RUZfWDZrZVJpTnltdmJFUHFIbzRJQ3J6QlpYTnkxOU5jV3llNmdXczEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2404-EU-000211. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2404-EU-000211"
@@ -22578,7 +22584,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im9kdDNuN0duQmk3U1hld0FSVHFxMjk2cllLNjlzMGVFYVg4ek5zV1VhMWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiLTlBRWg1VUhXVkhsMHZEM0FuU2lySGEtdmVTV0Rtd3JYakQyT190U3lxazEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InZDaldhbEJLR3ZzLVVtZzRVSUx0Q2pHZjZTaEh4b2cxVmNUSVNsV21FVGMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiM3dNVHdRR1BrZDFzOGRTMmUta1I4UzlEQWNlTkU1MEpRT3dpeVdGb0JDazEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-1405-EU-000193. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-1405-EU-000193"
@@ -22614,7 +22620,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlRUN3JUY2JRWEJ6U0RNZGxlenZvOEJSdUxpeXJuUEVOOHFwSC16WW5jbE0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiV09jM0xmLVAyUGs3aWd3YU0tSGtIRGJTUEd3MnNDTTM2WGV0SlN0SDVOYzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik45SGZOR1EySmdFYTY3a3BqYVhQQTRNSVhvTGYxcWJFcVpYWDRPd2RNWTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicENGXzNVVGZ0Q3NJTG9XSTgwdG1Ba0Nuc0NkSUtmcGp2QnVTR1JsWGF4WTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2509-EU-000431. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-EU-000431"
@@ -22650,7 +22656,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlMwY3NhZXRvY0xaYXBVdkVmYkYzdlJUNzA0ekp4Qk9vM01rWF9NczBMaEExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUWRaQ2pKX1E3QlZUbVdCYUY0ZEM3bmw1VTRDSFZIeFN2RkMxNXo2QzgzYzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Iks5MHhVd2NJb25RUXd1VWV4YW81Yzc3aV9Wejd5RlBQa1BwaUdHVU5wdWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoic2s2cW9pVlRHVUM5amJjNVVRMzNsRmFZTEZndzJ0NF95X3NaMWpfZVhsUTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2405-EU-000265. Hearing: Case Management Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-04. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2405-EU-000265"
@@ -22686,7 +22692,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlI0Wk8tdUVfNWpISFNHOXpQRHZ2OTJDMktnbDBxMjBFbkJIQmhrS1pPa0ExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUllEQXpSMGJuOFRHUjhIX3hIbms0V19oaGZ3Y0hwQ3NpcVNyOVVYWFVNczEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjlyUVF0d3ZjMVM4R2VSV2pyZGFibDB4NUdpNzZQTVJuSEMtWFJhUk9GbDAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoib1ZYV01DOEwtRUtpUzJ0ZE9vVjlkcGVYMi1uVzRkbEZCWFNSSzRURE1oTTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2506-EU-000320. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-08. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2506-EU-000320"
@@ -22722,7 +22728,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImZJZkJ6dUotT0pONm9ObEg5Rkh3a2cwMDR3Y1hhdWdkTVdkdTZ2SmFhcUExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMmZBSVJ0eDk0UDYxTW5RcUgxRVJUVmtKTUdhTmU2RGxBYWhzWW9jVEFuYzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImJVbEp4ZEFsQVJ4Z1lZS3pYckc3WDcwNlFpeUxMMHlUem4zT0swOXR6cEUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZC1MTHN4amJjSW9kRUJVNDN6eER1bjRESmpiSGVuc3pNazNUT3FHZ1AyRTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2509-ES-000037. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-09. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2509-ES-000037"
@@ -22758,7 +22764,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IklPcDVqa2F2a1ZlNVZoUFhQaEdtYnFhVEpJbUJmVEJKVnhKWmxPdlg1LWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiN2dQcVlSd3ppOVFjR2Z6OExGNkJkQkFDOWRmSjBFRVBGQWVBQVpWN0JsWTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjJNdU9aWi1BV2lzdmNmRkNmMHJaVUFCVzNzTjRsUFhFcGxxNzE3VEIzUjQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieXNzalJfU2dic21OdEhaX3BTRnNoWWk1YzgwdU1mbjNHTEJ2V0E0Wm9SVTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2307-ES-000019. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-06-10. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2307-ES-000019"
@@ -22794,7 +22800,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkVUWXNFYkROa1NVZl9rNGVjNzJydERaTkN4cEtjR1ItakZieVJnLUVlN2sxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSTZmdzVnQVVPTHpGcTAyUlZQY2hzYUg4UjRCMHFFZk54WkY2N2diU0xxVTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ino2VnFjdVoydmZpcThFTW5CRUYtZks0OHZEb2x0anVyMHh5eDgyVDd4bFUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUzlqY05yT2V0VUF4UzF3dno3NHZwSkZCZnNYY253cHdtZ182V2hfdEFlRTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2209-EU-000586. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-06-11. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2209-EU-000586"

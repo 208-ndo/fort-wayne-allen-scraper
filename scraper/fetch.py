@@ -40,6 +40,8 @@ ASSESSOR_PARCEL_LAYER_URL = "https://gis1.acimap.us/imapweb/rest/services/QueryL
 FORT_WAYNE_311_URL = "https://www.cityoffortwayne.org/311"
 FORT_WAYNE_311_INCIDENTS_URL = "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents"
 COURT_CALENDAR_API = "https://public.courts.in.gov/CourtCal/api"
+RECORDER_SEARCH_URL = "https://inallen.fidlar.com/INAllen/DirectSearch/"
+RECORDER_API_BASE = "https://inallen.fidlar.com/INAllen/Scrap.WebService.DirectSearch/"
 ALLEN_COUNTY_ID = 2
 TAX_RECORD_LIMIT = 500
 ASSESSOR_BATCH_SIZE = 10
@@ -59,6 +61,17 @@ ASSESSOR_FIELDS = [
     "GISPublished.SDE.CurrentOwner.PropertyState",
     "GISPublished.SDE.CurrentOwner.PropertyZip",
 ]
+RECORDER_DEED_TERMS = (
+    "deed",
+    "transfer on death",
+    "affidavit",
+    "survivorship",
+    "personal representative",
+    "executor",
+    "administrator",
+    "estate",
+    "trust",
+)
 
 
 class LinkParser(HTMLParser):
@@ -108,6 +121,27 @@ def fetch_bytes(url: str, timeout: int = 45) -> bytes:
 
 def fetch_json(url: str, timeout: int = 30) -> object:
     return json.loads(fetch_text(url, timeout=timeout))
+
+
+def post_json(url: str, payload: object, headers: dict[str, str] | None = None, timeout: int = 30) -> object:
+    data = json.dumps(payload).encode("utf-8")
+    req_headers = {"User-Agent": "fort-wayne-allen-scraper/0.1", "Content-Type": "application/json"}
+    if headers:
+        req_headers.update(headers)
+    req = Request(url, data=data, headers=req_headers, method="POST")
+    with urlopen(req, timeout=timeout) as resp:
+        return json.loads(resp.read().decode("utf-8", errors="replace"))
+
+
+def post_form(url: str, payload: str, timeout: int = 30) -> object:
+    req = Request(
+        url,
+        data=payload.encode("utf-8"),
+        headers={"User-Agent": "fort-wayne-allen-scraper/0.1", "Content-Type": "application/x-www-form-urlencoded"},
+        method="POST",
+    )
+    with urlopen(req, timeout=timeout) as resp:
+        return json.loads(resp.read().decode("utf-8", errors="replace"))
 
 
 def extract_links(url: str) -> tuple[list[tuple[str, str]], str]:
@@ -662,6 +696,180 @@ def name_variants(value: str) -> set[str]:
             variants.add("-".join([first, middle[0][0], last]))
             variants.add("-".join([last, first, middle[0][0]]))
     return {variant for variant in variants if variant}
+
+
+def recorder_name_queries(name: str) -> list[tuple[str, str]]:
+    tokens = name_tokens(name)
+    if len(tokens) < 2:
+        return []
+    first = tokens[0].title()
+    last = tokens[-1].title()
+    middle = " ".join(token.title() for token in tokens[1:-1])
+    queries = [(first, last)]
+    if middle:
+        queries.append((f"{first} {middle}", last))
+        queries.append(("", f"{last} {first} {middle}"))
+    queries.append(("", f"{last} {first}"))
+    return list(dict.fromkeys(queries))
+
+
+def recorder_exact_name_match(name: str, value: str) -> bool:
+    wanted = name_variants(name)
+    found = name_variants(value)
+    return bool(wanted and found and wanted.intersection(found))
+
+
+def recorder_login_token() -> str:
+    payload = post_form(
+        f"{RECORDER_API_BASE}token",
+        "grant_type=password&username=anonymous&password=anonymous",
+        timeout=20,
+    )
+    return str(payload.get("access_token") or "") if isinstance(payload, dict) else ""
+
+
+def recorder_search(token: str, first_name: str, last_business_name: str) -> list[dict]:
+    criteria = {
+        "FirstName": first_name,
+        "LastBusinessName": last_business_name,
+        "StartDate": "",
+        "EndDate": "",
+        "DocumentName": "",
+        "DocumentType": "",
+        "SubdivisionName": "",
+        "SubdivisionLot": "",
+        "SubdivisionBlock": "",
+        "MunicipalityName": "",
+        "TractSection": "",
+        "TractTownship": "",
+        "TractRange": "",
+        "TractQuarter": "",
+        "TractQuarterQuarter": "",
+        "AddressHouseNo": "",
+        "AddressStreet": "",
+        "AddressCity": "",
+        "AddressZip": "",
+        "ParcelNumber": "",
+        "Book": "",
+        "Page": "",
+        "ReferenceNumber": "",
+    }
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+    payload = post_json(f"{RECORDER_API_BASE}breeze/Search", criteria, headers=headers, timeout=20)
+    if not isinstance(payload, dict):
+        return []
+    return [row for row in payload.get("DocResults", []) if isinstance(row, dict)]
+
+
+def row_value(row: dict, *names: str) -> str:
+    lowered = {str(key).lower(): value for key, value in row.items()}
+    for name in names:
+        value = lowered.get(name.lower())
+        if value not in (None, ""):
+            return " ".join(str(value).split())
+    return ""
+
+
+def recorder_document(row: dict, probate_name: str) -> dict | None:
+    doc_type = row_value(row, "DocumentType", "DocumentTypeName", "Type")
+    doc_name = row_value(row, "DocumentName", "Name")
+    grantor = row_value(row, "Grantor", "Grantors", "From")
+    grantee = row_value(row, "Grantee", "Grantees", "To")
+    haystack = " ".join([doc_type, doc_name, grantor, grantee]).lower()
+    if not any(term in haystack for term in RECORDER_DEED_TERMS):
+        return None
+    if not (recorder_exact_name_match(probate_name, grantor) or recorder_exact_name_match(probate_name, doc_name)):
+        return None
+    return {
+        "grantor": grantor or doc_name,
+        "grantee": grantee,
+        "recorder_document_type": doc_type,
+        "recorder_document_number": row_value(row, "DocumentNumber", "DocumentNo", "DocNumber", "InstrumentNumber"),
+        "recorder_recorded_date": row_value(row, "RecordedDateTime", "RecordedDate", "RecordingDate"),
+        "parcel_id": row_value(row, "ParcelNumber", "Parcel", "PIN", "APN"),
+        "property_address": row_value(row, "PropertyAddress", "Address"),
+        "source_url": RECORDER_SEARCH_URL,
+    }
+
+
+def assessor_match_for_recorder_doc(doc: dict) -> tuple[dict | None, int]:
+    candidates: list[dict] = []
+    parcel = doc.get("parcel_id", "")
+    if parcel:
+        where = (
+            "GISPublished.SDE.Parcel_Poly.GIS_ID = {p} OR "
+            "GISPublished.SDE.Parcel_Poly.PIN = {p} OR "
+            "GISPublished.SDE.Parcel_Poly.PRCLID = {p}"
+        ).format(p=arcgis_quote(parcel))
+        candidates.extend(assessor_record(attrs) for attrs in assessor_query(where))
+    if not candidates and doc.get("property_address"):
+        for variant in address_lookup_variants(doc["property_address"]):
+            where = f"UPPER(GISPublished.SDE.CurrentOwner.PropertyAddress1) = {arcgis_quote(variant)}"
+            candidates.extend(assessor_record(attrs) for attrs in assessor_query(where))
+    candidates = unique_assessor_records(candidates)
+    if len(candidates) == 1:
+        return candidates[0], 1
+    return None, len(candidates)
+
+
+def apply_recorder_probate_enrichment(records: list[dict], statuses: list[SourceStatus]) -> None:
+    probate_rows = [record for record in records if record.get("lead_type_key") == "probate"]
+    searches = matches = property_matched = multiple = name_only = grantor_grantee = 0
+    try:
+        token = recorder_login_token()
+        if not token:
+            raise RuntimeError("Recorder DirectSearch anonymous token was not returned")
+        for record in probate_rows:
+            row_matches: list[dict] = []
+            for first, last in recorder_name_queries(record.get("owner_name", "")):
+                searches += 1
+                try:
+                    row_matches.extend(recorder_search(token, first, last))
+                except Exception:
+                    continue
+            docs = [doc for row in row_matches if (doc := recorder_document(row, record.get("owner_name", "")))]
+            if not docs:
+                name_only += 1
+                continue
+            matches += len(docs)
+            doc = docs[0]
+            for key in ("grantor", "grantee", "recorder_document_type", "recorder_document_number", "recorder_recorded_date"):
+                if doc.get(key):
+                    record[key] = doc[key]
+            record["recorder_source_url"] = doc.get("source_url", RECORDER_SEARCH_URL)
+            if record.get("grantor") or record.get("grantee"):
+                grantor_grantee += 1
+            assessor_match, candidate_count = assessor_match_for_recorder_doc(doc)
+            if assessor_match:
+                apply_assessor_fields(record, assessor_match, overwrite_owner=False)
+                tags = [tag for tag in (record.get("tags") or []) if tag != "probate-name-only"]
+                tags.extend(["probate-property-matched", "recorder-matched"])
+                record["tags"] = list(dict.fromkeys(tags))
+                record["hot_stack"] = True
+                property_matched += 1
+            elif len(docs) > 1 or candidate_count > 1:
+                multiple += 1
+                record["tags"] = list(dict.fromkeys([*(record.get("tags") or []), "needs-property-review"]))
+            else:
+                record["tags"] = list(dict.fromkeys([*(record.get("tags") or []), "recorder-matched"]))
+                name_only += 1
+        statuses.append(
+            SourceStatus(
+                "recorder_probate",
+                RECORDER_SEARCH_URL,
+                "live_partial",
+                f"Checked {len(probate_rows)} probate rows; attempted {searches} Recorder searches; found {matches} name-tied deed/transfer candidates.",
+            )
+        )
+    except Exception as exc:
+        name_only = len(probate_rows)
+        statuses.append(SourceStatus("recorder_probate", RECORDER_SEARCH_URL, "blocked", str(exc)))
+    print(
+        f"probate_rows_checked={len(probate_rows)} recorder_searches_attempted={searches} "
+        f"recorder_matches_found={matches} probate_recorder_property_matched={property_matched} "
+        f"probate_recorder_multiple_possible_matches={multiple} probate_recorder_name_only={name_only} "
+        f"grantor_grantee_fields_populated={grantor_grantee}"
+    )
 
 
 def owner_name_index(records: Iterable[dict]) -> dict[str, list[dict]]:
@@ -1248,6 +1456,7 @@ def build_records() -> dict:
     records.extend(probate_records(statuses, owner_name_index(tax_records)))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
+    apply_recorder_probate_enrichment(records, statuses)
     apply_assessor_enrichment(records, statuses)
     apply_absentee_detection(records, statuses)
     apply_institutional_owner_tags(records)
