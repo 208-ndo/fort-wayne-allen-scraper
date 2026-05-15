@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-15T02:49:18+00:00",
+  "fetched_at": "2026-05-15T02:56:19+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
@@ -25,7 +25,7 @@
       "source": "code_violation",
       "url": "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents",
       "status": "live",
-      "detail": "Parsed 250 public 311 rows; kept 61 property-distress code rows after noise filtering."
+      "detail": "Parsed 250 public 311 rows; excluded 17 non-property/intersection rows; kept 57 property-distress code rows after noise filtering."
     },
     {
       "source": "probate",
@@ -18493,43 +18493,6 @@
       "case_number": "260514-100009"
     },
     {
-      "id": "FW-f0bc03ca2b",
-      "owner_name": "Unknown Owner",
-      "property_address": "Sherington Rd & Liberty Mills Rd",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-05-14",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260513-100578. Type: Debris / Cistern. Status: Waiting.",
-      "source_status": "live",
-      "case_number": "260513-100578"
-    },
-    {
       "id": "FW-c4c8366174",
       "owner_name": "Unknown Owner",
       "property_address": "3029 Winslow Pl",
@@ -18783,43 +18746,6 @@
       "notes": "Live Fort Wayne 311/code row. Case 260513-100149. Type: Bulk Trash Pickup. Status: Unresolved.",
       "source_status": "live",
       "case_number": "260513-100149"
-    },
-    {
-      "id": "FW-ac8ab7860e",
-      "owner_name": "Unknown Owner",
-      "property_address": "2424 Forest Park Blvd",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-05-13",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260513-100132. Type: Debris / Cistern. Status: Resolved.",
-      "source_status": "live",
-      "case_number": "260513-100132"
     },
     {
       "id": "FW-4cd78507b5",
@@ -19217,16 +19143,17 @@
         "code_violation",
         "abandoned_vehicle",
         "property_neglect",
-        "hot_stack"
+        "tax_delinquent"
       ],
       "tags": [
         "code-violation",
         "abandoned-vehicle",
         "property-neglect",
-        "hot-stack"
+        "hot-stack",
+        "tax-delinquent"
       ],
       "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260511-100407. Type: Abandoned Vehicles. Status: Resolved. Address also appears in tax delinquent or foreclosure data.",
+      "notes": "Live Fort Wayne 311/code row. Case 260511-100407. Type: Abandoned Vehicles. Status: Resolved. Address also appears in Allen County tax delinquent data.",
       "source_status": "live",
       "case_number": "260511-100407"
     },
@@ -19453,43 +19380,6 @@
       "case_number": "260510-100042"
     },
     {
-      "id": "FW-fbf2d7e6d4",
-      "owner_name": "Unknown Owner",
-      "property_address": "Swinney Park, Park Drive, Fort Wayne, In, 46808, Usa",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-05-10",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260510-100040. Type: Debris / Cistern. Status: Resolved.",
-      "source_status": "live",
-      "case_number": "260510-100040"
-    },
-    {
       "id": "FW-65e4c1530a",
       "owner_name": "Unknown Owner",
       "property_address": "1122 W Jefferson Blvd",
@@ -19599,43 +19489,6 @@
       "notes": "Live Fort Wayne 311/code row. Case 260510-100031. Type: Debris / Cistern. Status: Resolved.",
       "source_status": "live",
       "case_number": "260510-100031"
-    },
-    {
-      "id": "FW-7d7dc19756",
-      "owner_name": "Unknown Owner",
-      "property_address": "2307 Forest Park Blvd",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-05-10",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260510-100027. Type: Debris / Cistern. Status: Resolved.",
-      "source_status": "live",
-      "case_number": "260510-100027"
     },
     {
       "id": "FW-f1b3fd1641",
@@ -19810,15 +19663,16 @@
       "distress_sources": [
         "code_violation",
         "trash_debris",
-        "hot_stack"
+        "tax_delinquent"
       ],
       "tags": [
         "code-violation",
         "trash-debris",
-        "hot-stack"
+        "hot-stack",
+        "tax-delinquent"
       ],
       "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 260509-100014. Type: Bulk Trash Pickup. Status: Resolved. Address also appears in tax delinquent or foreclosure data.",
+      "notes": "Live Fort Wayne 311/code row. Case 260509-100014. Type: Bulk Trash Pickup. Status: Resolved. Address also appears in Allen County tax delinquent data.",
       "source_status": "live",
       "case_number": "260509-100014"
     },

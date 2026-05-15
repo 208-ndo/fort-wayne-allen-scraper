@@ -472,6 +472,26 @@ def code_distress_tags(row: dict, repeated: bool, stacked: bool) -> tuple[list[s
     return list(dict.fromkeys(tags)), score
 
 
+def is_property_specific_address(address: str) -> bool:
+    cleaned = " ".join((address or "").split()).strip()
+    if not cleaned or " & " in cleaned:
+        return False
+    lowered = cleaned.lower()
+    public_space_terms = (
+        " park",
+        "trail",
+        "greenway",
+        "riverfront",
+        "right of way",
+        "right-of-way",
+        "sidewalk",
+        "alley",
+    )
+    if any(term in lowered for term in public_space_terms):
+        return False
+    return bool(re.match(r"^\d+\s+[A-Za-z0-9]", cleaned))
+
+
 def parse_incident_date(value: str) -> str:
     if not value:
         return datetime.now(UTC).date().isoformat()
@@ -483,10 +503,10 @@ def parse_incident_date(value: str) -> str:
 
 def code_violation_records(
     statuses: list[SourceStatus],
-    property_owner_index: dict[str, dict],
-    stack_index: dict[str, dict],
+    tax_index: dict[str, dict],
+    foreclosure_index: dict[str, dict],
 ) -> list[dict]:
-    raw_count = ignored = with_address = owner_matched = still_unknown = stacked_count = 0
+    raw_count = ignored = non_property = with_address = owner_matched = still_unknown = tax_stacked = foreclosure_stacked = 0
     try:
         rows = fetch_json(FORT_WAYNE_311_INCIDENTS_URL)
         if not isinstance(rows, list):
@@ -503,28 +523,40 @@ def code_violation_records(
             if addr:
                 with_address += 1
             key = address_key(addr)
-            stacked = key in stack_index
+            if not is_property_specific_address(addr):
+                non_property += 1
+                continue
+            stacked_tax = key in tax_index
+            stacked_foreclosure = key in foreclosure_index
+            stacked = stacked_tax or stacked_foreclosure
             classified = code_distress_tags(row, address_counts.get(key, 0) > 1, stacked)
-            if not addr or not classified:
+            if not classified:
                 ignored += 1
                 continue
             tags, score = classified
-            match = property_owner_index.get(key)
+            match = tax_index.get(key)
             owner = match.get("owner_name", "Unknown Owner") if match else "Unknown Owner"
             if match:
                 owner_matched += 1
             else:
                 still_unknown += 1
-            if stacked:
-                stacked_count += 1
+            if stacked_tax:
+                tax_stacked += 1
+                tags.append("tax-delinquent")
+            if stacked_foreclosure:
+                foreclosure_stacked += 1
+                tags.append("foreclosure")
             street, city, state, zip_code = split_city_state_zip(addr)
             case_type = str(row.get("casetype") or "Code / Nuisance").strip()
             status = str(row.get("incidentstatus") or "").strip()
             refno = str(row.get("refno") or row.get("id") or "").strip()
             filed_date = parse_incident_date(str(row.get("createdtime") or ""))
             notes = f"Live Fort Wayne 311/code row. Case {refno}. Type: {case_type}. Status: {status}."
-            if stacked:
-                notes += " Address also appears in tax delinquent or foreclosure data."
+            if stacked_tax:
+                notes += " Address also appears in Allen County tax delinquent data."
+            if stacked_foreclosure:
+                notes += " Address also appears in sheriff-sale/foreclosure data."
+            distress_sources = ["code_violation"] + [tag.replace("-", "_") for tag in tags if tag not in {"code-violation", "hot-stack"}]
             record = make_record(
                 owner_name=owner,
                 property_address=street,
@@ -537,8 +569,8 @@ def code_violation_records(
                 filed_date=filed_date,
                 amount=0,
                 public_records_url=FORT_WAYNE_311_URL,
-                distress_sources=["code_violation"] + [tag.replace("-", "_") for tag in tags if tag != "code-violation"],
-                tags=tags,
+                distress_sources=list(dict.fromkeys(distress_sources)),
+                tags=list(dict.fromkeys(tags)),
                 notes=notes,
             )
             record["score"] = score
@@ -552,29 +584,35 @@ def code_violation_records(
                 "code_violation",
                 FORT_WAYNE_311_INCIDENTS_URL,
                 "live",
-                f"Parsed {raw_count} public 311 rows; kept {len(records)} property-distress code rows after noise filtering.",
+                f"Parsed {raw_count} public 311 rows; excluded {non_property} non-property/intersection rows; kept {len(records)} property-distress code rows after noise filtering.",
             )
         )
         print(
-            "code_raw_records={raw} code_ignored_low_distress={ignored} code_distress_kept={kept} "
+            "code_raw_records={raw} code_non_property_excluded={non_property} "
+            "code_ignored_low_distress={ignored} code_distress_kept={kept} "
             "code_records_with_addresses={with_addr} code_owner_matched={matched} "
-            "code_unknown_owner={unknown} code_hot_stacked={stacked}".format(
+            "code_stacked_with_tax={tax_stacked} code_stacked_with_foreclosure={foreclosure_stacked} "
+            "code_unknown_owner={unknown}".format(
                 raw=raw_count,
+                non_property=non_property,
                 ignored=ignored,
                 kept=len(records),
                 with_addr=with_address,
                 matched=owner_matched,
+                tax_stacked=tax_stacked,
+                foreclosure_stacked=foreclosure_stacked,
                 unknown=still_unknown,
-                stacked=stacked_count,
             )
         )
         return records or code_violation_stub(statuses, "No public 311 rows passed distress filtering.")
     except Exception as exc:
         statuses.append(SourceStatus("code_violation", FORT_WAYNE_311_INCIDENTS_URL, "error", str(exc)))
         print(
-            f"code_raw_records={raw_count} code_ignored_low_distress={ignored} code_distress_kept=0 "
+            f"code_raw_records={raw_count} code_non_property_excluded={non_property} "
+            f"code_ignored_low_distress={ignored} code_distress_kept=0 "
             f"code_records_with_addresses={with_address} code_owner_matched={owner_matched} "
-            f"code_unknown_owner={still_unknown} code_hot_stacked={stacked_count} code_error={exc}"
+            f"code_stacked_with_tax={tax_stacked} code_stacked_with_foreclosure={foreclosure_stacked} "
+            f"code_unknown_owner={still_unknown} code_error={exc}"
         )
         return code_violation_stub(statuses, "Public Fort Wayne 311/code endpoint could not be parsed safely.")
 
@@ -652,10 +690,10 @@ def build_records() -> dict:
     tax_records = tax_delinquent_records(statuses)
     tax_owner_index = owner_index(tax_records)
     sheriff_records = sheriff_sale_records(statuses, tax_owner_index)
-    stack_index = {**owner_index(tax_records), **{address_key(record.get("property_address", "")): record for record in sheriff_records if record.get("property_address")}}
+    foreclosure_index = {address_key(record.get("property_address", "")): record for record in sheriff_records if record.get("property_address")}
     records.extend(sheriff_records)
     records.extend(tax_records)
-    records.extend(code_violation_records(statuses, tax_owner_index, stack_index))
+    records.extend(code_violation_records(statuses, tax_owner_index, foreclosure_index))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
