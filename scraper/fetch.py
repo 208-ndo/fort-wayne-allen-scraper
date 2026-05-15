@@ -529,6 +529,59 @@ def is_entity_owner(owner: str) -> bool:
     return bool(re.search(r"\b(llc|inc|corp|corporation|co|company|trust|holdings?|partners?|lp|llp|ltd)\b", owner or "", re.I))
 
 
+def institutional_owner_tags(owner: str) -> list[str]:
+    text = f" {owner or ''} ".lower()
+    tags: list[str] = []
+    institutional_terms = (
+        " bank",
+        "credit union",
+        "mortgage",
+        " loan",
+        "loan services",
+        "servicing",
+        "federal national mortgage",
+        "fannie mae",
+        "freddie mac",
+        "secretary of housing",
+        "hud",
+        "us bank",
+        "trust national association",
+        "foreclosure trustee",
+    )
+    if not any(term in text for term in institutional_terms):
+        return []
+    tags.append("institutional-owner")
+    if "secretary of housing" in text or "hud" in text:
+        tags.append("hud-owned")
+    elif " bank" in text or "credit union" in text or "trust national association" in text or "us bank" in text:
+        tags.append("bank-owned")
+    elif "mortgage" in text or " loan" in text or "loan services" in text or "servicing" in text or "fannie mae" in text or "freddie mac" in text:
+        tags.append("lender-owned")
+    return tags
+
+
+def apply_institutional_owner_tags(records: list[dict]) -> dict[str, int]:
+    counts = {"institutional": 0, "bank": 0, "hud": 0, "lender": 0}
+    for record in records:
+        tags = institutional_owner_tags(record.get("owner_name", ""))
+        if not tags:
+            continue
+        merged = list(dict.fromkeys([*(record.get("tags") or []), *tags]))
+        record["tags"] = merged
+        counts["institutional"] += 1
+        if "bank-owned" in tags:
+            counts["bank"] += 1
+        if "hud-owned" in tags:
+            counts["hud"] += 1
+        if "lender-owned" in tags:
+            counts["lender"] += 1
+    print(
+        f"institutional_owner_count={counts['institutional']} bank_owned_count={counts['bank']} "
+        f"hud_owned_count={counts['hud']} lender_owned_count={counts['lender']}"
+    )
+    return counts
+
+
 def apply_absentee_detection(records: list[dict], statuses: list[SourceStatus]) -> None:
     checked = with_mailing = absentee = out_of_state = missing = 0
     for record in records:
@@ -1197,6 +1250,7 @@ def build_records() -> dict:
     records = dedupe(records)
     apply_assessor_enrichment(records, statuses)
     apply_absentee_detection(records, statuses)
+    apply_institutional_owner_tags(records)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
     print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')} final_probate_records={sum(1 for record in records if record.get('lead_type_key') == 'probate')}")
     return {
