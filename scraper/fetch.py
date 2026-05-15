@@ -535,7 +535,7 @@ def apply_assessor_enrichment(records: list[dict], statuses: list[SourceStatus])
         if not match:
             continue
         counts[matched_by] += 1
-        overwrite_owner = record.get("owner_name") in {"", "Unknown Owner"} or matched_by == "parcel"
+        overwrite_owner = record.get("lead_type_key") != "probate" and (record.get("owner_name") in {"", "Unknown Owner"} or matched_by == "parcel")
         apply_assessor_fields(record, match, overwrite_owner=overwrite_owner)
         if record.get("lead_type_key") == "foreclosure":
             counts["sheriff"] += 1
@@ -543,9 +543,8 @@ def apply_assessor_enrichment(records: list[dict], statuses: list[SourceStatus])
         if record.get("lead_type_key") == "code_violation":
             counts["code"] += 1
         if record.get("lead_type_key") == "probate":
-            record["hot_stack"] = True
-            record["score"] = min(100, record.get("score", 0) + 8)
-            record["subject_to_score"] = max(0, record["score"] - 18)
+            # Probate rows only become hot later if another public distress signal, such as absentee, stacks.
+            record["hot_stack"] = bool(record.get("hot_stack"))
     print(
         f"records_enriched_by_parcel={counts['parcel']} records_enriched_by_address={counts['address']} "
         f"sheriff_records_owner_enriched={counts['sheriff']} code_records_owner_enriched={counts['code']} "
@@ -675,7 +674,7 @@ def apply_absentee_detection(records: list[dict], statuses: list[SourceStatus]) 
 
 def name_tokens(value: str) -> list[str]:
     suffixes = {"jr", "sr", "ii", "iii", "iv", "v"}
-    cleaned = re.sub(r"\b(estate|trust|llc|inc|corp|corporation|co|company)\b", " ", (value or "").lower())
+    cleaned = re.sub(r"\b(estate|decedent|deceased|trust|llc|inc|corp|corporation|co|company)\b", " ", (value or "").lower())
     tokens = re.findall(r"[a-z0-9]+", cleaned)
     return [token for token in tokens if token not in suffixes]
 
@@ -696,6 +695,94 @@ def name_variants(value: str) -> set[str]:
             variants.add("-".join([first, middle[0][0], last]))
             variants.add("-".join([last, first, middle[0][0]]))
     return {variant for variant in variants if variant}
+
+
+def probate_owner_search_terms(name: str) -> list[str]:
+    tokens = name_tokens(name)
+    if len(tokens) < 2:
+        return []
+    first, last = tokens[0], tokens[-1]
+    middle = tokens[1:-1]
+    terms = [
+        last,
+        f"{last} {first}",
+        f"{last} {first[0]}",
+        " ".join(tokens),
+        " ".join([last, first, *middle]),
+    ]
+    return list(dict.fromkeys(term.upper() for term in terms if term.strip()))
+
+
+def probate_safe_owner_match(probate_name: str, assessor_owner: str) -> bool:
+    probate_tokens = name_tokens(probate_name)
+    owner_tokens = set(name_tokens(assessor_owner))
+    if len(probate_tokens) < 2 or not owner_tokens:
+        return False
+    first, last = probate_tokens[0], probate_tokens[-1]
+    if first not in owner_tokens or last not in owner_tokens:
+        return False
+    if len(probate_tokens) > 2 and probate_tokens[1] in owner_tokens:
+        return True
+    return True
+
+
+def assessor_owner_search(term: str) -> list[dict]:
+    where = f"UPPER(GISPublished.SDE.CurrentOwner.OwnerofRecord) LIKE {arcgis_quote(term + '%')}"
+    return [assessor_record(attrs) for attrs in assessor_query(where)]
+
+
+def apply_probate_property_owner_search(records: list[dict], statuses: list[SourceStatus]) -> None:
+    probate_rows = [record for record in records if record.get("lead_type_key") == "probate"]
+    searches = candidates_found = matched = multiple = name_only = 0
+    try:
+        for record in probate_rows:
+            if record.get("property_address") and record.get("property_address") != "Unknown Address":
+                continue
+            candidates: list[dict] = []
+            for term in probate_owner_search_terms(record.get("owner_name", "")):
+                searches += 1
+                try:
+                    candidates.extend(assessor_owner_search(term))
+                except Exception:
+                    continue
+            candidates = unique_assessor_records(
+                candidate
+                for candidate in candidates
+                if probate_safe_owner_match(record.get("owner_name", ""), candidate.get("owner_name", ""))
+            )
+            candidates_found += len(candidates)
+            if len(candidates) == 1:
+                apply_assessor_fields(record, candidates[0], overwrite_owner=False)
+                tags = [tag for tag in (record.get("tags") or []) if tag != "probate-name-only"]
+                tags.append("probate-property-matched")
+                record["tags"] = list(dict.fromkeys(tags))
+                record["probate_property_candidate_count"] = 1
+                record["score"] = max(record.get("score", 0), 72)
+                record["subject_to_score"] = max(0, record["score"] - 18)
+                matched += 1
+            elif len(candidates) > 1:
+                tags = [tag for tag in (record.get("tags") or []) if tag != "probate-name-only"]
+                tags.append("needs-property-review")
+                record["tags"] = list(dict.fromkeys(tags))
+                record["probate_property_candidate_count"] = len(candidates)
+                multiple += 1
+            else:
+                name_only += 1
+        statuses.append(
+            SourceStatus(
+                "probate_property_owner_search",
+                ASSESSOR_PARCEL_LAYER_URL,
+                "live",
+                f"Checked {len(probate_rows)} probate rows; attempted {searches} full assessor owner searches; found {candidates_found} safe owner candidates.",
+            )
+        )
+    except Exception as exc:
+        statuses.append(SourceStatus("probate_property_owner_search", ASSESSOR_PARCEL_LAYER_URL, "error", str(exc)))
+    print(
+        f"probate_property_rows_checked={len(probate_rows)} property_owner_searches_attempted={searches} "
+        f"property_candidates_found={candidates_found} exact_safe_property_matches={matched} "
+        f"property_multiple_candidate_review_rows={multiple} property_name_only_rows={name_only}"
+    )
 
 
 def recorder_name_queries(name: str) -> list[tuple[str, str]]:
@@ -829,7 +916,8 @@ def apply_recorder_probate_enrichment(records: list[dict], statuses: list[Source
                     continue
             docs = [doc for row in row_matches if (doc := recorder_document(row, record.get("owner_name", "")))]
             if not docs:
-                name_only += 1
+                if not record.get("property_address") or record.get("property_address") == "Unknown Address":
+                    name_only += 1
                 continue
             matches += len(docs)
             doc = docs[0]
@@ -1456,6 +1544,7 @@ def build_records() -> dict:
     records.extend(probate_records(statuses, owner_name_index(tax_records)))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
+    apply_probate_property_owner_search(records, statuses)
     apply_recorder_probate_enrichment(records, statuses)
     apply_assessor_enrichment(records, statuses)
     apply_absentee_detection(records, statuses)
