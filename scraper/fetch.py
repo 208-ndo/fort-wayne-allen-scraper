@@ -23,7 +23,7 @@ from datetime import UTC, datetime, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable
-from urllib.parse import urljoin
+from urllib.parse import urlencode, urljoin
 from urllib.request import Request, urlopen
 from zipfile import ZipFile
 
@@ -36,11 +36,29 @@ TAX_SALE_URL = f"{ROOT}/321/Tax-Sale"
 SHERIFF_URL = f"{SHERIFF_ROOT}/sheriff-sale/"
 SHERIFF_ARCHIVE_URL = f"{SHERIFF_ROOT}/2026-sheriff-sales/"
 ASSESSOR_URL = f"{ROOT}/164/Assessor"
+ASSESSOR_PARCEL_LAYER_URL = "https://gis1.acimap.us/imapweb/rest/services/QueryLayers/QueryLayers/MapServer/10"
 FORT_WAYNE_311_URL = "https://www.cityoffortwayne.org/311"
 FORT_WAYNE_311_INCIDENTS_URL = "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents"
 COURT_CALENDAR_API = "https://public.courts.in.gov/CourtCal/api"
 ALLEN_COUNTY_ID = 2
 TAX_RECORD_LIMIT = 500
+ASSESSOR_BATCH_SIZE = 10
+ASSESSOR_FIELDS = [
+    "GISPublished.SDE.Parcel_Poly.PIN",
+    "GISPublished.SDE.Parcel_Poly.GIS_ID",
+    "GISPublished.SDE.Parcel_Poly.PRCLID",
+    "GISPublished.SDE.CurrentOwner.OwnerofRecord",
+    "GISPublished.SDE.CurrentOwner.MailingAddress1",
+    "GISPublished.SDE.CurrentOwner.MailingAddress2",
+    "GISPublished.SDE.CurrentOwner.MailingCity",
+    "GISPublished.SDE.CurrentOwner.MailingState",
+    "GISPublished.SDE.CurrentOwner.MailingZip",
+    "GISPublished.SDE.CurrentOwner.PropertyAddress1",
+    "GISPublished.SDE.CurrentOwner.PropertyAddress2",
+    "GISPublished.SDE.CurrentOwner.PropertyCity",
+    "GISPublished.SDE.CurrentOwner.PropertyState",
+    "GISPublished.SDE.CurrentOwner.PropertyZip",
+]
 
 
 class LinkParser(HTMLParser):
@@ -279,6 +297,229 @@ def owner_index(records: Iterable[dict]) -> dict[str, dict]:
     return index
 
 
+def arcgis_quote(value: str) -> str:
+    return "'" + (value or "").replace("'", "''") + "'"
+
+
+def assessor_query(where: str) -> list[dict]:
+    query = urlencode(
+        {
+            "f": "json",
+            "where": where,
+            "outFields": ",".join(ASSESSOR_FIELDS),
+            "returnGeometry": "false",
+        },
+        safe=",()'",
+    )
+    payload = fetch_json(f"{ASSESSOR_PARCEL_LAYER_URL}/query?{query}", timeout=20)
+    if not isinstance(payload, dict):
+        return []
+    if payload.get("error"):
+        raise RuntimeError(str(payload["error"]))
+    features = payload.get("features") or []
+    if not isinstance(features, list):
+        return []
+    return [feature.get("attributes", {}) for feature in features if isinstance(feature, dict)]
+
+
+def attr_value(attrs: dict, suffix: str) -> str:
+    for key, value in attrs.items():
+        if key.endswith(suffix) and value is not None:
+            return " ".join(str(value).split())
+    return ""
+
+
+def assessor_record(attrs: dict) -> dict:
+    mailing_lines = [attr_value(attrs, "MailingAddress1"), attr_value(attrs, "MailingAddress2")]
+    property_lines = [attr_value(attrs, "PropertyAddress1"), attr_value(attrs, "PropertyAddress2")]
+    return {
+        "pin": attr_value(attrs, "PIN"),
+        "parcel_id": attr_value(attrs, "GIS_ID") or attr_value(attrs, "PRCLID"),
+        "prclid": attr_value(attrs, "PRCLID"),
+        "owner_name": attr_value(attrs, "OwnerofRecord"),
+        "mailing_address": " ".join(line for line in mailing_lines if line),
+        "mailing_city": attr_value(attrs, "MailingCity"),
+        "mailing_state": attr_value(attrs, "MailingState"),
+        "mailing_zip": attr_value(attrs, "MailingZip"),
+        "property_address": " ".join(line for line in property_lines if line),
+        "property_city": attr_value(attrs, "PropertyCity"),
+        "property_state": attr_value(attrs, "PropertyState"),
+        "property_zip": attr_value(attrs, "PropertyZip"),
+    }
+
+
+def unique_assessor_records(rows: Iterable[dict]) -> list[dict]:
+    out: list[dict] = []
+    seen: set[str] = set()
+    for row in rows:
+        key = row.get("parcel_id") or row.get("pin") or row.get("prclid") or row.get("property_address")
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        out.append(row)
+    return out
+
+
+def address_lookup_variants(value: str) -> list[str]:
+    cleaned = " ".join((value or "").upper().split())
+    if not cleaned:
+        return []
+    variants = {cleaned}
+    replacements = {
+        " ST": " STREET",
+        " AVE": " AVENUE",
+        " BLVD": " BOULEVARD",
+        " DR": " DRIVE",
+        " RD": " ROAD",
+        " CT": " COURT",
+        " LN": " LANE",
+        " TRL": " TRAIL",
+        " WY": " WAY",
+        " PL": " PLACE",
+    }
+    for short, long in replacements.items():
+        if cleaned.endswith(short):
+            variants.add(cleaned[: -len(short)] + long)
+        if cleaned.endswith(long):
+            variants.add(cleaned[: -len(long)] + short)
+    return list(variants)
+
+
+def fetch_assessor_records(records: list[dict], statuses: list[SourceStatus]) -> list[dict]:
+    parcel_ids = sorted({record.get("parcel_id", "") for record in records if record.get("parcel_id")})
+    rows: list[dict] = []
+    errors = 0
+    try:
+        for offset in range(0, len(parcel_ids), ASSESSOR_BATCH_SIZE):
+            batch = parcel_ids[offset : offset + ASSESSOR_BATCH_SIZE]
+            where = "GISPublished.SDE.Parcel_Poly.GIS_ID IN (" + ",".join(arcgis_quote(parcel) for parcel in batch) + ")"
+            try:
+                rows.extend(assessor_record(attrs) for attrs in assessor_query(where))
+            except Exception:
+                errors += 1
+        address_keys_found = {
+            address_key(row.get("property_address", "")) for row in rows if row.get("property_address")
+        }
+        address_records = [
+            record
+            for record in records
+            if record.get("property_address")
+            and record.get("property_address") != "Unknown Address"
+            and address_key(record.get("property_address", "")) not in address_keys_found
+        ]
+        for record in address_records:
+            candidates = []
+            for variant in address_lookup_variants(record.get("property_address", "")):
+                where = f"UPPER(GISPublished.SDE.CurrentOwner.PropertyAddress1) = {arcgis_quote(variant)}"
+                try:
+                    candidates.extend(assessor_record(attrs) for attrs in assessor_query(where))
+                except Exception:
+                    errors += 1
+                    continue
+            wanted = address_key(record.get("property_address", ""))
+            exact = [candidate for candidate in candidates if address_key(candidate.get("property_address", "")) == wanted]
+            if len(exact) == 1:
+                rows.extend(exact)
+        rows = unique_assessor_records(rows)
+        statuses.append(
+            SourceStatus(
+                "assessor_property",
+                ASSESSOR_PARCEL_LAYER_URL,
+                "live_partial" if errors else "live",
+                f"Parsed {len(rows)} public assessor/property records by exact parcel or address lookup; {errors} lookup batches failed or timed out.",
+            )
+        )
+        print(f"property_assessor_records_parsed={len(rows)} property_assessor_lookup_errors={errors}")
+        return rows
+    except Exception as exc:
+        statuses.append(SourceStatus("assessor_property", ASSESSOR_PARCEL_LAYER_URL, "error", str(exc)))
+        print(f"property_assessor_records_parsed=0 property_assessor_error={exc}")
+        return []
+
+
+def apply_assessor_fields(record: dict, match: dict, *, overwrite_owner: bool) -> None:
+    if overwrite_owner and match.get("owner_name"):
+        record["owner_name"] = match["owner_name"]
+    for source_key, record_key in (
+        ("parcel_id", "parcel_id"),
+        ("property_address", "property_address"),
+        ("property_city", "property_city"),
+        ("property_state", "property_state"),
+        ("property_zip", "property_zip"),
+        ("mailing_address", "mailing_address"),
+        ("mailing_city", "mailing_city"),
+        ("mailing_state", "mailing_state"),
+        ("mailing_zip", "mailing_zip"),
+    ):
+        value = match.get(source_key, "")
+        if value:
+            record[record_key] = value
+    tags = list(record.get("tags") or [])
+    tags.append("property-record-matched")
+    record["tags"] = list(dict.fromkeys(tags))
+
+
+def apply_assessor_enrichment(records: list[dict], statuses: list[SourceStatus]) -> dict[str, int]:
+    assessor_records = fetch_assessor_records(records, statuses)
+    by_parcel = {row.get("parcel_id"): row for row in assessor_records if row.get("parcel_id")}
+    by_address: dict[str, list[dict]] = {}
+    by_owner: dict[str, list[dict]] = {}
+    for row in assessor_records:
+        if row.get("property_address"):
+            by_address.setdefault(address_key(row["property_address"]), []).append(row)
+        if row.get("owner_name"):
+            by_owner.setdefault(slug(row["owner_name"]), []).append(row)
+    counts = {
+        "parcel": 0,
+        "address": 0,
+        "sheriff": 0,
+        "code": 0,
+        "probate": 0,
+    }
+    for record in records:
+        match = None
+        matched_by = ""
+        parcel_id = record.get("parcel_id", "")
+        if parcel_id and parcel_id in by_parcel:
+            match = by_parcel[parcel_id]
+            matched_by = "parcel"
+        elif record.get("property_address") and record.get("property_address") != "Unknown Address":
+            candidates = by_address.get(address_key(record.get("property_address", "")), [])
+            if len(candidates) == 1:
+                match = candidates[0]
+                matched_by = "address"
+        elif record.get("lead_type_key") == "probate" and record.get("owner_name"):
+            candidates = by_owner.get(slug(record.get("owner_name", "")), [])
+            if len(candidates) == 1:
+                match = candidates[0]
+                matched_by = "address"
+                counts["probate"] += 1
+                tags = list(record.get("tags") or [])
+                tags = [tag for tag in tags if tag != "probate-name-only"]
+                tags.extend(["probate-property-matched", "property-record-matched"])
+                record["tags"] = list(dict.fromkeys(tags))
+        if not match:
+            continue
+        counts[matched_by] += 1
+        overwrite_owner = record.get("owner_name") in {"", "Unknown Owner"} or matched_by == "parcel"
+        apply_assessor_fields(record, match, overwrite_owner=overwrite_owner)
+        if record.get("lead_type_key") == "foreclosure":
+            counts["sheriff"] += 1
+            record["owner_lookup_status"] = "matched_from_public_assessor_property_record"
+        if record.get("lead_type_key") == "code_violation":
+            counts["code"] += 1
+        if record.get("lead_type_key") == "probate":
+            record["hot_stack"] = True
+            record["score"] = min(100, record.get("score", 0) + 8)
+            record["subject_to_score"] = max(0, record["score"] - 18)
+    print(
+        f"records_enriched_by_parcel={counts['parcel']} records_enriched_by_address={counts['address']} "
+        f"sheriff_records_owner_enriched={counts['sheriff']} code_records_owner_enriched={counts['code']} "
+        f"probate_records_property_matched={counts['probate']}"
+    )
+    return counts
+
+
 def absentee_address_key(street: str, city: str = "", state: str = "", zip_code: str = "") -> str:
     parts = [street or "", city or "", state or "", zip_code or ""]
     return address_key(" ".join(part for part in parts if part))
@@ -291,7 +532,7 @@ def is_entity_owner(owner: str) -> bool:
 def apply_absentee_detection(records: list[dict], statuses: list[SourceStatus]) -> None:
     checked = with_mailing = absentee = out_of_state = missing = 0
     for record in records:
-        if record.get("lead_type_key") != "tax_delinquent":
+        if not record.get("property_address") or record.get("property_address") == "Unknown Address":
             continue
         checked += 1
         mailing_address = record.get("mailing_address", "")
@@ -332,14 +573,14 @@ def apply_absentee_detection(records: list[dict], statuses: list[SourceStatus]) 
         record["subject_to_score"] = max(0, record["score"] - 18)
         record["hot_stack"] = True
     detail = (
-        f"Checked {checked} parsed tax/property records; {with_mailing} had mailing addresses; "
+        f"Checked {checked} property-bearing records; {with_mailing} had mailing addresses; "
         f"detected {absentee} absentee owners and {out_of_state} out-of-state owners."
     )
     if checked and not with_mailing:
-        detail += " Current delinquent spreadsheet does not expose mailing-address fields; future assessor/property adapter needed."
-    statuses.append(SourceStatus("absentee_owner", ASSESSOR_URL, "stubbed" if not with_mailing else "live", detail))
+        detail += " Current public source rows did not expose usable mailing-address fields."
+    statuses.append(SourceStatus("absentee_owner", ASSESSOR_PARCEL_LAYER_URL, "stubbed" if not with_mailing else "live", detail))
     print(
-        f"absentee_property_tax_checked={checked} absentee_with_mailing_address={with_mailing} "
+        f"absentee_property_records_checked={checked} absentee_with_mailing_address={with_mailing} "
         f"absentee_detected={absentee} out_of_state_owners={out_of_state} "
         f"absentee_missing_mailing_address={missing}"
     )
@@ -916,7 +1157,7 @@ def probate_stub(statuses: list[SourceStatus], detail: str) -> list[dict]:
 def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
     statuses.extend(
         [
-            SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing address adapter pending; current absentee detection uses only mailing fields already parsed from public source rows."),
+            SourceStatus("assessor", ASSESSOR_URL, "live", "Public assessor/property enrichment uses Allen County iMap parcel layer for exact parcel/address matches."),
         ]
     )
     return []
@@ -954,6 +1195,7 @@ def build_records() -> dict:
     records.extend(probate_records(statuses, owner_name_index(tax_records)))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
+    apply_assessor_enrichment(records, statuses)
     apply_absentee_detection(records, statuses)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
     print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')} final_probate_records={sum(1 for record in records if record.get('lead_type_key') == 'probate')}")
