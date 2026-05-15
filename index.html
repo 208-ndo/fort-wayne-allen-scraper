@@ -52,7 +52,7 @@ async function loadRecords(){
   const res=await fetch('data/records.json',{cache:'no-store'});
   const data=await res.json();
   records=data.records||[];
-  document.getElementById('updated').textContent=`Sample data: ${data.fetched_at||'local'}`;
+  document.getElementById('updated').textContent=`Last updated: ${data.fetched_at||'local'}`;
   updateStats();
   applyFilters();
 }
@@ -99,9 +99,30 @@ function openModal(i){
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function clearFilters(){document.getElementById('q').value='';document.getElementById('score-filter').value='';applyFilters()}
 function exportCSV(){
-  const headers=['Owner Name','Property Address','Property City','Property State','Property Zip','Mailing Address','Lead Type','Seller Score','Amount','Estimated Equity','Tags','Notes','Public Records URL'];
+  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','tags','notes'];
   const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
-  const lines=filtered.map(r=>[r.owner_name,r.property_address,r.property_city,r.property_state,r.property_zip,r.mailing_address,r.lead_type,r.score,r.amount,r.estimated_equity,(r.tags||[]).join(', '),r.notes,r.public_records_url].map(esc).join(','));
+  const lines=filtered.map(r=>[
+    r.owner_name,
+    r.property_address,
+    r.property_street||r.property_address,
+    r.property_city,
+    r.property_state,
+    r.property_zip,
+    r.mailing_address,
+    r.mailing_city,
+    r.mailing_state,
+    r.mailing_zip,
+    r.parcel_id,
+    r.lead_type,
+    (r.distress_sources||[]).join(', '),
+    r.score,
+    r.source_status||r.lead_type_key,
+    r.public_records_url,
+    r.filed_date,
+    r.amount,
+    (r.tags||[]).join(', '),
+    r.notes
+  ].map(esc).join(','));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[headers.map(esc).join(','),...lines].join('\n')],{type:'text/csv'}));a.download='fort_wayne_allen_leads.csv';a.click();
 }
 document.getElementById('tabs').addEventListener('click',e=>{const btn=e.target.closest('.tab');if(!btn)return;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');curTab=btn.dataset.tab;applyFilters()});
