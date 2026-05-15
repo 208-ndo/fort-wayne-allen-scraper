@@ -167,9 +167,8 @@ def make_record(
     mailing_zip: str = "",
     source_status: str = "live",
 ) -> dict:
-    absentee = bool(mailing_address and property_address and mailing_address.lower() != property_address.lower())
-    all_sources = list(dict.fromkeys(distress_sources + (["absentee"] if absentee else [])))
-    all_tags = list(dict.fromkeys(tags + (["absentee-owner"] if absentee else [])))
+    all_sources = list(dict.fromkeys(distress_sources))
+    all_tags = list(dict.fromkeys(tags))
     distress_count = len(all_sources)
     score = min(100, 45 + distress_count * 16 + (10 if amount else 0))
     return {
@@ -278,6 +277,72 @@ def owner_index(records: Iterable[dict]) -> dict[str, dict]:
             continue
         index.setdefault(address_key(addr), record)
     return index
+
+
+def absentee_address_key(street: str, city: str = "", state: str = "", zip_code: str = "") -> str:
+    parts = [street or "", city or "", state or "", zip_code or ""]
+    return address_key(" ".join(part for part in parts if part))
+
+
+def is_entity_owner(owner: str) -> bool:
+    return bool(re.search(r"\b(llc|inc|corp|corporation|co|company|trust|holdings?|partners?|lp|llp|ltd)\b", owner or "", re.I))
+
+
+def apply_absentee_detection(records: list[dict], statuses: list[SourceStatus]) -> None:
+    checked = with_mailing = absentee = out_of_state = missing = 0
+    for record in records:
+        if record.get("lead_type_key") != "tax_delinquent":
+            continue
+        checked += 1
+        mailing_address = record.get("mailing_address", "")
+        if not mailing_address:
+            missing += 1
+            continue
+        with_mailing += 1
+        property_key = absentee_address_key(
+            record.get("property_address", ""),
+            record.get("property_city", ""),
+            record.get("property_state", ""),
+            record.get("property_zip", ""),
+        )
+        mailing_key = absentee_address_key(
+            mailing_address,
+            record.get("mailing_city", ""),
+            record.get("mailing_state", ""),
+            record.get("mailing_zip", ""),
+        )
+        if not property_key or not mailing_key or property_key == mailing_key:
+            continue
+        absentee += 1
+        tags = list(record.get("tags") or [])
+        sources = list(record.get("distress_sources") or [])
+        tags.append("absentee-owner")
+        sources.append("absentee")
+        mailing_state = (record.get("mailing_state") or "").strip().upper()
+        if mailing_state and mailing_state != "IN":
+            out_of_state += 1
+            tags.append("out-of-state-owner")
+            sources.append("out_of_state_owner")
+        if is_entity_owner(record.get("owner_name", "")):
+            tags.append("entity-owner")
+        record["tags"] = list(dict.fromkeys(tags))
+        record["distress_sources"] = list(dict.fromkeys(sources))
+        record["distress_count"] = len(record["distress_sources"])
+        record["score"] = min(100, record.get("score", 0) + (10 if mailing_state and mailing_state != "IN" else 5))
+        record["subject_to_score"] = max(0, record["score"] - 18)
+        record["hot_stack"] = True
+    detail = (
+        f"Checked {checked} parsed tax/property records; {with_mailing} had mailing addresses; "
+        f"detected {absentee} absentee owners and {out_of_state} out-of-state owners."
+    )
+    if checked and not with_mailing:
+        detail += " Current delinquent spreadsheet does not expose mailing-address fields; future assessor/property adapter needed."
+    statuses.append(SourceStatus("absentee_owner", ASSESSOR_URL, "stubbed" if not with_mailing else "live", detail))
+    print(
+        f"absentee_property_tax_checked={checked} absentee_with_mailing_address={with_mailing} "
+        f"absentee_detected={absentee} out_of_state_owners={out_of_state} "
+        f"absentee_missing_mailing_address={missing}"
+    )
 
 
 def name_tokens(value: str) -> list[str]:
@@ -851,7 +916,7 @@ def probate_stub(statuses: list[SourceStatus], detail: str) -> list[dict]:
 def placeholder_records(statuses: list[SourceStatus]) -> list[dict]:
     statuses.extend(
         [
-            SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing match adapter pending; used later for absentee detection."),
+            SourceStatus("assessor", ASSESSOR_URL, "stubbed", "Property/mailing address adapter pending; current absentee detection uses only mailing fields already parsed from public source rows."),
         ]
     )
     return []
@@ -889,6 +954,7 @@ def build_records() -> dict:
     records.extend(probate_records(statuses, owner_name_index(tax_records)))
     records.extend(placeholder_records(statuses))
     records = dedupe(records)
+    apply_absentee_detection(records, statuses)
     sheriff = [record for record in records if record.get("lead_type_key") == "foreclosure"]
     print(f"final_records={len(records)} final_sheriff_records={len(sheriff)} final_tax_delinquent_records={sum(1 for record in records if record.get('lead_type_key') == 'tax_delinquent')} final_code_records={sum(1 for record in records if record.get('lead_type_key') == 'code_violation')} final_probate_records={sum(1 for record in records if record.get('lead_type_key') == 'probate')}")
     return {
