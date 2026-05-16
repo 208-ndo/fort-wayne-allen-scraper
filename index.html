@@ -3,166 +3,965 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fort Wayne / Allen County Motivated Seller Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Fort Wayne / Allen County Intel</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3a;--accent:#f5a623;--accent2:#e85d4a;--accent3:#4af5a6;--text:#e8e8f0;--muted:#777795;--hot:#ff4444;--warm:#ff8c00;--cool:#44aaff}
-*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Syne,sans-serif;min-height:100vh}.topbar{position:sticky;top:0;z-index:10;height:56px;background:rgba(10,10,15,.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px}.brand{display:flex;align-items:center;gap:10px}.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent3);box-shadow:0 0 18px var(--accent3)}.brand-name{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.brand-sub,.updated{font:11px "Space Mono",monospace;color:var(--muted)}.statsbar{display:flex;gap:18px;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px}.stat{min-width:76px;text-align:center}.stat-num{font-size:22px;font-weight:800;line-height:1}.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;white-space:nowrap}.hot{color:var(--hot)}.warm{color:var(--warm)}.green{color:var(--accent3)}.cool{color:var(--cool)}.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;overflow:auto}.tabs{display:flex;gap:2px;min-width:max-content}.tab{padding:12px 14px;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.tab.active{color:var(--text);border-bottom-color:var(--accent)}.badge{background:var(--border);border-radius:10px;font-size:10px;padding:1px 6px;margin-left:5px}.tab.active .badge{background:var(--accent);color:#000}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 24px}.search-wrap{flex:1;min-width:220px}.search-wrap input,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font:12px "Space Mono",monospace;padding:8px 10px;outline:none}select{width:auto;font-size:11px}.btn{border:0;border-radius:6px;padding:8px 14px;background:var(--accent);color:#000;font-size:11px;font-weight:800;letter-spacing:.05em;cursor:pointer}.btn-ghost{background:var(--surface);border:1px solid var(--border);color:var(--text)}.rec-count{margin-left:auto;font:11px "Space Mono",monospace;color:var(--muted)}.table-wrap{height:calc(100vh - 206px);overflow:auto}table{width:100%;border-collapse:collapse}th{position:sticky;top:0;background:var(--surface);z-index:2;text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}tr:hover{background:var(--surface)}.score-badge{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 13px "Space Mono",monospace}.sh{background:rgba(255,68,68,.15);color:var(--hot);border:1px solid rgba(255,68,68,.3)}.sm{background:rgba(255,140,0,.15);color:var(--warm);border:1px solid rgba(255,140,0,.3)}.sl{background:rgba(74,245,166,.15);color:var(--accent3);border:1px solid rgba(74,245,166,.3)}.owner-name{font-weight:800}.owner-sub,.date-cell{font:11px "Space Mono",monospace;color:var(--muted)}.amount-cell{font:700 12px "Space Mono",monospace;color:var(--accent)}.tags{display:flex;gap:4px;flex-wrap:wrap}.tag{font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;border:1px solid rgba(245,166,35,.25);background:rgba(245,166,35,.14);color:#f5c060;white-space:nowrap}.t-hot{background:rgba(255,68,68,.16);border-color:rgba(255,68,68,.3);color:#ff7777}.t-green{background:rgba(74,245,166,.14);border-color:rgba(74,245,166,.28);color:#50e8a0}.empty,.loading{text-align:center;padding:38px;color:var(--muted);font:12px "Space Mono",monospace}.mo{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:40;display:none;align-items:center;justify-content:center;padding:20px}.mo.open{display:flex}.mc{width:100%;max-width:760px;max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px}.mh{display:flex;justify-content:space-between;gap:18px;margin-bottom:18px}.mt{font-size:18px;font-weight:800}.ms{font:11px "Space Mono",monospace;color:var(--muted);margin-top:4px}.mx{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer}.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mf.full{grid-column:1/-1}.ml{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase}.mv{font:13px "Space Mono",monospace;margin-top:3px}.msec{grid-column:1/-1;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-top:4px}.mdiv{grid-column:1/-1;border:0;border-top:1px solid var(--border)}@media(max-width:720px){.topbar{padding:0 14px}.statsbar,.tabs-wrap,.toolbar{padding-left:14px;padding-right:14px}.mg{grid-template-columns:1fr}th:nth-child(4),td:nth-child(4){display:none}.table-wrap{height:auto;min-height:55vh}}
-.tag{box-shadow:0 0 10px rgba(245,166,35,.06)}
-.t-foreclosure{background:rgba(255,68,68,.14);border-color:rgba(255,68,68,.38);color:#ff8585;box-shadow:0 0 12px rgba(255,68,68,.12)}
-.t-tax{background:rgba(255,140,0,.14);border-color:rgba(255,140,0,.4);color:#ffbd66;box-shadow:0 0 12px rgba(255,140,0,.12)}
-.t-probate{background:rgba(168,85,247,.15);border-color:rgba(168,85,247,.42);color:#d6a6ff;box-shadow:0 0 12px rgba(168,85,247,.12)}
-.t-code{background:rgba(234,179,8,.15);border-color:rgba(234,179,8,.42);color:#f4d35e;box-shadow:0 0 12px rgba(234,179,8,.1)}
-.t-absentee{background:rgba(68,170,255,.14);border-color:rgba(68,170,255,.4);color:#8ccaff;box-shadow:0 0 12px rgba(68,170,255,.12)}
-.t-out-state{background:rgba(34,211,238,.14);border-color:rgba(34,211,238,.42);color:#8beeff;box-shadow:0 0 12px rgba(34,211,238,.12)}
-.t-institutional{background:rgba(148,163,184,.13);border-color:rgba(148,163,184,.38);color:#cbd5e1;box-shadow:0 0 12px rgba(148,163,184,.08)}
-.t-bank{background:rgba(127,29,29,.42);border-color:rgba(248,113,113,.5);color:#fecaca;box-shadow:0 0 12px rgba(248,113,113,.16)}
-.t-hot{background:rgba(255,82,24,.22);border-color:rgba(255,117,24,.62);color:#ffb199;box-shadow:0 0 14px rgba(255,82,24,.28)}
-.t-probate-match{background:rgba(192,132,252,.22);border-color:rgba(216,180,254,.62);color:#f0d5ff;box-shadow:0 0 14px rgba(192,132,252,.22)}
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--surface3:#1e1e28;--border:#2a2a3a;--border2:#32324a;--accent:#f5a623;--accent2:#e85d4a;--accent3:#4af5a6;--accent4:#5d8ef5;--text:#e8e8f0;--muted:#6b6b8a;--muted2:#9090b0;--hot:#ff4444;--warm:#ff8c00;--cool:#44aaff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-dot{width:10px;height:10px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.brand-name{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.brand-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+.updated{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+
+.statsbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;gap:20px;overflow-x:auto;scrollbar-width:none;}
+.statsbar::-webkit-scrollbar{display:none;}
+.stat{display:flex;flex-direction:column;align-items:center;min-width:72px;}
+.stat-num{font-size:20px;font-weight:800;line-height:1;}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;white-space:nowrap;}
+.stat-num.hot{color:var(--hot);}.stat-num.warm{color:var(--warm);}.stat-num.cool{color:var(--cool);}.stat-num.green{color:var(--accent3);}.stat-num.gold{color:var(--accent);}
+.sdiv{width:1px;background:var(--border);align-self:stretch;margin:0 2px;}
+
+.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.tabs-wrap::-webkit-scrollbar{height:3px;}
+.tabs-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+.tabs{display:flex;gap:2px;white-space:nowrap;min-width:max-content;}
+.tab{padding:12px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--text);border-bottom-color:var(--accent);}
+.tab .badge{display:inline-flex;align-items:center;justify-content:center;background:var(--border);color:var(--muted);border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;margin-left:5px;min-width:18px;}
+.tab.active .badge{background:var(--accent);color:#000;}
+.tab.urgent{color:var(--hot);}
+.tab.urgent .badge{background:var(--hot);color:#fff;}
+
+.toolbar{padding:10px 24px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--border);background:var(--bg);flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:180px;}
+.search-wrap input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:7px 10px 7px 32px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text);outline:none;}
+.search-wrap input:focus{border-color:var(--accent);}
+.search-wrap input::placeholder{color:var(--muted);}
+.si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;}
+select{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text);outline:none;cursor:pointer;}
+select:focus{border-color:var(--accent);}
+.btn{padding:7px 14px;border-radius:6px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:none;letter-spacing:.05em;transition:all .15s;}
+.btn-primary{background:var(--accent);color:#000;}
+.btn-primary:hover{background:#f0b040;}
+.btn-ghost{background:var(--surface);border:1px solid var(--border);color:var(--text);}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.rec-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;}
+
+.table-wrap{overflow:auto;height:calc(100vh - 214px);}
+table{width:100%;border-collapse:collapse;}
+thead th{background:var(--surface);padding:9px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:10;cursor:pointer;user-select:none;}
+thead th:hover{color:var(--text);}
+thead th.sorted{color:var(--accent);}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer;}
+tbody tr:hover{background:var(--surface);}
+tbody td{padding:9px 14px;font-size:13px;vertical-align:middle;}
+.score-badge{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;font-family:'Space Mono',monospace;}
+.sh{background:rgba(255,68,68,.15);color:var(--hot);border:1px solid rgba(255,68,68,.3);}
+.sm{background:rgba(255,140,0,.15);color:var(--warm);border:1px solid rgba(255,140,0,.3);}
+.sl{background:rgba(74,245,166,.15);color:var(--accent3);border:1px solid rgba(74,245,166,.3);}
+.owner-name{font-weight:700;font-size:13px;margin-bottom:2px;}
+.owner-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+.amount-cell{font-family:'Space Mono',monospace;font-weight:700;color:var(--accent);}
+.date-cell{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.tags{display:flex;flex-wrap:wrap;gap:3px;}
+.tag{font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.04em;white-space:nowrap;}
+.t-hot{background:rgba(255,68,68,.2);color:#ff7777;border:1px solid rgba(255,68,68,.3);}
+.t-warn{background:rgba(255,140,0,.2);color:#ffa040;border:1px solid rgba(255,140,0,.3);}
+.t-blue{background:rgba(93,142,245,.2);color:#8ab4ff;border:1px solid rgba(93,142,245,.3);}
+.t-green{background:rgba(74,245,166,.2);color:#50e8a0;border:1px solid rgba(74,245,166,.3);}
+.t-purple{background:rgba(180,80,255,.2);color:#c080ff;border:1px solid rgba(180,80,255,.3);}
+.t-gray{background:rgba(107,107,138,.2);color:#9090b0;border:1px solid rgba(107,107,138,.3);}
+.t-gold{background:rgba(245,166,35,.2);color:#f5c060;border:1px solid rgba(245,166,35,.3);}
+.view-btn{font-size:10px;font-weight:700;padding:4px 9px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;text-decoration:none;display:inline-block;transition:all .15s;letter-spacing:.04em;}
+.view-btn:hover{border-color:var(--accent);color:var(--accent);}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--muted);gap:8px;}
+.loading{text-align:center;padding:36px;color:var(--muted);font-family:'Space Mono',monospace;font-size:12px;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.87);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mc{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:780px;max-height:92vh;overflow-y:auto;padding:26px;}
+.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;}
+.mt{font-size:17px;font-weight:800;}
+.ms{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:3px;}
+.mx{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:0;}
+.mx:hover{color:var(--text);}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.mf{display:flex;flex-direction:column;gap:3px;}
+.mf.full{grid-column:1/-1;}
+.ml{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.mv{font-size:13px;color:var(--text);font-family:'Space Mono',monospace;}
+.mv.hi{color:var(--accent);font-weight:700;}
+.mv.gr{color:var(--accent3);}
+.mv.rd{color:var(--accent2);}
+.mdiv{grid-column:1/-1;border:none;border-top:1px solid var(--border);margin:2px 0;}
+.msec{grid-column:1/-1;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
+.mtags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:5px;}
+.mact{grid-column:1/-1;display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+
+/* DEAL ANALYZER in modal */
+.da-wrap{grid-column:1/-1;background:var(--surface2);border:1px solid var(--accent);border-radius:10px;padding:18px;margin-top:2px;}
+.da-title{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;}
+.da-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.da-field{display:flex;flex-direction:column;gap:4px;}
+.da-field.full{grid-column:1/-1;}
+.da-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.da-field input,.da-field select{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text);outline:none;width:100%;}
+.da-field input:focus{border-color:var(--accent);}
+.slider-row{display:flex;align-items:center;gap:10px;}
+.slider-row input[type=range]{flex:1;accent-color:var(--accent);cursor:pointer;}
+.slider-val{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);min-width:42px;text-align:right;}
+.cond-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.cond-btn{padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--muted);transition:all .15s;font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em;}
+.cond-btn.active{background:var(--accent);color:#000;border-color:var(--accent);}
+.rtable{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.rtable th{background:var(--bg);padding:7px 10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);}
+.rtable td{padding:7px 10px;font-size:11px;font-family:'Space Mono',monospace;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.rtable tr:last-child td{border-bottom:none;}
+.rtable tr:hover td{background:var(--surface);}
+.rtable tr.sel td{background:rgba(245,166,35,.1);color:var(--accent);font-weight:700;}
+.rtable td:first-child{color:var(--muted);}
+.da-result{grid-column:1/-1;border-radius:8px;padding:18px;text-align:center;border:2px solid var(--border);transition:all .25s;margin-top:4px;}
+.da-result.green{background:rgba(74,245,166,.07);border-color:rgba(74,245,166,.35);}
+.da-result.yellow{background:rgba(245,166,35,.07);border-color:rgba(245,166,35,.35);}
+.da-result.red{background:rgba(232,93,74,.07);border-color:rgba(232,93,74,.35);}
+.mao-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.mao-num{font-size:36px;font-weight:800;font-family:'Space Mono',monospace;line-height:1;}
+.mao-bd{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);margin-top:10px;line-height:1.8;}
+.mao-verdict{font-size:13px;font-weight:700;margin-top:8px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+@media(max-width:768px){
+  .mg,.da-grid{grid-template-columns:1fr;}
+  .mf.full,.da-field.full,.da-result{grid-column:1;}
+  .statsbar{gap:14px;}.stat-num{font-size:16px;}
+}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="brand"><div class="brand-dot"></div><div><div class="brand-name">Fort Wayne / Allen County Intel</div><div class="brand-sub">Motivated seller dashboard</div></div></div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <div>
+      <div class="brand-name">Fort Wayne / Allen County Intel</div>
+      <div class="brand-sub">Motivated seller dashboard</div>
+    </div>
+  </div>
   <div class="updated" id="updated">Loading...</div>
-</div>
+</header>
+
 <div class="statsbar">
   <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">Records</div></div>
+  <div class="sdiv"></div>
   <div class="stat"><div class="stat-num hot" id="s-hot">0</div><div class="stat-label">Hot Stack</div></div>
+  <div class="sdiv"></div>
   <div class="stat"><div class="stat-num warm" id="s-foreclosure">0</div><div class="stat-label">Foreclosure</div></div>
+  <div class="sdiv"></div>
   <div class="stat"><div class="stat-num cool" id="s-code">0</div><div class="stat-label">Code / Nuisance</div></div>
+  <div class="sdiv"></div>
   <div class="stat"><div class="stat-num green" id="s-absentee">0</div><div class="stat-label">Absentee</div></div>
+  <div class="sdiv"></div>
+  <div class="stat"><div class="stat-num gold" id="s-tax">0</div><div class="stat-label">Tax Delinquent</div></div>
+  <div class="sdiv"></div>
+  <div class="stat"><div class="stat-num cool" id="s-probate">0</div><div class="stat-label">Probate</div></div>
 </div>
-<div class="tabs-wrap"><div class="tabs" id="tabs">
-  <button class="tab active" data-tab="all">All <span class="badge">0</span></button>
-  <button class="tab" data-tab="hot_stack">Hot Stack <span class="badge">0</span></button>
-  <button class="tab" data-tab="foreclosure">Foreclosure <span class="badge">0</span></button>
-  <button class="tab" data-tab="tax_delinquent">Tax Delinquent <span class="badge">0</span></button>
-  <button class="tab" data-tab="code_violation">Code / Nuisance <span class="badge">0</span></button>
-  <button class="tab" data-tab="probate">Probate <span class="badge">0</span></button>
-  <button class="tab" data-tab="absentee">Absentee <span class="badge">0</span></button>
-</div></div>
+
+<div class="tabs-wrap">
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="all">All Leads <span class="badge" id="b-all">0</span></button>
+    <button class="tab urgent" data-tab="hot_stack">Hot Stack <span class="badge" id="b-hot_stack">0</span></button>
+    <button class="tab" data-tab="foreclosure">Foreclosure <span class="badge" id="b-foreclosure">0</span></button>
+    <button class="tab" data-tab="tax_delinquent">Tax Delinquent <span class="badge" id="b-tax_delinquent">0</span></button>
+    <button class="tab" data-tab="code_violation">Code / Nuisance <span class="badge" id="b-code_violation">0</span></button>
+    <button class="tab" data-tab="probate">Probate <span class="badge" id="b-probate">0</span></button>
+    <button class="tab" data-tab="absentee">Absentee <span class="badge" id="b-absentee">0</span></button>
+  </div>
+</div>
+
 <div class="toolbar">
-  <div class="search-wrap"><input id="q" placeholder="Search owner, address, parcel, tags..." oninput="applyFilters()"></div>
-  <select id="score-filter" onchange="applyFilters()"><option value="">Score: All</option><option value="80">80+</option><option value="60">60+</option></select>
-  <button class="btn" onclick="exportCSV()">CSV</button>
+  <div class="search-wrap">
+    <span class="si">&#8981;</span>
+    <input type="text" id="q" placeholder="Search owner, address, parcel, tags..." oninput="applyFilters()">
+  </div>
+  <select id="score-filter" onchange="applyFilters()">
+    <option value="">Score: All</option>
+    <option value="80">Score 80+</option>
+    <option value="60">Score 60+</option>
+  </select>
+  <button class="btn btn-primary" onclick="exportCSV()">CSV</button>
   <button class="btn btn-ghost" onclick="clearFilters()">Clear</button>
   <div class="rec-count" id="rec-count">0 records</div>
 </div>
-<div class="table-wrap"><table><thead><tr><th>Score</th><th>Owner / Property</th><th>Lead Type</th><th>Filed</th><th>Amount</th><th>Signals</th><th>Source</th></tr></thead><tbody id="tbody"><tr><td colspan="7"><div class="loading">Loading Fort Wayne sample records...</div></td></tr></tbody></table></div>
-<div class="mo" id="modal"><div class="mc"><div class="mh"><div><div class="mt" id="m-title"></div><div class="ms" id="m-sub"></div></div><button class="mx" onclick="closeModal()">x</button></div><div class="mg" id="m-grid"></div></div></div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr>
+      <th onclick="sortBy('score',this)">Score</th>
+      <th onclick="sortBy('owner_name',this)">Owner / Property</th>
+      <th onclick="sortBy('lead_type',this)">Lead Type</th>
+      <th onclick="sortBy('filed_date',this)">Filed</th>
+      <th onclick="sortBy('amount',this)">Amount</th>
+      <th>Signals</th>
+      <th>Source</th>
+    </tr></thead>
+    <tbody id="tbody">
+      <tr><td colspan="7"><div class="loading"><span class="spinner"></span>Loading Fort Wayne leads...</div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="mc" id="mc"></div>
+</div>
+
 <script>
-let records=[],filtered=[],curTab='all';
-const tabs=['all','hot_stack','foreclosure','tax_delinquent','code_violation','probate','absentee'];
-const money=v=>v==null||v===''?'':`$${Number(v).toLocaleString()}`;
+/* ── DATA ─────────────────────────────────────────────────────── */
+let records=[], filtered=[], curTab='all', sortCol='score', sortDir=-1;
+const PAGE=200;
+let rendered=0;
+
+const money=v=>v==null||v===''?'–':'$'+Number(v).toLocaleString();
 const clean=v=>String(v||'').trim();
-function tagClass(t){
-  const n=String(t||'').replace(/_/g,'-');
-  if(n==='hot-stack')return't-hot';
-  if(n==='probate-property-matched')return't-probate-match';
-  if(['bank-owned','hud-owned','lender-owned'].includes(n))return't-bank';
-  if(n.includes('foreclosure')||n==='sheriff-sale')return't-foreclosure';
-  if(n.includes('tax-delinquen'))return't-tax';
-  if(n.includes('probate'))return't-probate';
-  if(n.includes('code')||n.includes('nuisance')||n.includes('housing-building'))return't-code';
-  if(n==='absentee-owner')return't-absentee';
-  if(n==='out-of-state-owner')return't-out-state';
-  if(n==='institutional-owner')return't-institutional';
-  return'';
-}
-const tagHTML=r=>(r.tags||[]).map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('');
-const hasSignal=(r,s)=>[...(r.distress_sources||[]),...(r.tags||[])].includes(s)||r.lead_type_key===s;
-const inTab=r=>curTab==='all'||(curTab==='hot_stack'?r.hot_stack:hasSignal(r,curTab));
+
+const hasSignal=(r,s)=>[...(r.distress_sources||[]),...(r.tags||[])].some(x=>x===s||x.includes(s))||r.lead_type_key===s;
+const inTab=r=>{
+  if(curTab==='all')return true;
+  if(curTab==='hot_stack')return !!r.hot_stack;
+  return hasSignal(r,curTab);
+};
+
+/* ── LOAD ─────────────────────────────────────────────────────── */
 async function loadRecords(){
-  const res=await fetch('data/records.json',{cache:'no-store'});
-  const data=await res.json();
-  records=data.records||[];
-  document.getElementById('updated').textContent=`Last updated: ${data.fetched_at||'local'}`;
-  updateStats();
-  applyFilters();
+  try{
+    const res=await fetch('data/records.json',{cache:'no-store'});
+    const data=await res.json();
+    records=(data.records||[]);
+    document.getElementById('updated').textContent=`Last updated: ${data.fetched_at||'local'}`;
+    updateStats();
+    applyFilters();
+  }catch(err){
+    document.getElementById('tbody').innerHTML=`<tr><td colspan="7"><div class="empty">Could not load data/records.json: ${err.message}</div></td></tr>`;
+    document.getElementById('updated').textContent='Offline';
+  }
 }
+
+/* ── STATS ─────────────────────────────────────────────────────── */
 function updateStats(){
-  const count=fn=>records.filter(fn).length;
+  const c=fn=>records.filter(fn).length;
   document.getElementById('s-total').textContent=records.length;
-  document.getElementById('s-hot').textContent=count(r=>r.hot_stack);
-  document.getElementById('s-foreclosure').textContent=count(r=>hasSignal(r,'foreclosure'));
-  document.getElementById('s-code').textContent=count(r=>hasSignal(r,'code_violation'));
-  document.getElementById('s-absentee').textContent=count(r=>hasSignal(r,'absentee'));
-  document.querySelectorAll('.tab').forEach(btn=>{
-    const tab=btn.dataset.tab;
-    btn.querySelector('.badge').textContent=records.filter(r=>tab==='all'||(tab==='hot_stack'?r.hot_stack:hasSignal(r,tab))).length;
+  document.getElementById('s-hot').textContent=c(r=>r.hot_stack);
+  document.getElementById('s-foreclosure').textContent=c(r=>hasSignal(r,'foreclosure'));
+  document.getElementById('s-code').textContent=c(r=>hasSignal(r,'code_violation'));
+  document.getElementById('s-absentee').textContent=c(r=>hasSignal(r,'absentee'));
+  document.getElementById('s-tax').textContent=c(r=>hasSignal(r,'tax_delinquent'));
+  document.getElementById('s-probate').textContent=c(r=>hasSignal(r,'probate'));
+  ['all','hot_stack','foreclosure','tax_delinquent','code_violation','probate','absentee'].forEach(tab=>{
+    const b=document.getElementById('b-'+tab);
+    if(b)b.textContent=records.filter(r=>tab==='all'||(tab==='hot_stack'?r.hot_stack:hasSignal(r,tab))).length;
   });
 }
+
+/* ── TAG STYLING ──────────────────────────────────────────────── */
+function tagClass(t){
+  const n=String(t||'').toLowerCase().replace(/_/g,'-');
+  if(n.includes('hot-stack')||n==='hot')return 't-hot';
+  if(n.includes('foreclosure')||n.includes('sheriff'))return 't-hot';
+  if(n.includes('tax-delinq')||n.includes('tax_delinq'))return 't-warn';
+  if(n.includes('probate'))return 't-purple';
+  if(n.includes('code')||n.includes('nuisance')||n.includes('housing'))return 't-gold';
+  if(n.includes('absentee'))return 't-blue';
+  if(n.includes('out-of-state')||n.includes('out_of_state'))return 't-blue';
+  if(n.includes('institutional')||n.includes('bank')||n.includes('hud')||n.includes('lender'))return 't-gray';
+  if(n.includes('property-record-matched')||n.includes('property_record'))return 't-green';
+  return 't-gray';
+}
+const tagHTML=r=>(r.tags||[]).map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('');
+
+/* ── FILTER + SORT ────────────────────────────────────────────── */
 function applyFilters(){
   const q=clean(document.getElementById('q').value).toLowerCase();
   const minScore=Number(document.getElementById('score-filter').value)||0;
-  filtered=records.filter(r=>inTab(r)).filter(r=>(Number(r.score)||0)>=minScore).filter(r=>{
-    const hay=[r.owner_name,r.property_address,r.property_city,r.parcel_id,r.lead_type,...(r.tags||[])].join(' ').toLowerCase();
-    return !q||hay.includes(q);
+  filtered=records.filter(r=>inTab(r)&&(Number(r.score)||0)>=minScore).filter(r=>{
+    if(!q)return true;
+    const hay=[r.owner_name,r.property_address,r.property_city,r.parcel_id,r.lead_type,...(r.tags||[]),...(r.distress_sources||[])].join(' ').toLowerCase();
+    return hay.includes(q);
   });
-  render();
+  doSort();rendered=0;renderTable();
+  document.getElementById('rec-count').textContent=filtered.length.toLocaleString()+' records';
 }
-function render(){
+function sortBy(col,th){
+  sortDir=sortCol===col?-sortDir:-1;sortCol=col;
+  document.querySelectorAll('thead th').forEach(x=>x.classList.remove('sorted'));
+  if(th)th.classList.add('sorted');
+  doSort();rendered=0;renderTable();
+}
+function doSort(){
+  filtered.sort((a,b)=>{
+    let av=a[sortCol],bv=b[sortCol];
+    if(av==null)av=sortDir<0?-Infinity:Infinity;
+    if(bv==null)bv=sortDir<0?-Infinity:Infinity;
+    if(typeof av==='string')return av.localeCompare(bv)*sortDir;
+    return(av-bv)*sortDir;
+  });
+}
+function clearFilters(){
+  document.getElementById('q').value='';
+  document.getElementById('score-filter').value='';
+  applyFilters();
+}
+
+/* ── TABLE RENDER ─────────────────────────────────────────────── */
+const _rowStore=[];
+function renderTable(){
+  _rowStore.length=0;
   const tbody=document.getElementById('tbody');
-  document.getElementById('rec-count').textContent=`${filtered.length} records`;
-  if(!filtered.length){tbody.innerHTML='<tr><td colspan="7"><div class="empty">No matching Fort Wayne / Allen County leads.</div></td></tr>';return;}
-  tbody.innerHTML=filtered.map((r,i)=>{
-    const cls=r.score>=80?'sh':r.score>=60?'sm':'sl';
-    return `<tr onclick="openModal(${i})"><td><div class="score-badge ${cls}">${r.score}</div></td><td><div class="owner-name">${r.owner_name||'Unknown Owner'}</div><div class="owner-sub">${r.property_address}, ${r.property_city} ${r.property_state} ${r.property_zip}</div></td><td>${r.lead_type}</td><td class="date-cell">${r.filed_date||''}</td><td class="amount-cell">${money(r.amount)}</td><td><div class="tags">${tagHTML(r)}</div></td><td><a class="btn btn-ghost" href="${r.public_records_url}" onclick="event.stopPropagation()" target="_blank">View</a></td></tr>`;
-  }).join('');
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="7"><div class="empty">No matching leads found.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=filtered.slice(0,PAGE).map(rowHTML).join('');
+  rendered=Math.min(PAGE,filtered.length);
+  if(filtered.length>PAGE){
+    const s=document.createElement('tr');s.id='sentinel';
+    s.innerHTML='<td colspan="7"><div class="loading" style="padding:14px">Scroll for more...</div></td>';
+    tbody.appendChild(s);observe();
+  }
 }
-function openModal(i){
-  const r=filtered[i];
+function observe(){
+  const s=document.getElementById('sentinel');if(!s)return;
+  new IntersectionObserver(e=>{if(e[0].isIntersecting)loadMore();},{root:document.querySelector('.table-wrap'),threshold:.1}).observe(s);
+}
+function loadMore(){
+  const tbody=document.getElementById('tbody');
+  const s=document.getElementById('sentinel');if(s)s.remove();
+  filtered.slice(rendered,rendered+PAGE).forEach(r=>tbody.insertAdjacentHTML('beforeend',rowHTML(r)));
+  rendered+=PAGE;
+  if(rendered<filtered.length){
+    const s=document.createElement('tr');s.id='sentinel';
+    s.innerHTML='<td colspan="7"><div class="loading" style="padding:14px">Loading more...</div></td>';
+    tbody.appendChild(s);observe();
+  }
+}
+
+function rowHTML(r){
+  const sc=Number(r.score)||0;
+  const scls=sc>=80?'sh':sc>=60?'sm':'sl';
+  const rid=_rowStore.push(r)-1;
+  const lnk=r.public_records_url
+    ?`<a class="view-btn" href="${r.public_records_url}" target="_blank" onclick="event.stopPropagation()">View</a>`
+    :'<span style="color:var(--muted);font-size:11px">–</span>';
+  return `<tr onclick="openModalById(${rid})">
+    <td><div class="score-badge ${scls}">${sc}</div></td>
+    <td style="min-width:200px">
+      <div class="owner-name">${r.owner_name||'<span style="color:var(--muted)">Unknown Owner</span>'}</div>
+      <div class="owner-sub">${r.property_address||''}${r.property_city?', '+r.property_city:''} ${r.property_state||''} ${r.property_zip||''}</div>
+    </td>
+    <td class="date-cell">${r.lead_type||'–'}</td>
+    <td class="date-cell">${r.filed_date||'–'}</td>
+    <td class="amount-cell">${r.amount!=null?money(r.amount):'–'}</td>
+    <td style="max-width:320px"><div class="tags">${tagHTML(r)}</div></td>
+    <td>${lnk}</td>
+  </tr>`;
+}
+
+function openModalById(id){const r=_rowStore[id];if(r)openModal(r);}
+
+/* ── MODAL ────────────────────────────────────────────────────── */
+function openModal(r){
+  const fd=v=>v!=null&&v!==''?money(v):'–';
   const probateCandidates=Array.isArray(r.probate_candidate_addresses)?r.probate_candidate_addresses.join('; '):(r.probate_candidate_addresses||'');
   const candidateCount=r.probate_candidate_count??r.probate_property_candidate_count;
-  document.getElementById('m-title').textContent=r.owner_name||'Unknown Owner';
-  document.getElementById('m-sub').textContent=`${r.property_address}, ${r.property_city} ${r.property_state} ${r.property_zip}`;
-  document.getElementById('m-grid').innerHTML=[
-    ['Lead Type',r.lead_type],['Seller Score',r.score],['Amount',money(r.amount)],['Equity Estimate',money(r.estimated_equity)],['Parcel',r.parcel_id],['Owner Mailing',[r.mailing_address,r.mailing_city,r.mailing_state,r.mailing_zip].filter(Boolean).join(', ')],
-    ['Probate Match Status',r.probate_match_status],['Probate Candidate Count',candidateCount],['Probate Candidate Addresses',probateCandidates],
-    ['Distress Sources',(r.distress_sources||[]).join(', ')],['Tags',(r.tags||[]).join(', ')],['Notes',r.notes]
-  ].filter(([k,v])=>v!==undefined&&v!==null&&v!=='').map(([k,v])=>`<div class="mf ${k==='Notes'||k==='Probate Candidate Addresses'?'full':''}"><div class="ml">${k}</div><div class="mv">${v||''}</div></div>`).join('<hr class="mdiv">');
+
+  document.getElementById('mc').innerHTML=`
+    <div class="mh">
+      <div>
+        <div class="mt">${r.owner_name||'Unknown Owner'}</div>
+        <div class="ms">${r.property_address||''}${r.property_city?', '+r.property_city:''} ${r.property_state||''} ${r.property_zip||''} &middot; Score ${r.score||0}</div>
+      </div>
+      <button class="mx" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="mg">
+      <div class="msec">Property</div>
+      <div class="mf"><div class="ml">Lead Type</div><div class="mv">${r.lead_type||'–'}</div></div>
+      <div class="mf"><div class="ml">Seller Score</div><div class="mv hi">${r.score||'–'}</div></div>
+      <div class="mf"><div class="ml">Amount</div><div class="mv hi">${fd(r.amount)}</div></div>
+      <div class="mf"><div class="ml">Equity Estimate</div><div class="mv gr">${fd(r.estimated_equity)}</div></div>
+      <div class="mf full"><div class="ml">Property Address</div><div class="mv hi">${r.property_address||'–'}${r.property_city?', '+r.property_city:''} ${r.property_state||''} ${r.property_zip||''}</div></div>
+      <div class="mf full"><div class="ml">Mailing Address</div><div class="mv">${[r.mailing_address,r.mailing_city,r.mailing_state,r.mailing_zip].filter(Boolean).join(', ')||'–'}</div></div>
+      <div class="mf"><div class="ml">Parcel ID</div><div class="mv">${r.parcel_id||'–'}</div></div>
+      <div class="mf"><div class="ml">Filed Date</div><div class="mv">${r.filed_date||'–'}</div></div>
+      ${r.grantor?`<div class="mf"><div class="ml">Grantor</div><div class="mv">${r.grantor}</div></div>`:''}
+      ${r.grantee?`<div class="mf"><div class="ml">Grantee</div><div class="mv">${r.grantee}</div></div>`:''}
+
+      ${(r.probate_match_status||candidateCount)?`
+      <hr class="mdiv">
+      <div class="msec">Probate Details</div>
+      ${r.probate_match_status?`<div class="mf"><div class="ml">Match Status</div><div class="mv">${r.probate_match_status}</div></div>`:''}
+      ${candidateCount!=null?`<div class="mf"><div class="ml">Candidate Count</div><div class="mv">${candidateCount}</div></div>`:''}
+      ${probateCandidates?`<div class="mf full"><div class="ml">Candidate Addresses</div><div class="mv">${probateCandidates}</div></div>`:''}
+      `:''}
+
+      <hr class="mdiv">
+      <div class="msec">Distress Signals</div>
+      <div class="mf full"><div class="ml">Sources</div><div class="mv">${(r.distress_sources||[]).join(' &middot; ')||'–'}</div></div>
+      <div class="mtags">${tagHTML(r)}</div>
+
+      ${r.notes?`<hr class="mdiv"><div class="mf full"><div class="ml">Notes</div><div class="mv">${r.notes}</div></div>`:''}
+
+      ${r.property_address?`
+      <hr class="mdiv">
+      <div class="msec">Quick Lookup</div>
+      <div class="mf full" style="margin-top:4px;">
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a href="${zillowUrl(r)}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:rgba(0,100,255,.12);border:1px solid rgba(0,100,255,.3);color:#5b9ef5;font-size:11px;font-weight:700;text-decoration:none;font-family:'Space Mono',monospace;">&#127968; Zillow</a>
+          <a href="${redfinUrl(r)}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:rgba(220,50,50,.12);border:1px solid rgba(220,50,50,.3);color:#f07070;font-size:11px;font-weight:700;text-decoration:none;font-family:'Space Mono',monospace;">&#128202; Redfin</a>
+          <a href="${auditorUrl(r)}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);color:var(--accent);font-size:11px;font-weight:700;text-decoration:none;font-family:'Space Mono',monospace;">&#127963; County</a>
+          <a href="${googleUrl(r)}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:rgba(74,245,166,.1);border:1px solid rgba(74,245,166,.25);color:var(--accent3);font-size:11px;font-weight:700;text-decoration:none;font-family:'Space Mono',monospace;">&#128506; Street View</a>
+          ${r.public_records_url?`<a href="${r.public_records_url}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:rgba(107,107,138,.12);border:1px solid rgba(107,107,138,.3);color:var(--muted2);font-size:11px;font-weight:700;text-decoration:none;font-family:'Space Mono',monospace;">&#128196; Public Record</a>`:''}
+        </div>
+      </div>
+
+      <hr class="mdiv">
+      <div class="msec" style="margin-bottom:8px;">AI Value Estimator</div>
+      <div class="mf full">
+        <div id="ai-val-box" style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:12px;">
+          <button onclick="runAIValuation()" style="background:linear-gradient(135deg,rgba(245,166,35,.2),rgba(74,245,166,.15));border:1px solid rgba(245,166,35,.4);border-radius:6px;padding:8px 18px;color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.06em;width:100%;transition:all .2s;">
+            &#10024; Run AI Valuation &#8212; Get ARV Range + Analysis
+          </button>
+          <div id="ai-val-result"></div>
+        </div>
+      </div>
+      `:''}
+
+      <hr class="mdiv">
+      ${dealAnalyzerHTML(r)}
+
+      <div class="mact">
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    </div>`;
+
   document.getElementById('modal').classList.add('open');
+  window._modalRecord=r;
+
+  setTimeout(()=>{
+    _mRow=0;_mCond='medium';_mAddons={};
+    mSelRow(0);mCalc();
+  },60);
 }
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-function clearFilters(){document.getElementById('q').value='';document.getElementById('score-filter').value='';applyFilters()}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ── URL HELPERS ──────────────────────────────────────────────── */
+function zillowUrl(r){
+  const a=encodeURIComponent([r.property_address,r.property_city||'Fort Wayne','IN',r.property_zip].filter(Boolean).join(' '));
+  return `https://www.zillow.com/homes/${a}_rb/`;
+}
+function redfinUrl(r){
+  const q=encodeURIComponent([r.property_address,r.property_city||'Fort Wayne','IN',r.property_zip].filter(Boolean).join(', '));
+  return `https://www.redfin.com/city/35795/IN/Fort-Wayne?q=${q}`;
+}
+function auditorUrl(r){
+  if(r.parcel_id)return `https://www.allencountyauditor.org/ain/ain.jsp?ain=${encodeURIComponent(r.parcel_id)}`;
+  return `https://www.allencountyauditor.org/ain/ain.jsp?address=${encodeURIComponent(r.property_address||'')}`;
+}
+function googleUrl(r){
+  const a=encodeURIComponent([r.property_address,r.property_city||'Fort Wayne','IN'].filter(Boolean).join(', '));
+  return `https://www.google.com/maps/search/?api=1&query=${a}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VALUATION ENGINE — Allen County / Fort Wayne
+   Tier ranges based on Fort Wayne market comps
+═══════════════════════════════════════════════════════════════ */
+const FW_HOODS={
+  // TIER A — SW/Aboite/Covington — $180k–$280k remodeled
+  'aboite':        {tier:'A',compLow:185000,compMid:220000,compHigh:265000,ppsf:{low:110,mid:135,high:165}},
+  'covington':     {tier:'A',compLow:175000,compMid:210000,compHigh:255000,ppsf:{low:105,mid:128,high:158}},
+  'sw allen':      {tier:'A',compLow:180000,compMid:215000,compHigh:260000,ppsf:{low:108,mid:132,high:162}},
+  'homestead':     {tier:'A',compLow:195000,compMid:235000,compHigh:285000,ppsf:{low:115,mid:140,high:170}},
+  // TIER B — NW/Georgetown/Waynedale — $100k–$175k remodeled
+  'waynedale':     {tier:'B',compLow:105000,compMid:135000,compHigh:170000,ppsf:{low:72,mid:90,high:112}},
+  'georgetown':    {tier:'B',compLow:110000,compMid:140000,compHigh:175000,ppsf:{low:75,mid:93,high:116}},
+  'northwest':     {tier:'B',compLow:95000, compMid:125000,compHigh:160000,ppsf:{low:65,mid:84,high:106}},
+  'illinois road': {tier:'B',compLow:115000,compMid:148000,compHigh:185000,ppsf:{low:78,mid:98,high:122}},
+  'dupont':        {tier:'B',compLow:120000,compMid:152000,compHigh:190000,ppsf:{low:80,mid:101,high:126}},
+  // TIER C — Near NE/SE/Northside — $55k–$105k remodeled
+  'northside':     {tier:'C',compLow:62000, compMid:82000, compHigh:105000,ppsf:{low:44,mid:58,high:74}},
+  'southeast':     {tier:'C',compLow:55000, compMid:74000, compHigh:95000, ppsf:{low:40,mid:53,high:68}},
+  'northeast fort wayne':{tier:'C',compLow:60000,compMid:78000,compHigh:100000,ppsf:{low:42,mid:55,high:70}},
+  'central':       {tier:'C',compLow:58000, compMid:76000, compHigh:98000, ppsf:{low:41,mid:54,high:69}},
+  // TIER D — Downtown/SE core — $30k–$65k remodeled
+  'downtown':      {tier:'D',compLow:32000, compMid:48000, compHigh:65000, ppsf:{low:25,mid:36,high:48}},
+  'old fort wayne':{tier:'D',compLow:28000, compMid:42000, compHigh:58000, ppsf:{low:22,mid:32,high:43}},
+  'east state':    {tier:'D',compLow:30000, compMid:45000, compHigh:60000, ppsf:{low:23,mid:34,high:45}},
+  // DEFAULT
+  'fort wayne':    {tier:'C',compLow:65000, compMid:88000, compHigh:115000,ppsf:{low:46,mid:62,high:80}},
+};
+
+const ZIP_HOOD_FW={
+  '46801':'downtown','46802':'downtown','46803':'east state',
+  '46804':'aboite',  '46805':'northside','46806':'southeast',
+  '46807':'waynedale','46808':'northwest','46809':'waynedale',
+  '46814':'aboite',  '46815':'northeast fort wayne','46816':'southeast',
+  '46818':'northwest','46819':'southeast','46825':'dupont',
+  '46835':'dupont',  '46845':'homestead',
+};
+
+const TIER_LABELS={A:'Premium',B:'Solid',C:'Working Class',D:'Deep Discount'};
+const TIER_COLORS={A:'var(--accent3)',B:'var(--accent)',C:'var(--warm)',D:'var(--hot)'};
+const TIER_COMPS={
+  A:'Comp streets: Covington Rd, Illinois Rd, Aboite Center Rd',
+  B:'Comp streets: Lima Rd, Clinton St N, Coldwater Rd',
+  C:'Comp streets: Coliseum Blvd, Anthony Blvd, State Blvd',
+  D:'Comp streets: Calhoun St, Broadway, Pontiac St',
+};
+
+function detectHoodFW(r){
+  const addr=(r.property_address||'').toLowerCase();
+  const city=(r.property_city||'').toLowerCase();
+  let zip=(r.property_zip||'').replace(/\D/g,'').slice(0,5);
+
+  const clues=[
+    ['aboite','aboite'],['covington','covington'],['homestead','homestead'],
+    ['waynedale','waynedale'],['georgetown','georgetown'],['illinois road','illinois road'],
+    ['dupont','dupont'],['northside','northside'],['downtown','downtown'],
+    ['old fort','old fort wayne'],['state blvd','east state'],['east state','east state'],
+    ['broadway','downtown'],['calhoun','downtown'],['pontiac','downtown'],
+    ['coliseum','northside'],['anthony blvd','northeast fort wayne'],
+    ['lima rd','northwest'],['coldwater','northwest'],['clinton','northwest'],
+  ];
+
+  for(const[kw,hood]of clues){
+    if(addr.includes(kw)||city.includes(kw))return{hood,source:'keyword',confidence:'high'};
+  }
+  if(zip&&ZIP_HOOD_FW[zip])return{hood:ZIP_HOOD_FW[zip],source:'zip',confidence:'medium'};
+
+  // extract ZIP from address string
+  const m=(r.property_address||'').match(/\b(468\d{2})\b/);
+  if(m&&ZIP_HOOD_FW[m[1]])return{hood:ZIP_HOOD_FW[m[1]],source:'zip-extracted',confidence:'medium'};
+
+  return{hood:'fort wayne',source:'default',confidence:'low'};
+}
+
+function conditionMultiplierFW(r){
+  const dt=(r.lead_type||r.lead_type_key||'').toLowerCase();
+  const tags=(r.tags||[]).join(' ').toLowerCase();
+  if(tags.includes('fire'))return 0.50;
+  if(dt.includes('code')||tags.includes('code'))return 0.65;
+  if(tags.includes('vacant'))return 0.68;
+  if(dt.includes('foreclosure')||dt.includes('sheriff'))return 0.70;
+  if(dt.includes('probate'))return 0.75;
+  if(dt.includes('tax'))return 0.78;
+  return 0.80;
+}
+
+function distressPenaltyFW(r){
+  const dt=(r.lead_type||r.lead_type_key||'').toLowerCase();
+  const tags=(r.tags||[]).join(' ').toLowerCase();
+  let d=0,reasons=[];
+  if(dt.includes('foreclosure')||tags.includes('foreclosure')){d+=28;reasons.push('foreclosure');}
+  if(dt.includes('sheriff')||tags.includes('sheriff')){d+=30;reasons.push('sheriff sale');}
+  if(dt.includes('probate')||tags.includes('probate')){d+=18;reasons.push('probate estate');}
+  if(dt.includes('tax')||tags.includes('tax-delinq')){d+=15;reasons.push('tax delinquent');}
+  if(tags.includes('code')||tags.includes('nuisance')){d+=12;reasons.push('code violation');}
+  if(tags.includes('vacant')){d+=5;reasons.push('vacant');}
+  if(tags.includes('absentee')||tags.includes('out-of-state')){d+=4;reasons.push('absentee');}
+  if(tags.includes('bank-owned')||tags.includes('hud-owned')){d+=8;reasons.push('bank/HUD owned');}
+  if((r.distress_sources||[]).length>=3){d+=5;reasons.push('3+ distress signals');}
+  if(r.hot_stack){d+=4;reasons.push('hot stack');}
+  return{pct:Math.min(d,50),reasons};
+}
+
+function localValuationFW(r){
+  const hoodData=detectHoodFW(r);
+  const hood=hoodData.hood;
+  const hd=FW_HOODS[hood]||FW_HOODS['fort wayne'];
+  const factors=[];
+  const warnings=[];
+  let dataSources=0;
+  let dataQuality=0;
+
+  // Assessed value
+  let assessedMarket=null;
+  if(r.assessed_value&&r.assessed_value>5000){
+    // Indiana uses ~50% assessment ratio
+    assessedMarket=Math.round(r.assessed_value/0.50);
+    const ratio=assessedMarket/hd.compMid;
+    if(ratio>=0.80&&ratio<=1.20){
+      factors.push(`&#127963; Assessed $${Math.round(r.assessed_value).toLocaleString()} &divide; 0.50 = $${assessedMarket.toLocaleString()} market &mdash; aligns with tier`);
+      dataQuality+=35;dataSources++;
+    } else {
+      factors.push(`&#127963; Assessed $${Math.round(r.assessed_value).toLocaleString()} &divide; 0.50 = $${assessedMarket.toLocaleString()} market`);
+      dataQuality+=15;dataSources++;
+    }
+  } else if(r.estimated_equity&&r.estimated_equity>0){
+    factors.push(`&#128200; Equity signal: $${Math.round(r.estimated_equity).toLocaleString()}`);
+    dataQuality+=10;
+  }
+
+  factors.push(`&#128205; ${hood.replace(/\b\w/g,c=>c.toUpperCase())} (Tier ${hd.tier})`);
+  factors.push(`&#128178; Tier ${hd.tier} range: $${Math.round(hd.compLow/1000)}k&ndash;$${Math.round(hd.compHigh/1000)}k`);
+  factors.push(`&#128178; Price/sqft: $${hd.ppsf.low}&ndash;$${hd.ppsf.high}/sqft`);
+
+  const arvRemodeled=Math.round(hd.compHigh*0.92);
+  const arvLow=Math.round(hd.compLow*0.90);
+  const arvHigh=Math.round(hd.compHigh);
+  const arvSafe=Math.round(arvRemodeled*0.92);
+  const condMult=conditionMultiplierFW(r);
+  const arvAsIs=Math.round(arvRemodeled*condMult);
+  const{pct:discPct,reasons:discReasons}=distressPenaltyFW(r);
+  const distressedVal=Math.round(arvRemodeled*(1-discPct/100));
+
+  if(discReasons.length)factors.push(`&#128251; ${discPct}% distress discount: ${discReasons.join(', ')}`);
+  factors.push(`&#128273; ARV = fully renovated. As-Is &asymp; $${arvAsIs.toLocaleString()}`);
+  factors.push(`&#9989; Conservative ARV (low side): $${arvSafe.toLocaleString()} &mdash; use for MAO`);
+
+  if(hoodData.source==='default')warnings.push('&#9888;&#65039; Neighborhood not detected &mdash; using Fort Wayne average. Verify zip/address.');
+
+  const confidence=dataQuality>=60?'high':dataQuality>=30?'medium':'low';
+
+  const notes={
+    A:{rule:'Premium SW corridor. Retail buyers compete. Even distressed properties move fast here.',warning:'Buyers expect quality finishes. Budget rehab accordingly &mdash; shortcuts hurt ARV.'},
+    B:{rule:'Bread-and-butter rental &amp; flip market. Consistent buyer pool. Narrow spread.',warning:'Condition matters most &mdash; outdated vs remodeled can swing $30k+.'},
+    C:{rule:'High-volume distress zone. Cash buyers only. Verify comps are not other distress sales.',warning:'Pull only 0&ndash;3 month solds. Market moves fast in this bracket.'},
+    D:{rule:'Deep discount. Extended hold, thin buyer pool. Price aggressively and move fast.',warning:'If range is $40k&ndash;$65k, use $35k&ndash;$45k ARV. Low side always.'},
+  };
+
+  return{hood,tier:hd.tier,arvLow,arvHigh,arvRemodeled,arvSafe,arvAsIs,distressedVal,discPct,confidence,dataSources,factors,warnings,note:notes[hd.tier],hoodSource:hoodData.source};
+}
+
+function runAIValuation(){
+  const r=window._modalRecord;
+  if(!r)return;
+  const box=document.getElementById('ai-val-result');
+  const btn=document.querySelector('#ai-val-box button');
+  if(!box)return;
+  if(btn){btn.disabled=true;btn.textContent='Running comp analysis...';}
+  box.innerHTML='<div style="margin-top:10px;padding:10px;font-family:\'Space Mono\',monospace;font-size:11px;color:var(--muted);text-align:center;">Applying Fort Wayne investor comping rules...</div>';
+
+  setTimeout(()=>{
+    try{
+      const v=localValuationFW(r);
+      const fmt=n=>'$'+Math.round(n).toLocaleString();
+      const tc=TIER_COLORS[v.tier]||'var(--muted)';
+
+      box.innerHTML=`<div style="margin-top:12px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+        <div style="background:rgba(245,166,35,.06);padding:14px 16px;border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;">&#9989; CONSERVATIVE ARV &mdash; USE FOR MAO</div>
+              <div style="font-size:32px;font-weight:900;font-family:'Space Mono',monospace;color:var(--accent3);">${fmt(v.arvSafe)}</div>
+              <div style="font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:3px;">"Low side always" &mdash; avg comps &minus;8%</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;min-width:180px;">
+              <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:8px;text-align:center;">
+                <div style="font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:2px;">FLOOR</div>
+                <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--accent2);">${fmt(v.arvLow)}</div>
+                <div style="font-size:9px;color:var(--muted);">worst comp</div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:8px;text-align:center;">
+                <div style="font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:2px;">CEILING</div>
+                <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--accent3);">${fmt(v.arvRemodeled)}</div>
+                <div style="font-size:9px;color:var(--muted);">fully fixed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Neighborhood / Tier</div>
+            <div style="display:flex;align-items:center;gap:7px;">
+              <span style="font-size:18px;font-weight:900;color:${tc};font-family:'Space Mono',monospace;">Tier ${v.tier}</span>
+              <span style="font-size:11px;font-weight:700;color:${tc};">${TIER_LABELS[v.tier]}</span>
+            </div>
+            <div style="font-size:12px;font-weight:700;text-transform:capitalize;margin-top:2px;">${v.hood.replace(/\b\w/g,c=>c.toUpperCase())}</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:3px;">${TIER_COMPS[v.tier]}</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">Condition Spread</div>
+            <div style="font-size:10px;color:var(--muted2);line-height:2;">
+              <span style="color:var(--accent3);">Remodeled ARV:</span> ${fmt(v.arvRemodeled)}<br>
+              <span style="color:var(--warm);">As-Is value:</span> ${fmt(v.arvAsIs)}<br>
+              <span style="color:var(--hot);">Distressed offer:</span> ${fmt(v.distressedVal)}<br>
+              <span style="color:var(--muted);">Condition gap: ${fmt(v.arvRemodeled-v.arvAsIs)}</span>
+            </div>
+          </div>
+          <div style="grid-column:1/-1;">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">How We Comp&rsquo;d It (${v.dataSources} data source${v.dataSources!==1?'s':''})</div>
+            <div style="font-size:10px;color:var(--muted2);line-height:2.0;">${v.factors.join('<br>')}</div>
+          </div>
+          ${v.warnings.length?`<div style="grid-column:1/-1;background:rgba(255,68,68,.07);border:1px solid rgba(255,68,68,.2);border-radius:7px;padding:9px 12px;">
+            <div style="font-size:9px;color:var(--hot);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">&#128680; Flags</div>
+            <div style="font-size:10px;color:var(--muted2);line-height:1.9;">${v.warnings.join('<br>')}</div>
+          </div>`:''}
+          <div style="grid-column:1/-1;background:rgba(255,140,0,.07);border:1px solid rgba(255,140,0,.2);border-radius:7px;padding:10px 12px;">
+            <div style="font-size:9px;color:var(--warm);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">&#128203; Comp Rules Applied</div>
+            <div style="font-size:10px;color:var(--muted2);line-height:1.9;">
+              &#9989; SOLD comps only (not active, not pending)<br>
+              &#9989; Same micro-area: ${v.hood.replace(/\b\w/g,c=>c.toUpperCase())}<br>
+              &#9989; ARV = fully renovated ceiling (${fmt(v.arvRemodeled)})<br>
+              &#9989; Conservative cut: low side of range (${fmt(v.arvSafe)})<br>
+              &#9989; Distress discount applied: &minus;${v.discPct}%<br>
+              &#9888;&#65039; Verify size match (&plusmn;15% sqft) on Zillow before locking ARV
+            </div>
+          </div>
+          <div style="grid-column:1/-1;background:rgba(74,245,166,.05);border:1px solid rgba(74,245,166,.15);border-radius:7px;padding:10px 12px;">
+            <div style="font-size:9px;color:var(--accent3);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;">&#128161; ${TIER_LABELS[v.tier]} Market &mdash; Investor Note</div>
+            <div style="font-size:11px;color:var(--text);line-height:1.7;margin-bottom:4px;">${v.note.rule}</div>
+            <div style="font-size:10px;color:var(--warm);font-style:italic;">${v.note.warning}</div>
+          </div>
+          <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;">
+            <button onclick="useAIArv(${v.arvSafe})" style="padding:9px 6px;border-radius:6px;border:1px solid rgba(74,245,166,.4);background:rgba(74,245,166,.1);color:var(--accent3);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;line-height:1.3;">&#9989; Conservative<br>${fmt(v.arvSafe)}</button>
+            <button onclick="useAIArv(${v.arvRemodeled})" style="padding:9px 6px;border-radius:6px;border:1px solid rgba(245,166,35,.4);background:rgba(245,166,35,.1);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;line-height:1.3;">&#127968; Remodeled<br>${fmt(v.arvRemodeled)}</button>
+            <button onclick="useAIArv(${v.distressedVal})" style="padding:9px 6px;border-radius:6px;border:1px solid rgba(255,68,68,.3);background:rgba(255,68,68,.08);color:var(--hot);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;line-height:1.3;">&#128251; Distressed<br>${fmt(v.distressedVal)}</button>
+          </div>
+        </div>
+      </div>`;
+
+      if(btn){btn.disabled=false;btn.textContent='&#8635; Re-run Comp Analysis';}
+    }catch(e){
+      box.innerHTML=`<div style="margin-top:10px;padding:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);">Error: ${e.message}</div>`;
+      if(btn){btn.disabled=false;btn.textContent='&#10024; Run AI Valuation';}
+    }
+  },280);
+}
+
+function useAIArv(val){
+  const a=document.getElementById('da-arv');if(a){a.value=val;mSyncARVs();mCalc();}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DEAL ANALYZER — inline modal
+═══════════════════════════════════════════════════════════════ */
+const M_SQFT=[
+  {easy:15000,medium:27500,heavy:45000},
+  {easy:20000,medium:37500,heavy:65000},
+  {easy:30000,medium:57500,heavy:85000},
+  {easy:40000,medium:77500,heavy:105000},
+];
+const M_ADDONS=[
+  {id:'roof',  name:'Roof',         range:'+$8k–15k', def:11000},
+  {id:'hvac',  name:'HVAC',         range:'+$5k–10k', def:7000 },
+  {id:'found', name:'Foundation',   range:'+$10k–30k',def:18000},
+  {id:'plumb', name:'Plumbing',     range:'+$5k–15k', def:8000 },
+  {id:'elec',  name:'Electrical',   range:'+$5k–12k', def:7500 },
+  {id:'mold',  name:'Mold/Water',   range:'+$3k–12k', def:6000 },
+  {id:'sewer', name:'Sewer',        range:'+$4k–10k', def:6000 },
+  {id:'win',   name:'Windows/Doors',range:'+$3k–8k',  def:5000 },
+];
+let _mRow=0,_mCond='medium',_mAddons={};
+
+function dealAnalyzerHTML(r){
+  const arvBase=r.estimated_equity>0&&r.estimated_equity<500000?Math.round(r.estimated_equity*2):0;
+  const sqL=['Under 1,500 SF','1,500–2,000','2,000–2,500','2,500+'];
+  const trows=M_SQFT.map((row,i)=>`<tr id="mdr${i}" onclick="mSelRow(${i})" class="${i===0?'sel':''}"><td>${sqL[i]}</td><td>$${row.easy/1000}k</td><td>$${(row.medium/1000).toFixed(1).replace('.0','')}k</td><td>$${row.heavy/1000}k</td></tr>`).join('');
+  const addHTML=M_ADDONS.map(a=>`<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 10px;cursor:pointer;transition:all .15s;" id="mdai-${a.id}" onclick="mToggleAddon('${a.id}')">
+    <div><div style="font-size:12px;font-weight:700;color:var(--text);font-family:'Barlow Condensed',sans-serif;">${a.name}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);">${a.range}</div></div>
+    <div style="display:flex;align-items:center;gap:7px;"><div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);" id="mdacv-${a.id}">$${(a.def/1000).toFixed(0)}k</div><div style="width:16px;height:16px;border:2px solid var(--border2);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;" id="mdack-${a.id}"></div></div>
+  </div>`).join('');
+
+  return `<div class="da-wrap">
+  <div class="da-title">&#9841; Deal Analyzer</div>
+  <div style="display:flex;gap:5px;margin-bottom:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px;">
+    <button id="mmode-ws" onclick="mSetMode('wholesale')" style="flex:1;padding:6px 4px;border-radius:6px;border:1px solid rgba(245,166,35,.4);background:rgba(245,166,35,.1);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Wholesale</button>
+    <button id="mmode-fl" onclick="mSetMode('flip')" style="flex:1;padding:6px 4px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Flip</button>
+    <button id="mmode-re" onclick="mSetMode('rental')" style="flex:1;padding:6px 4px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Rental</button>
+  </div>
+  <div class="da-grid">
+    <div class="da-field full">
+      <label>ARV Range</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;">
+        <div><div style="font-size:9px;color:var(--muted);margin-bottom:3px;font-family:'Space Mono',monospace;">LOW</div><input type="number" id="da-arv-low" placeholder="e.g. 70000" oninput="mCalc()"></div>
+        <div><div style="font-size:9px;color:var(--accent);margin-bottom:3px;font-family:'Space Mono',monospace;">BASE ARV &#9733;</div><input type="number" id="da-arv" value="${arvBase||''}" oninput="mSyncARVs();mCalc()" style="border-color:rgba(245,166,35,.4);"></div>
+        <div><div style="font-size:9px;color:var(--muted);margin-bottom:3px;font-family:'Space Mono',monospace;">HIGH</div><input type="number" id="da-arv-high" placeholder="e.g. 95000" oninput="mCalc()"></div>
+      </div>
+    </div>
+    <div class="da-field full">
+      <label>Offer % of ARV</label>
+      <div class="slider-row"><input type="range" id="da-pct" min="50" max="90" value="70" oninput="document.getElementById('da-pctv').textContent=this.value+'%';mCalc()"><div class="slider-val" id="da-pctv">70%</div></div>
+      <div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;">
+        <button onclick="mSetPct(85)" style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;">Hot 85%</button>
+        <button onclick="mSetPct(75)" style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;">Normal 75%</button>
+        <button onclick="mSetPct(70)" style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;">Std 70%</button>
+        <button onclick="mSetPct(60)" style="font-family:'Space Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;">Deep 60%</button>
+      </div>
+    </div>
+    <div class="da-field full">
+      <label>Condition</label>
+      <div class="cond-btns" style="margin-top:4px;">
+        <button class="cond-btn" id="mcb-easy" onclick="mSetCond('easy',this)">Easy</button>
+        <button class="cond-btn active" id="mcb-medium" onclick="mSetCond('medium',this)">Needs Work</button>
+        <button class="cond-btn" id="mcb-heavy" style="border-color:rgba(255,68,68,.4);color:var(--hot);" onclick="mSetCond('heavy',this)">Full Gut</button>
+      </div>
+      <table class="rtable"><tr><th>Sq Ft</th><th>Easy</th><th>Needs Work</th><th>Full Gut</th></tr>${trows}</table>
+    </div>
+    <div class="da-field full">
+      <label>Add-On Repairs</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px;">${addHTML}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;">Add-On Total</div>
+        <div id="da-addon-total" style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--warm);">$0</div>
+      </div>
+    </div>
+    <div class="da-field"><label>Rehab $</label><input type="number" id="da-rehab" value="${M_SQFT[0].medium}" oninput="mCalc()"></div>
+    <div class="da-field"><label>Wholesale Fee</label><input type="number" id="da-fee" value="10000" oninput="mCalc()"></div>
+    <div class="da-field"><label>Closing Costs</label><input type="number" id="da-closing" value="3000" oninput="mCalc()"></div>
+    <div class="da-field"><label>Other Costs</label><input type="number" id="da-other" value="0" oninput="mCalc()"></div>
+    <div class="da-result" id="da-res" style="padding:16px;">
+      <div class="mao-lbl">Maximum Allowable Offer (MAO)</div>
+      <div class="mao-num" id="da-mao" style="color:var(--muted);">Enter ARV</div>
+      <div id="da-range-row" style="display:none;justify-content:center;gap:18px;margin:8px 0;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;">Low Ball</div><div id="da-mao-safe" style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--accent2);">–</div></div>
+        <div style="text-align:center;"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:.08em;">Target</div><div id="da-mao-target" style="font-family:'Space Mono',monospace;font-size:20px;font-weight:800;color:var(--accent);">–</div></div>
+        <div style="text-align:center;"><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em;">Max MAO</div><div id="da-mao-aggr" style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--accent3);">–</div></div>
+      </div>
+      <div class="mao-bd" id="da-bd"></div>
+      <div class="mao-verdict" id="da-vd"></div>
+    </div>
+  </div>
+  </div>`;
+}
+
+function mSetMode(m){
+  ['ws','fl','re'].forEach(k=>{
+    const b=document.getElementById('mmode-'+k);if(!b)return;
+    b.style.borderColor='var(--border)';b.style.background='none';b.style.color='var(--muted)';
+  });
+  const map={wholesale:'ws',flip:'fl',rental:'re'};
+  const C={wholesale:['rgba(245,166,35,.4)','rgba(245,166,35,.1)','var(--accent)'],flip:['rgba(74,245,166,.4)','rgba(74,245,166,.1)','var(--accent3)'],rental:['rgba(93,142,245,.4)','rgba(93,142,245,.1)','var(--accent4)']};
+  const b=document.getElementById('mmode-'+map[m]);
+  if(b){const[bc,bg,col]=C[m];b.style.borderColor=bc;b.style.background=bg;b.style.color=col;}
+  const pct={wholesale:70,flip:70,rental:80}[m];
+  const ps=document.getElementById('da-pct'),pv=document.getElementById('da-pctv');
+  if(ps)ps.value=pct;if(pv)pv.textContent=pct+'%';
+  const fl=document.getElementById('da-fee');
+  if(fl)fl.previousElementSibling.textContent=m==='wholesale'?'Wholesale Fee':m==='flip'?'Flip Profit Target':'Cash Flow Target';
+  mCalc();
+}
+function mSetPct(v){const ps=document.getElementById('da-pct'),pv=document.getElementById('da-pctv');if(ps)ps.value=v;if(pv)pv.textContent=v+'%';mCalc();}
+function mSetCond(c,btn){
+  _mCond=c;
+  document.querySelectorAll('.cond-btn').forEach(b=>{b.classList.remove('active');b.style.borderColor='';b.style.color='';});
+  btn.classList.add('active');
+  if(c==='heavy'){btn.style.borderColor='rgba(255,68,68,.4)';btn.style.color='var(--hot)';}
+  const rh=document.getElementById('da-rehab');if(rh)rh.value=M_SQFT[_mRow][c]+mCalcAddonTotal();
+  mCalc();
+}
+function mSelRow(i){
+  _mRow=i;
+  document.querySelectorAll('[id^="mdr"]').forEach(r=>r.classList.remove('sel'));
+  const el=document.getElementById('mdr'+i);if(el)el.classList.add('sel');
+  const rh=document.getElementById('da-rehab');if(rh)rh.value=M_SQFT[i][_mCond]+mCalcAddonTotal();
+  mCalc();
+}
+function mToggleAddon(id){
+  _mAddons[id]=!_mAddons[id];
+  const el=document.getElementById('mdai-'+id);
+  const ck=document.getElementById('mdack-'+id);
+  const cv=document.getElementById('mdacv-'+id);
+  const a=M_ADDONS.find(x=>x.id===id);
+  if(_mAddons[id]){
+    if(el){el.style.borderColor='rgba(255,140,0,.4)';el.style.background='rgba(255,140,0,.07)';}
+    if(ck){ck.textContent='&#10003;';ck.style.background='var(--warm)';ck.style.borderColor='var(--warm)';ck.style.color='#000';}
+    if(cv){cv.textContent='+$'+(a.def/1000).toFixed(0)+'k';cv.style.color='var(--warm)';}
+  }else{
+    if(el){el.style.borderColor='';el.style.background='';}
+    if(ck){ck.textContent='';ck.style.background='';ck.style.borderColor='var(--border2)';ck.style.color='';}
+    if(cv){cv.textContent='$'+(a.def/1000).toFixed(0)+'k';cv.style.color='';}
+  }
+  const rh=document.getElementById('da-rehab');if(rh)rh.value=M_SQFT[_mRow][_mCond]+mCalcAddonTotal();
+  const tot=document.getElementById('da-addon-total');const t=mCalcAddonTotal();
+  if(tot)tot.textContent=t>0?'+$'+t.toLocaleString():'$0';
+  mCalc();
+}
+function mCalcAddonTotal(){return M_ADDONS.filter(a=>_mAddons[a.id]).reduce((s,a)=>s+a.def,0);}
+
+function mSyncARVs(){
+  const base=parseFloat(document.getElementById('da-arv')?.value)||0;
+  if(!base)return;
+  const low=document.getElementById('da-arv-low');
+  const high=document.getElementById('da-arv-high');
+  if(low&&!low.value)low.value=Math.round(base*0.94);
+  if(high&&!high.value)high.value=Math.round(base*1.06);
+}
+
+function mCalc(){
+  const arv=parseFloat(document.getElementById('da-arv')?.value)||0;
+  const arvLow=parseFloat(document.getElementById('da-arv-low')?.value)||0;
+  const arvHigh=parseFloat(document.getElementById('da-arv-high')?.value)||0;
+  const pct=parseFloat(document.getElementById('da-pct')?.value)||70;
+  const rehab=parseFloat(document.getElementById('da-rehab')?.value)||0;
+  const fee=parseFloat(document.getElementById('da-fee')?.value)||10000;
+  const closing=parseFloat(document.getElementById('da-closing')?.value)||3000;
+  const other=parseFloat(document.getElementById('da-other')?.value)||0;
+  const fmt=v=>v>=0?'$'+Math.round(v).toLocaleString():'-$'+Math.round(Math.abs(v)).toLocaleString();
+
+  if(!arv){const m=document.getElementById('da-mao');if(m){m.textContent='Enter ARV';m.style.color='var(--muted)';}return;}
+
+  const gross=arv*pct/100;
+  const totalCosts=rehab+fee+closing+other;
+  const mao=gross-totalCosts;
+  const lowball=Math.max(0,Math.round(arv*(Math.max(50,pct-5)/100)-totalCosts));
+  const target=Math.max(0,Math.round(mao));
+  const maxMao=Math.max(0,Math.round(arv*(Math.min(90,pct+5)/100)-totalCosts));
+
+  const mEl=document.getElementById('da-mao');if(mEl)mEl.textContent=fmt(mao);
+  const rr=document.getElementById('da-range-row');
+  if(rr){
+    rr.style.display='flex';
+    const ms=document.getElementById('da-mao-safe');if(ms)ms.textContent=fmt(lowball);
+    const mt=document.getElementById('da-mao-target');if(mt)mt.textContent=fmt(target);
+    const ma=document.getElementById('da-mao-aggr');if(ma)ma.textContent=fmt(maxMao);
+  }
+
+  const bdEl=document.getElementById('da-bd');
+  if(bdEl)bdEl.innerHTML=[`ARV ${fmt(arv)}&times;${pct}%=${fmt(gross)}`,`&minus;Rehab ${fmt(rehab)}`,`&minus;Fee ${fmt(fee)}`,`&minus;Closing ${fmt(closing)}`,...(other?[`&minus;Other ${fmt(other)}`]:[])].join('&nbsp;&middot;&nbsp;');
+
+  const res=document.getElementById('da-res');const vd=document.getElementById('da-vd');
+  if(res)res.className='da-result';
+  if(mao>=30000){if(res)res.classList.add('green');if(mEl)mEl.style.color='var(--accent3)';if(vd){vd.textContent='Strong deal — room to move';vd.style.color='var(--accent3)';}}
+  else if(mao>=15000){if(res)res.classList.add('yellow');if(mEl)mEl.style.color='var(--accent)';if(vd){vd.textContent='Workable — negotiate hard';vd.style.color='var(--accent)';}}
+  else if(mao>0){if(res)res.classList.add('yellow');if(mEl)mEl.style.color='var(--warm)';if(vd){vd.textContent='Tight — seller needs to drop';vd.style.color='var(--warm)';}}
+  else{if(res)res.classList.add('red');if(mEl)mEl.style.color='var(--hot)';if(vd){vd.textContent="Doesn't pencil — walk away";vd.style.color='var(--hot)';}}
+}
+
+/* ── EXPORT ───────────────────────────────────────────────────── */
 function exportCSV(){
-  const headers=['owner_name','property_address','property_street','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','distress_signals','score','source','source_url','filed_date','amount_owed','probate_candidate_count','probate_candidate_addresses','probate_match_status','grantor','grantee','recorder_document_type','recorder_document_number','recorder_recorded_date','tags','notes'];
+  const headers=['owner_name','property_address','property_city','property_state','property_zip','mailing_address','mailing_city','mailing_state','mailing_zip','parcel_id','lead_type','score','amount','estimated_equity','filed_date','distress_sources','tags','notes','public_records_url'];
   const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
-  const lines=filtered.map(r=>[
-    r.owner_name,
-    r.property_address,
-    r.property_street||r.property_address,
-    r.property_city,
-    r.property_state,
-    r.property_zip,
-    r.mailing_address,
-    r.mailing_city,
-    r.mailing_state,
-    r.mailing_zip,
-    r.parcel_id,
-    r.lead_type,
-    (r.distress_sources||[]).join(', '),
-    r.score,
-    r.source_status||r.lead_type_key,
-    r.public_records_url,
-    r.filed_date,
-    r.amount,
-    r.probate_candidate_count??r.probate_property_candidate_count,
-    Array.isArray(r.probate_candidate_addresses)?r.probate_candidate_addresses.join('; '):r.probate_candidate_addresses,
-    r.probate_match_status,
-    r.grantor,
-    r.grantee,
-    r.recorder_document_type,
-    r.recorder_document_number,
-    r.recorder_recorded_date,
-    (r.tags||[]).join(', '),
-    r.notes
-  ].map(esc).join(','));
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[headers.map(esc).join(','),...lines].join('\n')],{type:'text/csv'}));a.download='fort_wayne_allen_leads.csv';a.click();
+  const lines=filtered.map(r=>[r.owner_name,r.property_address,r.property_city,r.property_state,r.property_zip,r.mailing_address,r.mailing_city,r.mailing_state,r.mailing_zip,r.parcel_id,r.lead_type,r.score,r.amount,r.estimated_equity,r.filed_date,(r.distress_sources||[]).join(', '),(r.tags||[]).join(', '),r.notes,r.public_records_url].map(esc).join(','));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([[headers.map(esc).join(','),...lines].join('\n')],{type:'text/csv'}));
+  a.download=`fort_wayne_allen_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
 }
-document.getElementById('tabs').addEventListener('click',e=>{const btn=e.target.closest('.tab');if(!btn)return;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');curTab=btn.dataset.tab;applyFilters()});
-loadRecords().catch(err=>{document.getElementById('tbody').innerHTML=`<tr><td colspan="7"><div class="empty">Could not load data/records.json: ${err.message}</div></td></tr>`});
+
+/* ── TABS ─────────────────────────────────────────────────────── */
+document.getElementById('tabs').addEventListener('click',e=>{
+  const btn=e.target.closest('.tab');if(!btn)return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  curTab=btn.dataset.tab;
+  applyFilters();
+});
+
+/* ── BOOT ─────────────────────────────────────────────────────── */
+loadRecords();
 </script>
 </body>
 </html>
