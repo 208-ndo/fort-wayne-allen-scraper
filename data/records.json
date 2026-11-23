@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-22T17:27:55+00:00",
+  "fetched_at": "2026-11-23T21:37:47+00:00",
   "source": "Fort Wayne / Allen County, Indiana public-source pipeline",
   "status": "live_partial_with_stubs",
   "source_status": [
@@ -25,13 +25,13 @@
       "source": "code_violation",
       "url": "https://fortwayne-citizen-services.thesmartcity311.com/getrecentIncidents",
       "status": "live",
-      "detail": "Parsed 252 public 311 rows; excluded 8 non-property/intersection rows; kept 14 property-distress code rows after noise filtering."
+      "detail": "Parsed 282 public 311 rows; excluded 8 non-property/intersection rows; kept 18 property-distress code rows after noise filtering."
     },
     {
       "source": "probate",
       "url": "https://public.courts.in.gov/CourtCal/api/Hearing/List",
       "status": "live",
-      "detail": "Scanned 9227 Allen County public hearing rows; kept 36 probate/estate rows; 0 safely matched to tax/property owner records."
+      "detail": "Scanned 9554 Allen County public hearing rows; kept 37 probate/estate rows; 0 safely matched to tax/property owner records."
     },
     {
       "source": "assessor",
@@ -43,25 +43,25 @@
       "source": "probate_property_owner_search",
       "url": "https://gis1.acimap.us/imapweb/rest/services/QueryLayers/QueryLayers/MapServer/10",
       "status": "live",
-      "detail": "Checked 36 probate rows; attempted 174 full assessor owner searches; found 21 safe owner candidates."
+      "detail": "Checked 37 probate rows; attempted 178 full assessor owner searches; found 22 safe owner candidates."
     },
     {
       "source": "recorder_probate",
       "url": "https://inallen.fidlar.com/INAllen/DirectSearch/",
       "status": "live_partial",
-      "detail": "Checked 36 probate rows; attempted 132 Recorder searches; found 0 name-tied deed/transfer candidates."
+      "detail": "Checked 37 probate rows; attempted 134 Recorder searches; found 0 name-tied deed/transfer candidates."
     },
     {
       "source": "assessor_property",
       "url": "https://gis1.acimap.us/imapweb/rest/services/QueryLayers/QueryLayers/MapServer/10",
-      "status": "live",
-      "detail": "Parsed 70 public assessor/property records by exact parcel or address lookup; 0 lookup batches failed or timed out."
+      "status": "live_partial",
+      "detail": "Parsed 73 public assessor/property records by exact parcel or address lookup; 1 lookup batches failed or timed out."
     },
     {
       "source": "absentee_owner",
       "url": "https://gis1.acimap.us/imapweb/rest/services/QueryLayers/QueryLayers/MapServer/10",
       "status": "live",
-      "detail": "Checked 84 property-bearing records; 70 had mailing addresses; detected 32 absentee owners and 12 out-of-state owners."
+      "detail": "Checked 88 property-bearing records; 73 had mailing addresses; detected 34 absentee owners and 12 out-of-state owners."
     }
   ],
   "records": [
@@ -2341,7 +2341,7 @@
       "owner_lookup_status": "matched_from_public_assessor_property_record"
     },
     {
-      "id": "FW-405277adca",
+      "id": "FW-c2281b536f",
       "owner_name": "Tax Delinquent Adapter Pending",
       "property_address": "Allen County Delinquent Property List",
       "property_city": "Fort Wayne",
@@ -2354,7 +2354,7 @@
       "parcel_id": "",
       "lead_type": "Tax Delinquent Source Stub",
       "lead_type_key": "tax_delinquent",
-      "filed_date": "2026-11-22",
+      "filed_date": "2026-11-23",
       "amount": 0,
       "score": 61,
       "subject_to_score": 43,
@@ -2372,6 +2372,160 @@
       "public_records_url": "https://www.allencounty.in.gov/824/Delinquent-Property-List",
       "notes": "Live Allen County delinquent property page is reachable; row-level parser is intentionally stubbed until the linked document format is locked down.",
       "source_status": "stub"
+    },
+    {
+      "id": "FW-87a4c1ac30",
+      "owner_name": "Raz LLC",
+      "property_address": "3114 Webster St",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "46807",
+      "mailing_address": "6712 Inverness Dr",
+      "mailing_city": "Fort Wayne",
+      "mailing_state": "IN",
+      "mailing_zip": "46804",
+      "parcel_id": "02-12-14-251-031.000-074",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-11-23",
+      "amount": 0,
+      "score": 79,
+      "subject_to_score": 61,
+      "distress_count": 4,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": true,
+      "distress_sources": [
+        "code_violation",
+        "trash_debris",
+        "nuisance",
+        "absentee"
+      ],
+      "tags": [
+        "code-violation",
+        "trash-debris",
+        "nuisance",
+        "property-record-matched",
+        "absentee-owner",
+        "entity-owner"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 261123-100332. Type: Debris / Cistern. Status: Waiting.",
+      "source_status": "live",
+      "case_number": "261123-100332"
+    },
+    {
+      "id": "FW-5d6849aabf",
+      "owner_name": "Etzel Suzanne G",
+      "property_address": "906 Blue Stone Ct",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "46804",
+      "mailing_address": "906 Blue Stone Ct",
+      "mailing_city": "Fort Wayne",
+      "mailing_state": "IN",
+      "mailing_zip": "46804",
+      "parcel_id": "02-11-03-480-014.000-075",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-11-23",
+      "amount": 0,
+      "score": 74,
+      "subject_to_score": 56,
+      "distress_count": 3,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": false,
+      "distress_sources": [
+        "code_violation",
+        "trash_debris",
+        "nuisance"
+      ],
+      "tags": [
+        "code-violation",
+        "trash-debris",
+        "nuisance",
+        "property-record-matched"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 261123-100265. Type: Debris / Cistern. Status: Resolved.",
+      "source_status": "live",
+      "case_number": "261123-100265"
+    },
+    {
+      "id": "FW-5e9f554d65",
+      "owner_name": "Knoop Benjamin",
+      "property_address": "2406 Florida Dr",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "46805",
+      "mailing_address": "2406 Florida Dr",
+      "mailing_city": "Fort Wayne",
+      "mailing_state": "IN",
+      "mailing_zip": "46805",
+      "parcel_id": "02-07-36-283-005.000-074",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-11-23",
+      "amount": 0,
+      "score": 84,
+      "subject_to_score": 66,
+      "distress_count": 3,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": true,
+      "distress_sources": [
+        "code_violation",
+        "housing_building_code",
+        "orders_to_repair"
+      ],
+      "tags": [
+        "code-violation",
+        "housing-building-code",
+        "orders-to-repair",
+        "property-record-matched"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 261123-100002. Type: Minimum Housing/Commercial Standards. Status: Resolved.",
+      "source_status": "live",
+      "case_number": "261123-100002"
+    },
+    {
+      "id": "FW-7d9951db5b",
+      "owner_name": "Unknown Owner",
+      "property_address": "300 E Superior St, Fort Wayne, In, 46802, Usa",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "",
+      "mailing_address": "",
+      "mailing_city": "",
+      "mailing_state": "",
+      "mailing_zip": "",
+      "parcel_id": "",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-11-23",
+      "amount": 0,
+      "score": 74,
+      "subject_to_score": 56,
+      "distress_count": 3,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": false,
+      "distress_sources": [
+        "code_violation",
+        "trash_debris",
+        "nuisance"
+      ],
+      "tags": [
+        "code-violation",
+        "trash-debris",
+        "nuisance"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 261122-100083. Type: Debris. Status: Resolved.",
+      "source_status": "live",
+      "case_number": "261122-100083"
     },
     {
       "id": "FW-d84cddb6fe",
@@ -2407,7 +2561,7 @@
         "property-record-matched"
       ],
       "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 261122-100010. Type: Debris. Status: Waiting.",
+      "notes": "Live Fort Wayne 311/code row. Case 261122-100010. Type: Debris. Status: Resolved.",
       "source_status": "live",
       "case_number": "261122-100010"
     },
@@ -2445,47 +2599,9 @@
         "property-record-matched"
       ],
       "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 261120-100118. Type: Minimum Housing/Commercial Standards. Status: Waiting.",
+      "notes": "Live Fort Wayne 311/code row. Case 261120-100118. Type: Minimum Housing/Commercial Standards. Status: Resolved.",
       "source_status": "live",
       "case_number": "261120-100118"
-    },
-    {
-      "id": "FW-048740822d",
-      "owner_name": "Colter Rebecca A",
-      "property_address": "9320 Sail Wind Dr",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "46804",
-      "mailing_address": "9320 Sail Wind Dr",
-      "mailing_city": "Fort Wayne",
-      "mailing_state": "IN",
-      "mailing_zip": "46804",
-      "parcel_id": "02-11-02-351-002.000-075",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-11-19",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance",
-        "property-record-matched"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 261119-100559. Type: Debris / Cistern. Status: Resolved.",
-      "source_status": "live",
-      "case_number": "261119-100559"
     },
     {
       "id": "FW-360b4930f4",
@@ -2524,6 +2640,44 @@
       "notes": "Live Fort Wayne 311/code row. Case 261119-100558. Type: Debris / Cistern. Status: Resolved.",
       "source_status": "live",
       "case_number": "261119-100558"
+    },
+    {
+      "id": "FW-048740822d",
+      "owner_name": "Colter Rebecca A",
+      "property_address": "9320 Sail Wind Dr",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "46804",
+      "mailing_address": "9320 Sail Wind Dr",
+      "mailing_city": "Fort Wayne",
+      "mailing_state": "IN",
+      "mailing_zip": "46804",
+      "parcel_id": "02-11-02-351-002.000-075",
+      "lead_type": "Code / Nuisance",
+      "lead_type_key": "code_violation",
+      "filed_date": "2026-11-19",
+      "amount": 0,
+      "score": 74,
+      "subject_to_score": 56,
+      "distress_count": 3,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": false,
+      "distress_sources": [
+        "code_violation",
+        "trash_debris",
+        "nuisance"
+      ],
+      "tags": [
+        "code-violation",
+        "trash-debris",
+        "nuisance",
+        "property-record-matched"
+      ],
+      "public_records_url": "https://www.cityoffortwayne.org/311",
+      "notes": "Live Fort Wayne 311/code row. Case 261119-100559. Type: Debris / Cistern. Status: Resolved.",
+      "source_status": "live",
+      "case_number": "261119-100559"
     },
     {
       "id": "FW-a4fd02b45c",
@@ -2875,44 +3029,6 @@
       "case_number": "261116-100008"
     },
     {
-      "id": "FW-5d38aa7a92",
-      "owner_name": "Baker Stuart L",
-      "property_address": "1028 Kensington Blvd",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "46805",
-      "mailing_address": "1028 Kensington Blvd",
-      "mailing_city": "Fort Wayne",
-      "mailing_state": "IN",
-      "mailing_zip": "46805",
-      "parcel_id": "02-13-06-153-003.000-074",
-      "lead_type": "Code / Nuisance",
-      "lead_type_key": "code_violation",
-      "filed_date": "2026-11-15",
-      "amount": 0,
-      "score": 74,
-      "subject_to_score": 56,
-      "distress_count": 3,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "code_violation",
-        "trash_debris",
-        "nuisance"
-      ],
-      "tags": [
-        "code-violation",
-        "trash-debris",
-        "nuisance",
-        "property-record-matched"
-      ],
-      "public_records_url": "https://www.cityoffortwayne.org/311",
-      "notes": "Live Fort Wayne 311/code row. Case 261115-100049. Type: Debris / Cistern. Status: Resolved.",
-      "source_status": "live",
-      "case_number": "261115-100049"
-    },
-    {
       "id": "FW-a17a98a23e",
       "owner_name": "NFN Valance",
       "property_address": "Unknown Address",
@@ -2943,7 +3059,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InNFMGFMVE5XNmMwX2R1Qm5VN1Z3SjQ3aUhrcmNBd3VsYlB4RDRhc18yMnMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiczktQzkwZHZBNlMxTExKbjYxamIwcTk1czB4YjAwZUhBNk1yNWl4T0p0TTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImZDZm42bFFpLVFGV0VWUEM2UW5yeUJmeGFUTF9RVFJCV3IxXzZiZ0N3UEkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSEppRXlWWnI2TTQ3cmdhU2NNRDRSb1d1VVkyQkF2RmFYdjRfM3dpMTdsSTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2210-EU-000636. Hearing: Hearing on Motion for 41(E) Dismissal. Court: Allen Superior Court 2. Hearing date: 2026-11-16. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2210-EU-000636",
@@ -2982,7 +3098,7 @@
         "decedent",
         "needs-property-review"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ikx4ZWlma0RMLUo1ZjZiMlVnMFBHaWRsQ01EM2ZKaDYweXViVEdScHd4bVExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNDltZEZobkFveTBSS01zSHJXWnFfWWZQVXA1OWlMX3FmWkhSa1dFc01QNDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkdjdE1jZWVEcUR2TER0Z01FLVNzNjRubnBPUkF5NEtSTks1c19TdjFPREExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVWlLaG9vVXdHVUZNWENhUExVaTQ0SjlpbXJDT2tjOXVQQWFHUUNveEpDODEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2210-ES-000056. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-16. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 2 possible property candidates; review before using: 4620 Merriam Creek Dr, Fort Wayne IN 46816 (Jones Matthew Q & Carrie A; Parcel 02-18-05-229-001.000-051; Mailing 4620 Merriam Park Dr, Fort Wayne IN 46816); 4022 Marlton Dr, Fort Wayne IN 46818 (Jones Carrie L; Parcel 02-07-29-227-010.000-073).",
       "source_status": "live",
       "case_number": "02D02-2210-ES-000056",
@@ -3022,7 +3138,7 @@
         "decedent",
         "needs-property-review"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkdMNjNxNk1PMVZhMkZNUzhRWnJEMEY4MC1HeHhzNWRza29WZjlBZTIzTGcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTUhfbTdTSjhmeTl5eTZlLTk0X2V5MXA0TnN3a3pUVlg1NUJmbzI3a0lFSTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlVqOW50Mkhfc0hvaDRwWUlyZEY5OWJtdVJldWdORGZPLVh1TTNHVWdNQXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMkVVQkpvMnIyeTVMWHpaLWhfNFlwSWZVaE1yOUx4clBrRkRZRUI3ZjRSUTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2309-ES-000034. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-16. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 2 possible property candidates; review before using: 3002 Lillie St, Fort Wayne IN 46806 (Williams Dorothy J; Parcel 02-12-13-232-012.000-074; Mailing PO Box 11905, Fort Wayne IN 46861); 3010 Lillie St, Fort Wayne IN 46806 (Williams Dorothy J; Parcel 02-12-13-232-013.000-074; Mailing PO Box 11905, Fort Wayne IN 46861).",
       "source_status": "live",
       "case_number": "02D02-2309-ES-000034",
@@ -3063,7 +3179,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFPcTJXbDBjY2lxdU5sdkgzQXFmSzg4YzRwTHBRR2N0bi1lNnVub0tFQmMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiLUFXY19ycHQyRWFUZ2I2VmRCWnRUM0YtazQ3YjJlZURvb2tJRThucEFmNDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im5ZdDhBeG5WVXhSZHlwTmpjcVdsLXBpQ0ZaT0lmWjVqQm4xNW90OVRVMWMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVE9SZ3ljdFQ4MXJlYm1uSnF2Yl95akh2MkVSbHg3ZGxqY1pOQVV4WU8xMDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2607-EU-000350. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-11-16. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 7907 Pebble Creek Pl, Fort Wayne IN 46835 (Butterworth Melissa; Parcel 02-08-10-303-010.000-072).",
       "source_status": "live",
       "case_number": "02D02-2607-EU-000350",
@@ -3104,7 +3220,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkNYZmtZMEdrMG83QVl5NURGWFR4VHlXRFpyM0pwMmtFZHB1RUFNc25EbkUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaW1KZ0pBZDJDSHhGazZuRmY2NmZKM0NtTXFtSkYtMG5xWkNfendVYm4wdzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjFlTEEtclJ6bXVJd0JIR09ON1g4b0dzZEJaM2piQ2tlcFZ6UnRuZGU4SzgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMjM4aWpta0h6bGRHamNsSHZIam5WM2N2dVhBUTdzTlFZSE15VllwYV9tazEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2405-EU-000265. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-17. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 5622 Werling Dr, Fort Wayne IN 46806 (Spencer Willie & Beatrice; Parcel 02-13-19-378-026.000-070).",
       "source_status": "live",
       "case_number": "02D02-2405-EU-000265",
@@ -3144,7 +3260,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjFyZ2lzTWZ0bWVyM05EQ1M5a2F0R3E3WTItTjJsWVAwUEpLbUg2OXZKOVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoic3FKWkZEem8tMzlyZ28wTktkZ2lVeTRsOTNCVmFheTEwcDgxZkhCdFo0WTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlQxSTI1Z3RfNm5aT1VoeWNJU0YycTJJYlIteFpPVlpjVWczSUlBMzhlYXMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiejE0MEF6ODNQNHQxMXV0RG9FNEpTQk5rbHBkbTNzWGJHa1RGemhueFRZUTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2605-EU-000256. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-11-18. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2605-EU-000256",
@@ -3183,7 +3299,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ims1X2dJNjR6VU5icjRKX21zdWRuVWktU2N2WGFhaE14XzBwV2tTcm1ndjgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZlBHVWdhVDNXS1lZSy0yYVRkZGVqRi1Nb09ETThkc0dFeVdsNDN3c05GNDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InM2MFJHeUxmam5kRFd0OFBnUF9xQUd3T3ItM2xtVVhhelZKV3FncTFQYk0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYS1KX3ExaFAwSlJUU2pGMUlLbWNVdmNMZ3E4SnpmMHFGOUh5TzdsTkNJbzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2210-EU-000640. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-19. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2210-EU-000640",
@@ -3222,53 +3338,13 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFEZ29lSEtxbXpTY3BwNjBuQTFjMEVWbGwydnh6SDE2NmVDb2R4STNELWcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWHhVU0hwZjNXNVB6SkJncDMwVXlCVDI5VHNpeEJrbzBlYmlqdmFZTlM4YzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkNRdWtZajFJQnhtV3VHSjhrLWhxeGJWc01SUkdUSURaVWRza1JCZ3Q1bjAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiOWp3bVY1VUFzcVYzSkJqR1J3SkdGem9oUzIySjlxN1hUVko3SUpOVmI4dzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000046. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-11-19. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-ES-000046",
       "probate_candidate_count": 0,
       "probate_property_candidate_count": 0,
       "probate_match_status": "probate-name-only"
-    },
-    {
-      "id": "FW-d6c263f85b",
-      "owner_name": "Melvin Odis Johnson",
-      "property_address": "Unknown Address",
-      "property_city": "Fort Wayne",
-      "property_state": "IN",
-      "property_zip": "",
-      "mailing_address": "",
-      "mailing_city": "",
-      "mailing_state": "",
-      "mailing_zip": "",
-      "parcel_id": "",
-      "lead_type": "Probate / Estate",
-      "lead_type_key": "probate",
-      "filed_date": "2026-11-23",
-      "amount": 0,
-      "score": 61,
-      "subject_to_score": 43,
-      "distress_count": 1,
-      "estimated_value": 0,
-      "estimated_equity": 0,
-      "hot_stack": false,
-      "distress_sources": [
-        "probate"
-      ],
-      "tags": [
-        "probate",
-        "estate",
-        "decedent",
-        "needs-property-review"
-      ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im53RHJxQnVPQ0RmZE95YWd1dFpiR20zQlpya3VoandEQWhNUHlvUjJnUFUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWV9mdFdOZTRka2kzeEkwdF9wYU1nQ3QyaHVVcUF0dHRPdXU3d0FSRzBfQTEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2401-ES-000002. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-23. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 2 possible property candidates; review before using: 436 Lasselle St, Fort Wayne IN 46815 (Johnson Melvin & Catherine; Parcel 02-12-12-301-014.000-074; Mailing 4221 Buesching Dr, Fort Wayne IN 46815); 4221 Buesching Dr, Fort Wayne IN 46815 (Johnson Melvin O & Catherine; Parcel 02-08-29-201-013.000-072).",
-      "source_status": "live",
-      "case_number": "02D02-2401-ES-000002",
-      "probate_candidate_count": 2,
-      "probate_property_candidate_count": 2,
-      "probate_match_status": "needs-property-review",
-      "probate_candidate_addresses": "436 Lasselle St, Fort Wayne IN 46815 (Johnson Melvin & Catherine; Parcel 02-12-12-301-014.000-074; Mailing 4221 Buesching Dr, Fort Wayne IN 46815); 4221 Buesching Dr, Fort Wayne IN 46815 (Johnson Melvin O & Catherine; Parcel 02-08-29-201-013.000-072)"
     },
     {
       "id": "FW-e33d440ec2",
@@ -3301,7 +3377,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkVUclRaZkR3Z2dQaHZVMEs0QnJoYWNaR05wOVhRWW55S0Rlc0o3NEVxOGMxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoicDFtdzB4bGhZT3hhUEhJZUczcllSRmRHVWd2U1J1V3NaNERqd3dhbzBxbzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImxxODMwOGlUeDJ4UEg5cy02U09NLWpndGdXLXVrTzNHME9SclVtZ3BrQVUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiOW9oazJncVpWRElDcG9UWmlZSU1SdTZYNTg0cW5WbV82aXo5OF9NcWN6ZzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-1907-EU-000346. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-23. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-1907-EU-000346",
@@ -3340,7 +3416,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkdYRkg2cm02TkJTSFJyd29aekNzakx4eGFwR2lodjNTdWRsSXhpdG5XTDgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMnNPOHRhVU5Eb0FJc2pWc2tsSHJMUk9RQW9UODBpREtlaF9BTVlDUkVhZzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImV4aldlX1FMUXA4eUpTRkZBLUZTN2NGbGxvMDVxdGIxbE9uYkV6UkdfTVUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUnEwcHIzS2RmUHg5M250aEd0U0dhZm1jRU84ZWdaX1BHVHVfRlY2dnFPSTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2106-EU-000347. Hearing: Hearing on Sanctions. Court: Allen Superior Court 2. Hearing date: 2026-11-24. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2106-EU-000347",
@@ -3379,7 +3455,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjA5UGI4RXZQdTV3VktUYVJSRk5MaWd5LVVzRlFDVi1ZRWgtS3hxblZEY00xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieXhlYzNCNmVvV25XSDlfQllyN3R6RWhWQlpYUjhxUmRMRVdCcjZDNzhFNDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Imk2alNxZkdZXzBwMUN0N3Vyc3o5VU9wdlRvYmZNeTU0UUdnc1FfZk9NWjAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSGN6OEg0V09DeVpGc1pVaHRKbnp3elNFRzd1Zk42ZWYwZGc1N3d0a0pITTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2412-EU-000605. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2412-EU-000605",
@@ -3418,7 +3494,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Il9TZTgzVHBOR1VKU290V1R0VlQ4NTQwV2tLdVlSSzBQdWtjWXdMVDREQVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMGNRZjN1VHZmcWZlMkRZdUI1YV9zSXpUMkdTWU56eFlpS1Z6bnp6MUJkQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IktURURyOFBIcmJFSnF1VERLU3ZzOFV5VDlaSThqTHIwVTVPVnBYTWJjcGcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiN3VVR0dOcVFiRHZNNGdTcFlPQ2lLUk4xN3Vkc01QeFo4aTI1ek5fRW9SVTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000382. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2507-EU-000382",
@@ -3457,7 +3533,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Inh4cWVBaS1SUmhTMExKZl80V0VJdGVJdFFnZTItS0VqeEprZ2lxRkdFeVkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQk8tSmVhdDNNdGhWVnAybHBJTkxvNTlSdzFTU0duQlMxeGFqMDY2b1d3NDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjU1THU2VndVQnRNal9aSzA3c0dITi00dFp2aWNqTHVua3N4WHRaay1rN0UxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieDFxOFJzMy0xZVd4LVV2X1NsbmN0SE5sUkxiVm5VcGIwNTFJd0NaTVUzQTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2312-EU-000629. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2312-EU-000629",
@@ -3496,7 +3572,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjFDaWZWMUVxd21uVVZJdmhJanFzM0xrc3pxU1MzTlBmcXpPWkNKT0ZNaG8xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiNFVVQ1dqNWVVX241TkpiVHdWZzdFbVBmamUyaFVIY3R5SWFDSFp1RjhnZzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlQtRWp5bjVjY1h0bjZPczRqVndFSTRud2d5cmtlZ2Jvckx3ZmdGYS01NEkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaFpYanhZTVVTb3pPODU5aGZ1NVA3YzRuLVN1QzhYcDREZUgyRW1rS2tCUTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2409-EU-000481. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2409-EU-000481",
@@ -3535,7 +3611,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkFTR3lTOEtKM0x2M2JVNnVuRjVqeFVZSjJWUlduaXlNZDFZMUNiRF82Z3cxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSGxoLTdSZVdaWFFSSm9waU1aa1ItcEp4ZTY0VHhjanB2cVVaVjBTV1R1STEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjdEVDNlbTFaRE9UUjFGOFZWWU5mVnZOWnZ5NW04RmV6QkFaOUZ1amJaeU0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZUZNVmp6WEF6SWxMU0dQU0VRM04zMGJycG0yeU15VlhFdzFSM2Jkck92YzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2102-EU-000087. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2102-EU-000087",
@@ -3574,7 +3650,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlBJeEZiUE5ScXIzOUZsQmp6N0habTY1NFAxQ1hjclJ1bFg1ajIzbnE3cDAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibE1SNDVuQnNFWFl5WG5XM2JWSTZEdGNNYXM3U1o4NHhzQlcyOU0zVjdEQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlZBMDJjNWU2OFNpUEZYWWdIbnBpYzU4UW9PVHFmNmxXUEh2ZDlFTTExN3MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVWFiYWdzWVhWTDZYNVIzRWpuOGNhbjFpdEZWeDFYWFpVN01nUThfRUhiRTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2508-EU-000388. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2508-EU-000388",
@@ -3613,7 +3689,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IktKbEZjMjlRVEx5aTVqd3lRZUNOaUtJY3pFdFF5WC1LVjh2Ym8zT1hweHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZGpMQUJ0VUU2WW1odVU3NFdzVmdlSjRKazRvaVJUdnVwOXN3MW1uWW9vQTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlZSZFVUbUhYVklGcFNMaDd6WC1mRllBUlpqd2I1WTFUTXR0SlgyM1JlNXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiLVNiMmZxbVlaRFRpZ1dfbG5jZG9iNF9Zbm40eTZjRjNneVl2RzU5RUltczEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2308-EU-000452. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-11-30. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2308-EU-000452",
@@ -3653,7 +3729,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InlJVzhrSmVzQXFKdEEwOUI1SlFHbXgzUjJFS0xHZ1c0YUQ1NkdIMUV2QzQxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWk8tMlBlU2VnWFJzYnNxNGFqMjRDeWdpUDBhQUdSeHBQYUVWZTZ2czFwSTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InZielBnOHFoOHFDbkxkQ1RHRU1VdXZqNkVKeXdWR3JWUXdUNWVwV0ZDUDgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiOUYwRlZrT3RKX19wYXloczhkb2M0RFE2SWpYMkoyVmtrNVk1TmkzMjdWMDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2504-EU-000197. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-01. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 11202 Leatherwood Run, Fort Wayne IN 46818 (Seculoff Thomas A & Dena J; Parcel 02-02-31-255-011.000-091).",
       "source_status": "live",
       "case_number": "02D02-2504-EU-000197",
@@ -3696,7 +3772,7 @@
         "probate-property-matched",
         "absentee-owner"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkNFTTNUYTRpM0Z6di1sMVF2OGJLN3A0djFnWFNqYmRPclNWUFNyTW9HZkExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMEV3bzhSUXlMWUk0UUFFOUtSZlVEeDRMTmQ1M2RLS1BhLTBvRVRGdkh6bzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkZMbHRuNUwtbHVuNllKTy1Qci1rUTNvU1pOWTlZSDBJVnlRUzJkeG4wS0kxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVk0yLU45ZWFpWk5pODFVNmpaMTdwYm1Oby0xUllIRkNyb1J1OWVZWkRRQTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2607-EU-000346. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-12-02. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 1122 Canal St, New Haven IN 46774 (Pettit Delores J; Parcel 02-13-12-186-004.000-041; Mailing 329 Bensman Ave, New Haven IN 46774).",
       "source_status": "live",
       "case_number": "02D02-2607-EU-000346",
@@ -3736,7 +3812,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im4wckpLRXpOamVZRl9QdjY3OHYwOFlTaUpNeFZZUEQtZ2VmRUZKLW9ENDAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibHJ1U1M4enY0R3JydktzYjR3WTRGSHFFNXE5cFFEUzZuU0EtMWtYRVBxMDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjgtMHhUNkk2QVU1ell2cVI3SGdTRGM2VUo0RHNPTDB4b3hDMVFGc0Y3d3cxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoieDUyQjlaTnVHTW5TaUsyLXAzV1BBRTRhQ2RLY0VLSEdGS0tGcFpmWUFOODEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2602-EU-000082. Hearing: Attorney Conference. Court: Allen Superior Court 2. Hearing date: 2026-12-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2602-EU-000082",
@@ -3775,7 +3851,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjlOLWk2U2lJdnROdUlBdzBPcXhrVE1qbGdGMjU4U0RwbXZUdU1XaV9RZ2sxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTEpEUFZ5bnFMTERqcGg0QUlfMUVydVR6ODB5VWpKaTJYWXhfaWxyUjJyYzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjB3blZkZXBzRENRUUR1SW1Jd3VLUTVGZ2dVckFFWjU1Yk9WWS05elpmSkUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTElkMVZSZzlEYVhxbmlxN0w4bHJhY0tfczVoc2FaWm5SOUFKZ2RYR3ZsdzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2601-ES-000003. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-03. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2601-ES-000003",
@@ -3814,14 +3890,14 @@
         "decedent",
         "needs-property-review"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImpBMWRGYjkwNzhLVEFNeDdXZVlVNUNTMlNDWjFnZzF5ajJfcmtDT0ZOVmcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZG1VUWpGXzB2UzNTLS1GVldrS0M1ODFOY1dpYXlyVmtndlBsell4UEpSYzEifX0=",
-      "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000373. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 5 possible property candidates; review before using: 325 Vin Santo Run, Fort Wayne IN 46845 (Evans Charles K & Mary Ann; Parcel 02-02-28-329-029.000-057); 916 Tennessee Ave, Fort Wayne IN 46805 (Evans Charles E; Parcel 02-12-01-128-014.000-074); 1026 E Berry St, Fort Wayne IN 46803 (Evans Charles & Rhonda Marie; Parcel 02-12-01-406-007.000-074); 812 Coombs St, Fort Wayne IN 46803 (Evans Charles; Parcel 02-12-01-406-008.000-074; Mailing 1026 E Berry St, Fort Wayne IN 46803); 1973 Meadowsweet Pkwy, Fort Wayne IN 46808 (Evans Richard Charles as Trustee of The Richard Charles Evans Living Trust dtd 12/17/2024; Parcel 02-07-32-415-009.000-066).",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Iml5YVZiY21CLWpJNm9GZ043elhiRW5vRlZSd3VQNkFLdDNha2FEdVRHODAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoianNXbVdxX2F2d2dIbzJmeE9CeUJEQU92Ujd4NmkxdXpfWnBaX2Vuc0NMRTEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000373. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 5 possible property candidates; review before using: 916 Tennessee Ave, Fort Wayne IN 46805 (Evans Charles E; Parcel 02-12-01-128-014.000-074); 1026 E Berry St, Fort Wayne IN 46803 (Evans Charles & Rhonda Marie; Parcel 02-12-01-406-007.000-074); 812 Coombs St, Fort Wayne IN 46803 (Evans Charles; Parcel 02-12-01-406-008.000-074; Mailing 1026 E Berry St, Fort Wayne IN 46803); 1973 Meadowsweet Pkwy, Fort Wayne IN 46808 (Evans Richard Charles as Trustee of The Richard Charles Evans Living Trust dtd 12/17/2024; Parcel 02-07-32-415-009.000-066); 325 Vin Santo Run, Fort Wayne IN 46845 (Evans Charles K & Mary Ann; Parcel 02-02-28-329-029.000-057).",
       "source_status": "live",
       "case_number": "02D02-2507-EU-000373",
       "probate_candidate_count": 5,
       "probate_property_candidate_count": 5,
       "probate_match_status": "needs-property-review",
-      "probate_candidate_addresses": "325 Vin Santo Run, Fort Wayne IN 46845 (Evans Charles K & Mary Ann; Parcel 02-02-28-329-029.000-057); 916 Tennessee Ave, Fort Wayne IN 46805 (Evans Charles E; Parcel 02-12-01-128-014.000-074); 1026 E Berry St, Fort Wayne IN 46803 (Evans Charles & Rhonda Marie; Parcel 02-12-01-406-007.000-074); 812 Coombs St, Fort Wayne IN 46803 (Evans Charles; Parcel 02-12-01-406-008.000-074; Mailing 1026 E Berry St, Fort Wayne IN 46803); 1973 Meadowsweet Pkwy, Fort Wayne IN 46808 (Evans Richard Charles as Trustee of The Richard Charles Evans Living Trust dtd 12/17/2024; Parcel 02-07-32-415-009.000-066)"
+      "probate_candidate_addresses": "916 Tennessee Ave, Fort Wayne IN 46805 (Evans Charles E; Parcel 02-12-01-128-014.000-074); 1026 E Berry St, Fort Wayne IN 46803 (Evans Charles & Rhonda Marie; Parcel 02-12-01-406-007.000-074); 812 Coombs St, Fort Wayne IN 46803 (Evans Charles; Parcel 02-12-01-406-008.000-074; Mailing 1026 E Berry St, Fort Wayne IN 46803); 1973 Meadowsweet Pkwy, Fort Wayne IN 46808 (Evans Richard Charles as Trustee of The Richard Charles Evans Living Trust dtd 12/17/2024; Parcel 02-07-32-415-009.000-066); 325 Vin Santo Run, Fort Wayne IN 46845 (Evans Charles K & Mary Ann; Parcel 02-02-28-329-029.000-057)"
     },
     {
       "id": "FW-75f75fea45",
@@ -3854,7 +3930,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ii1JNEdkTFBqU0F1dnBJcTBlc1g1bDkyalptZDFKbUdVUndqdWpRMWpBRkkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTXloUjBCb242Tnh1czVRLVNmUXpwRmRkM19HYjVwMmtsbzVBb3BhMmNWZzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InhTUm4tNmJnNDg0RTljZFc3ejR4elE2NG9JOURNN045bFUtYmFGZFRYNzAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQVJsLUFPNVFLTGhOS3B2OTQzazZTQWp5SThDTUJhRC1wejQ1WnJfdDNEWTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2111-EU-000657. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2111-EU-000657",
@@ -3893,7 +3969,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkV0TmozU0p4N0ppY2hDQUg4YldwamxpMVN5WkE1TG5kZ0JScXRjdC1yYXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiN3IzeXhSYVRPd2NnS0hoMHctNDNLQktMRlVvdEVMdUxmbVFKUlNjRjhGNDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InhXVmw4TmFWbmxqOHItcUlhckE3R2RQVVJEYk0xZmZUY1B4emtkQkZQS3MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiVXdrUDJxUHl1R0dMUWgxc0ViZUpmX0Rjc2JRU1Z6R2lDb3hjTk01bXBPWTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000365. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2507-EU-000365",
@@ -3932,7 +4008,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjBqQzJxcXBCdndSQnlQMC11QmcxLXdtUmVLVElRMzZZbGxtaHdzbTMtUjAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiTGJ5QU94N2pfUm13a1Q2Rjd4NUhZNzNtSHBmV0V3NnB3bzhESV95RmhsZzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik5TQWZNOFduRkhJY3ZqNlNpZ1JIOEphWTl3aWJWeXdTY1ZnM0JFZFBad2MxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQ1RzMmxoc1pqZTNNM1pnd1NsRzRweGtRZVlXRkpsbkJtR21JYUlMdlZWQTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D01-1611-EU-000530. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 1. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D01-1611-EU-000530",
@@ -3971,7 +4047,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ijh5ZVVZdEwwWG1ZQ2Z0YmZkbV9UUVUxUU1USkVUWWdxeVFVb3o4N2pTZDgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRHZ5WEhBMDM0RnNYNThSdWZqa2FqbnhLa1ZoYy11Ymp3X3ktWWlmTjY2azEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjV2YkF0QmxJY05tbVFWc0JpaWhZYXhuMWplQTlvd0VLaDZlclhlT3VpMzAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiSFZ5dUxfYkxVM0JhR3ZsX3FrUk9GMVlGZWVkLVYtSm1yb18xLW5CZk1NazEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000369. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2507-EU-000369",
@@ -4010,7 +4086,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjBSMS0zTlVUZ2Vsck1JbjdUMUFjVEROTWh2bHVEXzVkQWZCaXd5TzZfVFkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZkVwazNJX0ZjMUdMQzZFci1KS1lwRmtfQTM2RF9qNnZyMWdSTUJqTWs4czEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InVtd2pOcFp2ZExUX1NNTmNHWWYzZnNQWFJueVB2UXY0amM5R1JpT3hYcmsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYmc0UDdHSEtyZks4NG1mWlpSS0NmVkRKNlBBcVpuZDJXaHBLNWZYQ3hhbzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2508-EU-000411. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2508-EU-000411",
@@ -4049,7 +4125,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IlZpU3Fhck1WMlQtcjhldHA2WW02aGlLUUVYaDVTelE1WGxiclJiaXJHakkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiUFZFVm1kenJ2YjdiWjhzWVczUFpvMDhXVEhxcXVuY3ZqSWE5Q1U1ZlV0VTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImxhSEhuSDhBU2gyeF8xNkJOZHk3d1pGanp1TUpiSTdTWW15R0lyRHJDNzgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiaFpYanhZTVVTb3pPODU5aGZ1NVA3Vmd4RExHYks5ZzFkSFZjLUEzNUczNDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2303-EU-000166. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2303-EU-000166",
@@ -4089,7 +4165,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjBibFJYNnVUeUc1YzdaSjJsZTNWTXlPaHMyN1djVnFuZlBpbkdQUk0wWEUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidTlYSkNINWlvdDJnQWdUdktxcl9QOEJzT2JmdzVMaUxhdjFOQk56clYyUTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im5XeEhsUDhXRWxqdmdGMW5tazl0WWRZOXpwV29DX3BaelZoRDBuc0NLTHcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidERFOS0tWFg3QlU0bVFUeElMUTRUSkxkbXI5aFplOFRwbDZYMFpnX0JoNDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D01-1109-ES-000054. Hearing: Hearing on Rule to Show Cause for Failure to File. Court: Allen Superior Court 1. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 207 Southridge Rd, Fort Wayne IN 46825 (Horstman Sarah L & David J; Parcel 02-07-11-279-009.000-073).",
       "source_status": "live",
       "case_number": "02D01-1109-ES-000054",
@@ -4129,7 +4205,7 @@
         "decedent",
         "probate-name-only"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik9qbVNYSW9qQ1JyRnZVN1JMbUE1TnZma2pZem1fWDFlNnVuS2VhZFo5S00xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoidzhoOVRrRVdaa1pTZkJRZVVqVGU0OTNEVlZ6eV9Xb3hlTlZVa2FqYjFvTTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkIyYzJkeXV2Y2d2SjRXTk1VYVVnaFR1WnhCdTJsdEdUNDVZbWRBTTlqclUxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiRzFRdTVEblQxcEJJYUl6Vm1KTVdRTFdDNFJuaFVNQTJyWFFHVG1oVWNlQTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000046. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-14. No safe tax/property owner match found; property address left unknown.",
       "source_status": "live",
       "case_number": "02D02-2510-ES-000046",
@@ -4169,7 +4245,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IjZqdVJldk1SNTRBQXlIaEFIQks5ZE1ucnJ5Q2RMeVB1cmVTN3UzSW0wWWsxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiN0MzekN5MFRhMm52ZXRzZzBfMURsTGVINVVsc2s4dVFQNTVuV1ZoZGU4azEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkRuOHcxSy16M1dDa240R3JVNGg5cV9OaUwteU01T0F5NXppai0tdXE5eTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoid2ZPdFprcVZTY2ZyRHpYQ01XNGlqNUZsY3pMMnNRWlQ3UEp5cERqTExlTTEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2508-ES-000032. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-15. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 1429 Edgewater Ave, Fort Wayne IN 46805 (Schroeder Todd A; Parcel 02-12-01-232-014.000-074).",
       "source_status": "live",
       "case_number": "02D02-2508-ES-000032",
@@ -4210,7 +4286,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im9uVkRhWGJtZW9FZHhPckg1eENWYjE5aWhFZlJsWU4zelE4NC1QWkpObUkxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMVg4cGt2SVVMd2x3bGtLR3RIck9QUmtRcDRsaFdHU1l1X2dtNmE3d2Z5YzEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Il9EdjhJX1l0N3lqUmQyeHJnbnFlVUN1S056clROMkIwNVRNUkJKTG5YNDAxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiMmFMVXM2OWp3RmdNLUNGVEMtZ3BsY1pGdEpZREp2b0YzNDk2VU1wYS1KbzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2510-ES-000045. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-15. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 6411 Bennington Dr, Fort Wayne IN 46815 (Bohde Kevin K & Sheryl; Parcel 02-08-34-301-004.000-072).",
       "source_status": "live",
       "case_number": "02D02-2510-ES-000045",
@@ -4251,7 +4327,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6ImxNSGZvZnNHa0wzelpObjc4RXFDQ0ZIRjFwZEh4bm8yUnVXQnNSUkxHRTgxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiYjk5ZTlDYjdjY1hRMWhoMlBQS1k2WXp1N1JyNEp2aVRGUkowaGNKaXF6STEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Ik5Wel9ITlh1SXY4aU1oclVIdzU4SUFlVnFTU1dmNTZyVURwbl8xbng0TE0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQkkzdEJRTFBIMzhRbjdpZDcwMnV5T2VobkpFRGNtbnlHbVpQSjRPNGFYYzEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2304-EU-000238. Hearing: Pretrial Conference. Court: Allen Superior Court 2. Hearing date: 2026-12-17. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 1106 Degroff St, Fort Wayne IN 46808 (Rogers Timothy C & Richard M & Robert A & Melissa Edna; Parcel 02-12-03-256-011.000-074).",
       "source_status": "live",
       "case_number": "02D02-2304-EU-000238",
@@ -4292,7 +4368,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IldpNFRjU1d6WVRtSGJBLUowNzkxOXpGOTUtR2VsWmlJWlVfYzJiQkFDX0ExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoid1R6bVg1b3pvWndUU1hyY3BhNzlUTEFRek5GcTVWaU5KS3Fobkg2YzVvSTEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im11Nkc1bTh4WnZzMnJiNzJxZElPS3N3aDNsNy0xdUc1STdRQU1iTTNzT1UxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoibkJrT2hWY2MyMzI0b3pCMnNldFh5MHVxdEFNUmlEY0tLNVZVVFQ1VkV0NDEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2507-EU-000342. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-17. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 7815 Fountainhead Pl, Fort Wayne IN 46835 (Stine Lowell D & Martha J; Parcel 02-08-14-355-003.000-072).",
       "source_status": "live",
       "case_number": "02D02-2507-EU-000342",
@@ -4333,7 +4409,7 @@
         "property-record-matched",
         "probate-property-matched"
       ],
-      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IkhLWENHUzdWTHVhelZvUVN1SzF0WGlKZ2cxT2lQUFkyNVJQWlJremNVSFExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiQlhvN25zNkgwT2VGQUpHUlJqRWdLUnZVTXBETGlaem1jUWExcUNjS0pIMDEifX0=",
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6Im9ETTE3T2NTajdnazFzZE13Z0JLQUQ2SEJvb0ZuUXo2NTBmaUN1WlRIUE0xIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiZ1NMdkFHaWVoX0t1b2U2eV9YaTEwWDNfM21LM05CbnpuV19ubG5LSl9xODEifX0=",
       "notes": "Live Indiana court calendar probate row. Case 02D02-2609-EU-000492. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-17. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 11106 Westwind Dr, FORT WAYNE IN 46845 (Harmon Terry E; Parcel 02-02-34-154-008.000-091; Mailing 11106 Westwind Dr, Fort Wayne IN 46845).",
       "source_status": "live",
       "case_number": "02D02-2609-EU-000492",
@@ -4341,6 +4417,89 @@
       "probate_property_candidate_count": 1,
       "probate_match_status": "confirmed-single-assessor-owner-match",
       "probate_candidate_addresses": "11106 Westwind Dr, FORT WAYNE IN 46845 (Harmon Terry E; Parcel 02-02-34-154-008.000-091; Mailing 11106 Westwind Dr, Fort Wayne IN 46845)"
+    },
+    {
+      "id": "FW-fe6712582d",
+      "owner_name": "Juanita Palermo",
+      "property_address": "11205 State Road 37",
+      "property_city": "New Haven",
+      "property_state": "IN",
+      "property_zip": "46774",
+      "mailing_address": "c/o Diane Palermo Blake 10264 N Beach Rd",
+      "mailing_city": "Syracuse",
+      "mailing_state": "IN",
+      "mailing_zip": "46567",
+      "parcel_id": "02-09-18-100-012.000-054",
+      "lead_type": "Probate / Estate",
+      "lead_type_key": "probate",
+      "filed_date": "2026-12-22",
+      "amount": 0,
+      "score": 77,
+      "subject_to_score": 59,
+      "distress_count": 2,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": true,
+      "distress_sources": [
+        "probate",
+        "absentee"
+      ],
+      "tags": [
+        "probate",
+        "estate",
+        "decedent",
+        "property-record-matched",
+        "probate-property-matched",
+        "absentee-owner"
+      ],
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6IktjVnQ2NUVPRHpLakpEZG9HS2lyejN3aF9OblUzVTl3eU5tWGNESlptVXcxIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiWFE1aTFFeDl1c2lTcF9oTUpxWUtrMm9RU2JTRkZaUnhMS0xqX2FMOVk4bzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2602-EU-000059. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-22. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned one safe property match: 11205 State Road 37, New Haven IN 46774 (Palermo Nick & Juanita; Parcel 02-09-18-100-012.000-054; Mailing c/o Diane Palermo Blake 10264 N Beach Rd, Syracuse IN 46567).",
+      "source_status": "live",
+      "case_number": "02D02-2602-EU-000059",
+      "probate_candidate_count": 1,
+      "probate_property_candidate_count": 1,
+      "probate_match_status": "confirmed-single-assessor-owner-match",
+      "probate_candidate_addresses": "11205 State Road 37, New Haven IN 46774 (Palermo Nick & Juanita; Parcel 02-09-18-100-012.000-054; Mailing c/o Diane Palermo Blake 10264 N Beach Rd, Syracuse IN 46567)"
+    },
+    {
+      "id": "FW-25952a5fb9",
+      "owner_name": "Gassie M Green",
+      "property_address": "Unknown Address",
+      "property_city": "Fort Wayne",
+      "property_state": "IN",
+      "property_zip": "",
+      "mailing_address": "",
+      "mailing_city": "",
+      "mailing_state": "",
+      "mailing_zip": "",
+      "parcel_id": "",
+      "lead_type": "Probate / Estate",
+      "lead_type_key": "probate",
+      "filed_date": "2026-12-22",
+      "amount": 0,
+      "score": 61,
+      "subject_to_score": 43,
+      "distress_count": 1,
+      "estimated_value": 0,
+      "estimated_equity": 0,
+      "hot_stack": false,
+      "distress_sources": [
+        "probate"
+      ],
+      "tags": [
+        "probate",
+        "estate",
+        "decedent",
+        "needs-property-review"
+      ],
+      "public_records_url": "https://public.courts.in.gov/mycase/#/vw/CaseSummary/eyJ2Ijp7IkNhc2VUb2tlbiI6InRrVHEwR0VlY3A0V3IyVWlqNV96MEpkS0ExMFVUMnNSZk5SMVJlNFpBdEExIiwiSGlkZVRvb2xiYXJzIjp0cnVlLCJQQUxvZ28iOmZhbHNlLCJTUkNUIjoiM0JUckNsNC1BMWZxaU9ySUhCV0Etd2tMRGdBbk1PVG1ZbFFkVUFEMndRYzEifX0=",
+      "notes": "Live Indiana court calendar probate row. Case 02D02-2110-EU-000593. Hearing: Hearing. Court: Allen Superior Court 2. Hearing date: 2026-12-22. No safe tax/property owner match found; property address left unknown. Public assessor owner search returned 2 possible property candidates; review before using: 3300 Blk Chestnut St, Fort Wayne IN 46803 (Green John & Gassie M; Parcel 02-13-08-152-022.000-074; Mailing 3313 Chestnut St, Fort Wayne IN 46803); 3330 Chestnut St, Fort Wayne IN 46803 (Green John Curtis & Gassie; Parcel 02-13-08-153-014.000-074).",
+      "source_status": "live",
+      "case_number": "02D02-2110-EU-000593",
+      "probate_candidate_count": 2,
+      "probate_property_candidate_count": 2,
+      "probate_match_status": "needs-property-review",
+      "probate_candidate_addresses": "3300 Blk Chestnut St, Fort Wayne IN 46803 (Green John & Gassie M; Parcel 02-13-08-152-022.000-074; Mailing 3313 Chestnut St, Fort Wayne IN 46803); 3330 Chestnut St, Fort Wayne IN 46803 (Green John Curtis & Gassie; Parcel 02-13-08-153-014.000-074)"
     }
   ]
 }
